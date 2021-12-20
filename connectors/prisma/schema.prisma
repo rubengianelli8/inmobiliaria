@@ -6,3 +6,48 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+model User {
+  id                         Int                          @id @default(autoincrement())
+  username                   String                       @unique(map: "username") @db.VarChar(150)
+  password                   String                       @db.VarChar(128)
+  firts_name                 String                       @db.VarChar(150)
+  last_name                  String                       @db.VarChar(150)
+  email                      String                       @unique @db.VarChar(150)
+  birth_date                 DateTime                     @db.Date  
+  roles                      Roles_Users[]
+}
+model Roles {
+  id                        Int                           @id @default(autoincrement())
+  description               String                        @db.VarChar(80)
+  users                     Roles_Users[]
+  permissions               Permissions_Roles[]
+}
+model Permission {
+  id                        Int                           @id @default(autoincrement())
+  descripcion               String                        @db.VarChar(80)
+  roles                     Permissions_Roles[]
+}
+model Roles_Users {
+  id                        Int                           @id @default(autoincrement())
+  user                      User                          @relation(fields: [id_user], references: [id])
+  rol                       Roles                         @relation(fields: [id_rol], references: [id])
+  id_rol                    Int
+  id_user                   Int
+  created_at                DateTime                      @db.Date
+  updated_at                DateTime                      @db.Date
+  created_by_id             Int
+  updated_by_id             Int
+}
+
+
+model Permissions_Roles {
+  id                        Int                           @id @default(autoincrement())
+  rol                       Roles                         @relation(fields: [id_rol], references: [id])
+  permission                Permission                    @relation(fields: [id_permission], references: [id])
+  id_rol                    Int
+  id_permission             Int
+  created_at                DateTime                      @db.Date
+  updated_at                DateTime                      @db.Date
+  created_by_id             Int
+  updated_by_id             Int
+}
