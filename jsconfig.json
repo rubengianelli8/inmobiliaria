@@ -3,10 +3,9 @@
     "baseUrl": ".",
     "paths": {
       "@/components/*": ["components/*"],
-      "@/prisma/*": ["connectors/prisma/*"],
-      "@/models/*": ["models/*"],
-      "@/utils/*": ["utils/*"],
-      "@/redux/*": ["redux/*"]
+      "@/prisma/*": ["src/connectors/prisma/*"],
+      "@/models/*": ["src/models/*"],
+      "@/utils/*": ["src/utils/*"]
     }
   },
   "exclude": ["node_modules"]
