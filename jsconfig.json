@@ -5,6 +5,7 @@
       "@/components/*": ["components/*"],
       "@/prisma/*": ["src/connectors/prisma/*"],
       "@/models/*": ["src/models/*"],
+      "@/graphql/*": ["src/graphql/*"],
       "@/utils/*": ["src/utils/*"]
     }
   },

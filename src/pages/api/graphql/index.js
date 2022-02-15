@@ -1,7 +1,7 @@
 import { ApolloServer } from "apollo-server-micro";
 
-import { resolvers } from "../../../graphql/resolvers";
-import { schemas } from "./schemas";
+import { resolvers } from "@/graphql/resolvers";
+import { schemas } from "@/graphql/schemas";
 
 const apolloServer = new ApolloServer({
   cors: { origin: "*", credentials: true },
