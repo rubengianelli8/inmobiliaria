@@ -4,9 +4,8 @@ export const schema = gql`
   type User {
     id: Int
     email: String
-    password: String
-    id_real_estate: Int
-    real_estate: RealEstate
+    first_name: String
+    last_name: String
   }
 
   type Query {

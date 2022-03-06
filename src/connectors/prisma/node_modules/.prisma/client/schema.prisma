@@ -10,14 +10,12 @@ model inm_real_estate{
   id                         Int                          @id @default(autoincrement())
   email                      String                       @unique @db.VarChar(150)
   password                   String                       @db.VarChar(128)
-  clients                    inm_user[]
 }
 model inm_user {
   id                         Int                          @id @default(autoincrement())
   email                      String                       @unique @db.VarChar(150)
-  password                   String                       @db.VarChar(128)
-  id_real_estate             Int
-  real_estate                inm_real_estate              @relation(fields: [id_real_estate], references: [id])
+  first_name                 String                       @db.VarChar(40)
+  last_name                  String                       @db.VarChar(40)
   owner                      inm_owner[]
   client                     inm_client[]
 }
@@ -26,6 +24,7 @@ model inm_owner{
   id                         Int                          @id @default(autoincrement())
   id_user                    Int                          @unique
   user                       inm_user                     @relation(fields: [id_user], references: [id])
+  estates                    inm_estate[]
 }
 
 model inm_client{
@@ -33,10 +32,27 @@ model inm_client{
   id_user                    Int                          @unique
   user                       inm_user                     @relation(fields: [id_user], references: [id])
   billing                    inm_billing[]
+  estate                     inm_estate[]
 }
 
 model inm_billing{
   id                         Int                          @id @default(autoincrement())
   id_client                  Int                          @unique
   client                     inm_client                   @relation(fields: [id_client], references: [id])
+}
+
+model inm_estate{
+  id                         Int                          @id @default(autoincrement())
+  address                    String                       @db.VarChar(100)
+  type                       estate_type
+  price                      Int
+  id_owner                   Int
+  owner                      inm_owner                    @relation(fields: [id_owner], references: [id])
+  id_client                  Int
+  client                     inm_client                   @relation(fields: [id_client], references: [id])
+}
+
+enum estate_type{
+  alquiler
+  venta
 }
