@@ -14,7 +14,7 @@ const Owners = () => {
   return (
     <>
       <NavBar />
-      <div className="bg-secondary w-250 h-screen z-50 shadow-box flex justify-center absolute">
+      <div className="bg-secondary w-250 h-screen z-50 shadow-box md:flex justify-center hidden md:absolute">
         <nav className="w-4/5 flex flex-col mt-6">
           <ToggleGroup.Root
             type="single"
@@ -53,7 +53,7 @@ const Owners = () => {
           </ToggleGroup.Root>
         </nav>
       </div>
-      <div className="ml-255">
+      <div className="md:ml-255">
         <Owner path={path} />
       </div>
     </>

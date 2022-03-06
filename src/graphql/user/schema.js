@@ -6,13 +6,27 @@ export const schema = gql`
     email: String
     first_name: String
     last_name: String
+    dni: Int
+    personal_address: String
+    work_address: String
+    phone: String
+    cell_phone: String
   }
 
   type Query {
     getUser(id: Int): User
   }
   type Mutation {
-    addUser(email: String, password: String, id_real_estate: Int): User
+    addUser(
+      email: String
+      first_name: String
+      last_name: String
+      dni: Int
+      personal_address: String
+      work_address: String
+      phone: String
+      cell_phone: String
+    ): User
     deleteUser(id: Int): User
   }
 `;
