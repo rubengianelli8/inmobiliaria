@@ -1,32 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { signIn, useSession } from "next-auth/client";
 import Router from "next/router";
+import { useForm } from "react-hook-form";
 
 import NavBar from "@/components/navbar";
-import Input from "@/components/input.js";
+import Input from "@/components/input/index.js";
 import Button from "@/components/button";
 
 const signin = () => {
   const [session, loading] = useSession();
-  const [user, setUser] = useState({});
   const [error, setError] = useState({ ok: true, message: "" });
 
   useEffect(() => {
     if (session) Router.push("/");
   }, [session]);
 
-  const handleChange = (e) => {
-    console.log(e);
-    setUser({ ...user, [e.target.name]: e.target.value });
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(user);
+  const onSubmit = (e) => {
     signIn("credentials", {
       redirect: false,
-      email: user.email,
-      password: user.password,
+      email: e.email,
+      password: e.password,
       callbackUrl: "http://localhost:3000/",
     }).then((res) => {
       if (res.ok) Router.push(res.url);
@@ -44,7 +43,7 @@ const signin = () => {
       <NavBar />
       <div className="flex justify-center">
         <form
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col max-w-400 w-10/12 border border-blue-300 p-8 shadow-box mt-16"
         >
           {!error.ok && (
@@ -61,7 +60,8 @@ const signin = () => {
               placeholder="tuemail@email.com"
               type="text"
               name="email"
-              onChange={handleChange}
+              register={register}
+              error={errors.email}
             />
           </div>
           <div className="mt-5">
@@ -70,7 +70,8 @@ const signin = () => {
               placeholder="contraseña"
               type="password"
               name="password"
-              onChange={handleChange}
+              register={register}
+              error={errors.password}
             />
           </div>
           <div className="flex justify-center mt-5">

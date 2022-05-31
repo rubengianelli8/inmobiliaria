@@ -6,12 +6,17 @@
     "start": "next start",
     "test": "jest"
   },
+  "prisma": {
+    "schema": "./src/connectors/prisma/schema.prisma"
+  },
   "dependencies": {
     "@apollo/client": "^3.4.17",
     "@graphql-tools/schema": "^8.3.1",
     "@graphql-tools/utils": "^8.5.3",
     "@hookform/resolvers": "^2.8.8",
     "@prisma/client": "^3.4.1",
+    "@radix-ui/react-alert-dialog": "^0.1.7",
+    "@radix-ui/react-label": "^0.1.5",
     "@radix-ui/react-toggle-group": "^0.1.5",
     "apollo-server-micro": "^3.5.0",
     "apollo3-cache-persist": "^0.13.0",

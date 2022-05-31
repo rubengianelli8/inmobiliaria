@@ -16,4 +16,9 @@ export const owner = {
   async deleteOwner(_parent, { id }, _context) {
     return await prisma.inm_owner.delete({ where: { id } });
   },
+  async getAllOwners(_parent, data, _context) {
+    return await prisma.inm_owner.findMany({
+      include: { user: true },
+    });
+  },
 };

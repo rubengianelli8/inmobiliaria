@@ -12,6 +12,9 @@ module.exports = {
         12: "12px",
         14: "14px",
         16: "16px",
+        18: "18px",
+        20: "20px",
+        30: "30px",
       },
       width: {
         250: "250px",
@@ -21,7 +24,9 @@ module.exports = {
       },
       maxWidth: {
         400: "400px",
+        720: "720px",
       },
+      minWidth: { btn100: "100px" },
       boxShadow: {
         box: "0 3px 6px 0 rgba(0, 0, 0, 0.16)",
       },
@@ -31,6 +36,7 @@ module.exports = {
         secondary: "#2FA4FF",
         tertiary: "#00FFDD",
         quaternary: "#E8FFC2",
+        gray: "#ffffff",
       },
     },
   },

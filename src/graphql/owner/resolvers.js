@@ -5,6 +5,9 @@ export const resolvers = {
     getOwner(_parent, _args, _context) {
       return owner.getOwner(_parent, _args, _context);
     },
+    getAllOwners(_parent, _args, _context) {
+      return owner.getAllOwners(_parent, _args, _context);
+    },
   },
   Mutation: {
     addOwner(_parent, _args, _context) {

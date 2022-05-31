@@ -1,11 +1,13 @@
 import React from "react";
-import AddOwner from "./addOwner";
+import AsideNavigation from "./aside-navigation";
+import OwnerLayout from "./owner-layout";
+import ViewOwners from "./view-owners";
 
-const Owner = ({ path }) => {
+const Owner = () => {
   return (
-    <>
-      <div>{path === "addOwner" && <AddOwner />}</div>
-    </>
+    <OwnerLayout>
+      <ViewOwners />
+    </OwnerLayout>
   );
 };
 

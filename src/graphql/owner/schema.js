@@ -9,6 +9,7 @@ export const schema = gql`
 
   type Query {
     getOwner(id: Int): Owner
+    getAllOwners: [Owner]
   }
   type Mutation {
     addOwner(id_user: Int): Owner
