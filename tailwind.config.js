@@ -14,6 +14,7 @@ module.exports = {
         16: "16px",
         18: "18px",
         20: "20px",
+        25: "25px",
         30: "30px",
       },
       width: {
@@ -32,11 +33,10 @@ module.exports = {
       },
       margin: { 255: "255px" },
       colors: {
-        primary: "#0E185F",
-        secondary: "#2FA4FF",
-        tertiary: "#00FFDD",
+        primary: "#1f1f1e",
+        secondary: "#de8d00",
+        tertiary: "#de4a00",
         quaternary: "#E8FFC2",
-        gray: "#ffffff",
       },
     },
   },

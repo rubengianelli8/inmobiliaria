@@ -12,6 +12,7 @@ const ModalAlert = ({
   setOpen,
   cancelAction,
   action,
+  isDialog = false,
 }) => {
   return (
     <AlertDialog.Root open={open} className="z-50">
@@ -46,17 +47,19 @@ const ModalAlert = ({
             >
               {acceptButton}
             </AlertDialog.Action>
-            <AlertDialog.Cancel
-              className="text-12 md:text-16 sm:ml-5 w-4/5 sm:w-auto mx-auto sm:mx-0 sm:min-w-btn100 leading-10 font-bold uppercase tracking-widest px-3 py-1 rounded text-center bg-primary text-white shadow-box border-gray-100"
-              onClick={() => {
-                {
-                  if (cancelAction) cancelAction();
-                  setOpen(false);
-                }
-              }}
-            >
-              {cancelButton}
-            </AlertDialog.Cancel>
+            {!isDialog && (
+              <AlertDialog.Cancel
+                className="text-12 md:text-16 sm:ml-5 w-4/5 sm:w-auto mx-auto sm:mx-0 sm:min-w-btn100 leading-10 font-bold uppercase tracking-widest px-3 py-1 rounded text-center bg-primary text-white shadow-box border-gray-100"
+                onClick={() => {
+                  {
+                    if (cancelAction) cancelAction();
+                    setOpen(false);
+                  }
+                }}
+              >
+                {cancelButton}
+              </AlertDialog.Cancel>
+            )}
           </div>
         </AlertDialog.Content>
       </AlertDialog.Portal>

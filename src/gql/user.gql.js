@@ -25,3 +25,19 @@ export const ADD_USER = gql`
     }
   }
 `;
+
+export const GET_USER = gql`
+  query GetUser($ownerId: Int) {
+    getUser(id_owner: $ownerId) {
+      id
+      email
+      first_name
+      last_name
+      dni
+      personal_address
+      work_address
+      phone
+      cell_phone
+    }
+  }
+`;

@@ -13,7 +13,17 @@ export const schema = gql`
   }
   type Mutation {
     addOwner(id_user: Int): Owner
-    updateOwner(id: Int, id_user: Int): Owner
+    updateOwner(
+      id: Int
+      email: String
+      first_name: String
+      last_name: String
+      dni: Int
+      personal_address: String
+      work_address: String
+      phone: String
+      cell_phone: String
+    ): Owner
     deleteOwner(id: Int): Owner
   }
 `;

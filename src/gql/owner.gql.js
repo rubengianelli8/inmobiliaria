@@ -8,6 +8,34 @@ export const ADD_OWNER = gql`
   }
 `;
 
+export const UPDATE_OWNER = gql`
+  mutation Mutation(
+    $id: Int
+    $email: String
+    $firstName: String
+    $lastName: String
+    $dni: Int
+    $personalAddress: String
+    $workAddress: String
+    $phone: String
+    $cellPhone: String
+  ) {
+    updateOwner(
+      id: $id
+      email: $email
+      first_name: $firstName
+      last_name: $lastName
+      dni: $dni
+      personal_address: $personalAddress
+      work_address: $workAddress
+      phone: $phone
+      cell_phone: $cellPhone
+    ) {
+      id
+    }
+  }
+`;
+
 export const GET_ALL_OWNERS = gql`
   query GetAllOwners {
     getAllOwners {

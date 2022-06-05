@@ -17,7 +17,11 @@ export const estate = {
     }
   },
   async updateEstate(_parent, data, _context) {
-    return await prisma.inm_estate.update({ where: { id: data.id }, data });
+    try {
+      return await prisma.inm_estate.update({ where: { id: data.id }, data });
+    } catch (e) {
+      console.log(e);
+    }
   },
   async deleteEstate(_parent, { id }, _context) {
     return await prisma.inm_estate.delete({ where: { id } });

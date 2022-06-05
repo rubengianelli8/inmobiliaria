@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Router from "next/router";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { validationSchema } from "./validation-schema";
-import { useMutation } from "@apollo/client";
+import { useMutation, useLazyQuery } from "@apollo/client";
 
 import { ADD_USER } from "src/gql/user.gql";
 import { ADD_OWNER } from "src/gql/owner.gql";
+import { GET_OWNER } from "src/gql/owner.gql";
+import { UPDATE_OWNER } from "src/gql/owner.gql";
 
 import OwnerLayout from "@/containers/owner/owner-layout";
 import Input from "@/components/input/index.js";
@@ -15,37 +17,93 @@ import ModalAlert from "@/components/modal-alert";
 
 const AddOwner = () => {
   const [openModal, setOpenModal] = useState(false);
+  const [openModalUpdate, setOpenModalUpdate] = useState(false);
+
+  const [getUserOwner, { data: dataUserOwner }] = useLazyQuery(GET_OWNER);
+  const [updateUser] = useMutation(UPDATE_OWNER);
+  const [addUser, { data }] = useMutation(ADD_USER);
+  const [addOwner, { data: dataOwner }] = useMutation(ADD_OWNER);
+  const id = Router.router?.query?.id;
+
+  useEffect(() => {
+    if (id) {
+      getUserOwner({
+        variables: {
+          getOwnerId: parseInt(id),
+        },
+      });
+    }
+  }, [id]);
 
   // React-Hook-Form
   const {
     handleSubmit,
     register,
     formState: { errors },
+    setValue,
   } = useForm({ mode: "onBlur", resolver: yupResolver(validationSchema) });
 
-  const [addUser, { data }] = useMutation(ADD_USER);
-  const [addOwner, { data: dataOwner }] = useMutation(ADD_OWNER);
+  useEffect(() => {
+    if (dataUserOwner?.getOwner?.user) {
+      setValue("email", dataUserOwner.getOwner.user.email);
+      setValue("first_name", dataUserOwner.getOwner.user.first_name);
+      setValue("last_name", dataUserOwner.getOwner.user.last_name);
+      setValue("dni", dataUserOwner.getOwner.user.dni);
+      setValue(
+        "personal_address",
+        dataUserOwner.getOwner.user.personal_address
+      );
+      setValue(
+        "work_address",
+        dataUserOwner.getOwner.user.work_address || undefined
+      );
+      setValue("phone", dataUserOwner.getOwner.user.phone || undefined);
+      setValue(
+        "cell_phone",
+        dataUserOwner.getOwner.user.cell_phone || undefined
+      );
+    }
+  }, [dataUserOwner]);
+
   const onSubmit = (data) => {
-    addUser({
-      variables: {
-        email: data.email,
-        firstName: data.first_name,
-        lastName: data.last_name,
-        dni: parseInt(data.dni),
-        personalAddress: data.personal_address,
-        workAddress: data.work_address,
-        phone: data.phone,
-        cellPhone: data.cell_phone,
-      },
-    }).then((res) =>
-      addOwner({
+    if (!id)
+      addUser({
         variables: {
-          idUser: res.data.addUser.id,
+          email: data.email,
+          firstName: data.first_name,
+          lastName: data.last_name,
+          dni: parseInt(data.dni),
+          personalAddress: data.personal_address,
+          workAddress: data.work_address,
+          phone: data.phone,
+          cellPhone: data.cell_phone,
+        },
+      }).then((res) =>
+        addOwner({
+          variables: {
+            idUser: res.data.addUser.id,
+          },
+        }).then(() => {
+          setOpenModal(true);
+        })
+      );
+    else {
+      updateUser({
+        variables: {
+          id: parseInt(id),
+          email: data.email,
+          firstName: data.first_name,
+          lastName: data.last_name,
+          dni: parseInt(data.dni),
+          personalAddress: data.personal_address,
+          workAddress: data.work_address,
+          phone: data.phone,
+          cellPhone: data.cell_phone,
         },
       }).then(() => {
-        setOpenModal(true);
-      })
-    );
+        setOpenModalUpdate(true);
+      });
+    }
   };
   return (
     <>
@@ -63,6 +121,17 @@ const AddOwner = () => {
           Router.push("/owner");
         }}
       />
+      <ModalAlert
+        title={"El propietario a sido actualizado"}
+        message=""
+        acceptButton={"Aceptar"}
+        open={openModalUpdate}
+        setOpen={setOpenModalUpdate}
+        isDialog={true}
+        action={() => {
+          Router.push("/owner/user/" + id);
+        }}
+      />
       <OwnerLayout>
         <div className="flex justify-center h-screen mt-5">
           <form
@@ -70,6 +139,13 @@ const AddOwner = () => {
             method="post"
             onSubmit={handleSubmit(onSubmit)}
           >
+            <div className="mb-3">
+              {!id ? (
+                <h2>Agregar dueño de propiedad</h2>
+              ) : (
+                <h2>Actualizar dueño de propiedad</h2>
+              )}
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 gap-y-5">
               <div>
                 <Input
@@ -153,7 +229,11 @@ const AddOwner = () => {
               </div>
             </div>
             <div className="mt-2 flex justify-center">
-              <Button type="submit" label="Agregar" bgColor="bg-blue-500" />
+              <Button
+                type="submit"
+                label={id ? "Actualizar" : "Agregar"}
+                bgColor="bg-tertiary"
+              />
             </div>
           </form>
         </div>
