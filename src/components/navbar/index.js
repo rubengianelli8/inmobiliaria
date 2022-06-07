@@ -5,7 +5,7 @@ import { useSession } from "next-auth/client";
 const NavBar = () => {
   const [session, loading] = useSession();
   return (
-    <div className="w-full bg-primary text-quaternary flex py-4 relative">
+    <div className="w-full bg-primary text-quaternary flex py-4 fixed top-0 h-[60px]">
       <div className="absolute h-full flex top-0 items-center">
         <h2 className="text-25 uppercase text-tertiary font-serif font-bold ml-2">
           sc inmobiliaria
@@ -23,7 +23,7 @@ const NavBar = () => {
       )}
 
       {session && (
-        <ul className="flex ml-auto mr-auto text-lg font-bold items-center">
+        <ul className="hidden sm:flex ml-auto md:mr-auto text-lg font-bold items-center">
           <li className="mr-3 hover:underline">
             <Link href={"/signin"}>Clientes</Link>
           </li>

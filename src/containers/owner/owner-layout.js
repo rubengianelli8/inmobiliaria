@@ -5,7 +5,7 @@ const OwnerLayout = ({ children }) => {
   return (
     <div className="grid grid-cols-12">
       <AsideNavigation />
-      <div className="col-start-1 col-end-13 md:col-start-2 ml-2">
+      <div className="col-start-1 col-end-13 sm:col-start-2 ml-2">
         {children}
       </div>
     </div>

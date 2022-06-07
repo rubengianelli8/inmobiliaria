@@ -5,8 +5,8 @@ export const resolvers = {
     getEstate(_parent, _args, _context) {
       return estate.getEstate(_parent, _args, _context);
     },
-    getAllEstates(_parent, _args, _context) {
-      return estate.getAllEstates(_parent, _args, _context);
+    getAllEstatesByOwner(_parent, _args, _context) {
+      return estate.getAllEstatesByOwner(_parent, _args, _context);
     },
   },
 

@@ -41,7 +41,7 @@ export const schema = gql`
 
   type Query {
     getEstate(id: Int): Estate
-    getAllEstates: [Estate]
+    getAllEstatesByOwner(owner_id: Int): [Estate]
   }
   type Mutation {
     addEstate(

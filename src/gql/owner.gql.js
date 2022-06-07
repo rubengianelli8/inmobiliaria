@@ -37,8 +37,8 @@ export const UPDATE_OWNER = gql`
 `;
 
 export const GET_ALL_OWNERS = gql`
-  query GetAllOwners {
-    getAllOwners {
+  query GetAllOwners($page: Int, $pageSize: Int, $dni: Int, $name: String) {
+    getAllOwners(page: $page, page_size: $pageSize, dni: $dni, name: $name) {
       id
       user {
         id
@@ -52,6 +52,12 @@ export const GET_ALL_OWNERS = gql`
         cell_phone
       }
     }
+  }
+`;
+
+export const TOTAL_OWNERS = gql`
+  query TotalOwners {
+    totalOwners
   }
 `;
 

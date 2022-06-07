@@ -70,7 +70,7 @@ const AsideNavigation = () => {
             aria-label="Home dashboard"
             className={
               path.includes("/owner/add-owner")
-                ? "p-3  rounded-full text-primary bg-quaternary flex items-center justify-center text-left"
+                ? "p-3 rounded-full text-primary bg-quaternary flex items-center justify-center text-left"
                 : "p-3 rounded-full text-quaternary flex items-center justify-center text-left"
             }
           >

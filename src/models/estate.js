@@ -6,8 +6,13 @@ export const estate = {
       where: { id },
     });
   },
-  async getAllEstates(_parent, data, _context) {
-    return await prisma.inm_estate.findMany({});
+  async getAllEstatesByOwner(_parent, data, _context) {
+    return await prisma.inm_estate.findMany({
+      where: { owner: { id: data.owner_id } },
+      include: {
+        owner: { include: { user: true } },
+      },
+    });
   },
   async addEstate(_parent, data, _context) {
     try {

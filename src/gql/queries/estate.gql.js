@@ -40,3 +40,30 @@ export const GET_ESTATE_BY_ID = gql`
     }
   }
 `;
+export const GET_ALL_ESTATES_BY_OWNER = gql`
+  query GetAllEstatesByOwner($ownerId: Int) {
+    getAllEstatesByOwner(owner_id: $ownerId) {
+      id
+      type_estate
+      province
+      city
+      location
+      address
+      address_number
+      area_m2
+      bedrooms
+      bathrooms
+      garages
+      floors
+      price
+      type
+      status
+      owner {
+        user {
+          first_name
+          last_name
+        }
+      }
+    }
+  }
+`;

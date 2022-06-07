@@ -33,8 +33,35 @@ export const owner = {
     return await prisma.inm_owner.delete({ where: { id } });
   },
   async getAllOwners(_parent, data, _context) {
-    return await prisma.inm_owner.findMany({
-      include: { user: true },
-    });
+    try {
+      let filters = { user: {} };
+      if (data.dni) {
+        Object.assign(filters.user, { dni: data.dni });
+      }
+      if (data.name) {
+        Object.assign(filters.user, { first_name: data.name });
+      }
+
+      //console.log("filt......", filters);
+
+      const owners = await prisma.inm_owner.findMany({
+        where: {
+          /* user: {
+            /* dni: data.dni, 
+          }, */
+          ...{ ...filters },
+        },
+        skip: data.page * data.page_size,
+        take: data.page_size,
+        include: { user: true },
+      });
+
+      return owners;
+    } catch (e) {
+      console.log("er...", e);
+    }
+  },
+  async totalOwners(_parent, data, _context) {
+    return await prisma.inm_owner.count();
   },
 };
