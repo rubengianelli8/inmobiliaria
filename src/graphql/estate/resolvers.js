@@ -8,6 +8,9 @@ export const resolvers = {
     getAllEstatesByOwner(_parent, _args, _context) {
       return estate.getAllEstatesByOwner(_parent, _args, _context);
     },
+    getTotalEstates(_parent, _args, _context) {
+      return estate.getTotalEstates(_parent, _args, _context);
+    },
   },
 
   Mutation: {
@@ -15,7 +18,11 @@ export const resolvers = {
       return estate.addEstate(_parent, _args, _context);
     },
     updateEstate(_parent, _args, _context) {
-      return estate.updateEstate(_parent, _args, _context);
+      try {
+        return estate.updateEstate(_parent, _args, _context);
+      } catch (e) {
+        console.log(e);
+      }
     },
     deleteEstate(_parent, _args, _context) {
       return estate.deleteEstate(_parent, _args, _context);

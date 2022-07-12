@@ -1,17 +1,92 @@
 import { prisma } from "@/prisma/client";
 
 export const client = {
-  async getClient(_parent, { id }, _context) {
-    return await prisma.inm_client.findUnique({
-      where: { id },
-      include: { user: true, billing: true },
+  async getClient(_parent, { id_client }, _context) {
+    const user_ = await prisma.inm_user.findFirst({
+      where: {
+        client: {
+          some: {
+            id: id_client,
+          },
+        },
+      },
+      include: {
+        client: true,
+      },
+    });
+    return user_;
+  },
+  async getAllClients(_parent, data, _context) {
+    try {
+      let filters = { user: {} };
+      if (data.dni) {
+        Object.assign(filters.user, { dni: data.dni });
+      }
+      if (data.name) {
+        Object.assign(filters.user, { first_name: data.name });
+      }
+
+      const clients = await prisma.inm_client.findMany({
+        where: {
+          ...{ ...filters },
+        },
+        skip: data.page * data.page_size,
+        take: data.page_size,
+        include: { user: true, estate: true },
+      });
+      console.log("asdas", clients[0].estate);
+      return clients;
+    } catch (e) {
+      console.log("error", e);
+    }
+  },
+  async totalClients(_parent, data, _context) {
+    let filters = { user: {} };
+    if (data.dni) {
+      Object.assign(filters.user, { dni: data.dni });
+    }
+    if (data.name) {
+      Object.assign(filters.user, { first_name: data.name });
+    }
+    return await prisma.inm_client.count({
+      where: {
+        ...{ ...filters },
+      },
     });
   },
   async addClient(_parent, data, _context) {
-    return await prisma.inm_client.create({ data });
+    try {
+      const client_ = await prisma.inm_client.create({
+        data: {
+          user: {
+            create: { ...data },
+          },
+        },
+      });
+      return client_.user;
+    } catch (err) {
+      console.log(err);
+    }
   },
   async updateClient(_parent, data, _context) {
-    return await prisma.inm_client.update({ where: { id: data.id }, data });
+    try {
+      let id = data.id_client;
+      delete data.id_client;
+      const client_ = await prisma.inm_client.update({
+        where: {
+          id,
+        },
+        data: {
+          user: {
+            update: { ...data },
+          },
+        },
+      });
+      console.log("client_", client_);
+      return client_.user;
+    } catch (err) {
+      console.log("err...", err);
+    }
   },
   async deleteClient(_parent, { id }, _context) {
     return await prisma.inm_client.delete({ where: { id } });

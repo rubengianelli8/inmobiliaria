@@ -51,6 +51,11 @@ const AddEstate = () => {
       setValue("type_estate", dataEstate?.getEstate?.type_estate || "");
       setValue("province", dataEstate?.getEstate?.province || "");
       setValue("city", dataEstate?.getEstate?.city || "");
+      setValue("domain", dataEstate?.getEstate?.domain || "");
+      setValue(
+        "certificate_estate",
+        dataEstate?.getEstate?.certificate_estate || ""
+      );
       setValue("location", dataEstate?.getEstate?.location || "");
       setValue("neighborhood", dataEstate?.getEstate?.neighborhood || "");
       setValue("address", dataEstate?.getEstate?.address || "");
@@ -118,28 +123,7 @@ const AddEstate = () => {
     return false;
   };
   const onSubmitAddEstate = (data) => {
-    console.log({
-      ...data,
-      idEstate: parseInt(id_estate),
-      garden: toBoolean(data.garden),
-      pool: toBoolean(data.pool),
-      credit: toBoolean(data.credit),
-      commercial_use: toBoolean(data.commercial_use),
-      has_cartel: toBoolean(data.has_cartel),
-      pets: toBoolean(data.pets),
-      area_m2: parseInt(data.area_m2),
-      area_m3: parseInt(data.area_m3),
-      bedrooms: parseInt(data.bedrooms),
-      bathrooms: parseInt(data.bathrooms),
-      garages: parseInt(data.garages),
-      floors: parseInt(data.floors),
-      antiquity: parseInt(data.antiquity),
-      id_owner: parseInt(id_owner),
-      price: parseInt(1),
-      status: data.status,
-    });
     if (!id_estate) {
-      console.log("add");
       addEstate({
         variables: {
           ...data,
@@ -184,7 +168,6 @@ const AddEstate = () => {
           garages: parseInt(data.garages),
           floors: parseInt(data.floors),
           antiquity: parseInt(data.antiquity),
-          id_owner: parseInt(id_owner),
           status: data.status,
           price: parseInt(data.price),
         },
@@ -205,10 +188,10 @@ const AddEstate = () => {
         open={openModal}
         setOpen={setOpenModal}
         action={() => {
-          Router.push("/owner/add-estate");
+          Router.push("/estates");
         }}
         cancelAction={() => {
-          Router.push("/owner/add-estate");
+          Router.push("/estates");
         }}
       />
       <div className="w-full flex justify-center mt-5">
@@ -235,6 +218,22 @@ const AddEstate = () => {
               label="Precio"
               name={"price"}
               placeholder="AR$00.00"
+              register={register}
+              error={errors.price}
+            />
+            <Input
+              type="text"
+              label="Dominio"
+              name={"domain"}
+              placeholder="Número de dominio"
+              register={register}
+              error={errors.domain}
+            />
+            <Input
+              type="text"
+              label="Número partida inmobiliaria"
+              name={"certificate_estate"}
+              placeholder="Numero de partida inmobiliaria"
               register={register}
               error={errors.price}
             />

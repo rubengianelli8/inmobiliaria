@@ -32,7 +32,6 @@ const ViewOwners = () => {
       name: filters.name,
     });
     setTotalPages(Math.ceil(cantOwners?.totalOwners / 10));
-    console.log("filt...", filters);
   }, [dataOwners, page, filters]);
 
   const handleChange = (e) => {
@@ -42,15 +41,17 @@ const ViewOwners = () => {
   return (
     <div>
       <div className="w-4/5 max-w-[800px] mx-auto p-1 bg-gray-200 mt-3 flex rounded">
-        <form className="w-full flex mx-2 gap-x-2">
+        <form className="w-full flex flex-col md:flex-row mx-2 gap-x-3 gap-y-3">
           <input
-            className="rounded-full px-3"
+            type="number"
+            className="rounded-full px-3 py-2"
             placeholder="Dni"
             name="dni"
             onChange={handleChange}
           />
+
           <input
-            className="rounded-full px-3"
+            className="rounded-full px-3 py-2"
             placeholder="Nombre"
             name="name"
             onChange={handleChange}
@@ -60,7 +61,7 @@ const ViewOwners = () => {
               e.preventDefault();
               setFilters({ ...search });
             }}
-            className="ml-auto bg-tertiary py-2 px-3 rounded"
+            className="ml-auto bg-tertiary py-2 px-3 rounded mb-1 md:mb-0"
           >
             Filtrar
           </button>

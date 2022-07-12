@@ -20,6 +20,7 @@
     "@radix-ui/react-toggle-group": "^0.1.5",
     "apollo-server-micro": "^3.5.0",
     "apollo3-cache-persist": "^0.13.0",
+    "dayjs": "^1.11.3",
     "env-cmd": "^10.1.0",
     "graphql": "^16.0.1",
     "graphql-scalars": "^1.13.6",

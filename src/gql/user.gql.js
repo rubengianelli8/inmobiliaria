@@ -27,8 +27,8 @@ export const ADD_USER = gql`
 `;
 
 export const GET_USER = gql`
-  query GetUser($ownerId: Int) {
-    getUser(id_owner: $ownerId) {
+  query GetUser($ownerId: Int, $clientId: Int) {
+    getUser(id_owner: $ownerId, id_client: $clientId) {
       id
       email
       first_name

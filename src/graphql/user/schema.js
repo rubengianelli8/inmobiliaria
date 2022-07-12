@@ -14,7 +14,7 @@ export const schema = gql`
   }
 
   type Query {
-    getUser(id: Int, id_owner: Int): User
+    getUser(id: Int, id_owner: Int, id_client: Int): User
   }
   type Mutation {
     addUser(

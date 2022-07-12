@@ -20,7 +20,7 @@ const AsideNavigation = () => {
       }
     >
       <div
-        className="h-10 w-10 rounded-full bg-tertiary absolute top-1 -right-5 z-50 flex justify-center items-center cursor-pointer"
+        className="h-10 w-10 rounded-full bg-tertiary hidden absolute top-1 -right-5 z-50 sm:flex justify-center items-center cursor-pointer"
         onClick={() => setShowNav(!showNav)}
       >
         {!showNav && (

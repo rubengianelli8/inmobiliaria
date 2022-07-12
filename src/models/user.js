@@ -1,24 +1,38 @@
 import { prisma } from "@/prisma/client";
 
 export const user = {
-  async getUser(_parent, { id, id_owner }, _context) {
+  async getUser(_parent, { id, id_owner, id_client }, _context) {
     try {
       if (id)
         return await prisma.inm_user.findUnique({
           where: { id },
           include: { real_estate: true },
         });
-      const user_ = await prisma.inm_user.findMany({
-        where: {
-          owner: {
-            every: {
-              id: id_owner,
+      let user_;
+      if (id_owner)
+        user_ = await prisma.inm_user.findFirst({
+          where: {
+            owner: {
+              some: {
+                id: id_owner,
+              },
             },
           },
-        },
-      });
-      console.log("user", user_[0]);
-      return user_[0];
+        });
+      if (id_client) {
+        console.log("id_client", id_client);
+        user_ = await prisma.inm_user.findFirst({
+          where: {
+            client: {
+              some: {
+                id: id_client,
+              },
+            },
+          },
+        });
+      }
+
+      return user_;
     } catch (e) {
       console.log("err.....", e);
     }

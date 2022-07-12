@@ -34,14 +34,35 @@ export const schema = gql`
     type: String
     status: String
     price: Int
+    certificate_estate: String
+    domain: String
     id_owner: Int
     id_client: Int
     owner: Owner
+    client: Client
   }
 
   type Query {
     getEstate(id: Int): Estate
-    getAllEstatesByOwner(owner_id: Int): [Estate]
+    getAllEstatesByOwner(
+      owner_id: Int
+      client_id: Int
+      until: Int
+      since: Int
+      domain: String
+      neighborhood: String
+      page: Int
+      page_size: Int
+      status: String
+    ): [Estate]
+    getTotalEstates(
+      owner_id: Int
+      until: Int
+      since: Int
+      domain: String
+      neighborhood: String
+      status: String
+    ): Int
   }
   type Mutation {
     addEstate(
@@ -76,6 +97,8 @@ export const schema = gql`
       type: String
       status: String
       price: Int
+      certificate_estate: String
+      domain: String
       id_owner: Int
       id_client: Int
     ): Estate
@@ -112,6 +135,8 @@ export const schema = gql`
       type: String
       status: String
       price: Int
+      certificate_estate: String
+      domain: String
       id_owner: Int
       id_client: Int
     ): Estate

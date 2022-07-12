@@ -110,6 +110,8 @@ export const UPDATE_ESTATE = gql`
     $type: String
     $status: String
     $price: Int
+    $certificate_estate: String
+    $domain: String
     $id_owner: Int
     $id_client: Int
   ) {
@@ -146,9 +148,19 @@ export const UPDATE_ESTATE = gql`
       type: $type
       status: $status
       price: $price
+      certificate_estate: $certificate_estate
+      domain: $domain
       id_owner: $id_owner
       id_client: $id_client
     ) {
+      id
+    }
+  }
+`;
+
+export const DELETE_ESTATE = gql`
+  mutation Mutation($deleteEstateId: Int) {
+    deleteEstate(id: $deleteEstateId) {
       id
     }
   }

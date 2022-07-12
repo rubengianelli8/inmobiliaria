@@ -18,8 +18,8 @@ export const GET_ESTATE_BY_ID = gql`
       internal_state
       area_m2
       area_m3
-      bedrooms
       antiquity
+      bedrooms
       bathrooms
       garages
       floors
@@ -35,14 +35,59 @@ export const GET_ESTATE_BY_ID = gql`
       type
       status
       price
-      id_owner
-      id_client
+      certificate_estate
+      domain
+      owner {
+        id
+        user {
+          first_name
+          last_name
+          dni
+        }
+      }
     }
   }
 `;
+export const GET_TOTAL_ESTATES = gql`
+  query Query(
+    $until: Int
+    $since: Int
+    $domain: String
+    $neighborhood: String
+    $status: String
+  ) {
+    getTotalEstates(
+      until: $until
+      since: $since
+      domain: $domain
+      neighborhood: $neighborhood
+      status: $status
+    )
+  }
+`;
 export const GET_ALL_ESTATES_BY_OWNER = gql`
-  query GetAllEstatesByOwner($ownerId: Int) {
-    getAllEstatesByOwner(owner_id: $ownerId) {
+  query GetAllEstatesByOwner(
+    $ownerId: Int
+    $clientId: Int
+    $until: Int
+    $since: Int
+    $domain: String
+    $neighborhood: String
+    $page: Int
+    $page_size: Int
+    $status: String
+  ) {
+    getAllEstatesByOwner(
+      owner_id: $ownerId
+      client_id: $clientId
+      until: $until
+      since: $since
+      domain: $domain
+      neighborhood: $neighborhood
+      page: $page
+      page_size: $page_size
+      status: $status
+    ) {
       id
       type_estate
       province
@@ -58,7 +103,17 @@ export const GET_ALL_ESTATES_BY_OWNER = gql`
       price
       type
       status
+      neighborhood
+      domain
+      certificate_estate
+      id_owner
       owner {
+        user {
+          first_name
+          last_name
+        }
+      }
+      client {
         user {
           first_name
           last_name

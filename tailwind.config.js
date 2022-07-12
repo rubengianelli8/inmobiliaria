@@ -38,6 +38,9 @@ module.exports = {
         tertiary: "#de4a00",
         quaternary: "#E8FFC2",
       },
+      zIndex: {
+        60: 60,
+      },
     },
   },
   variants: {
