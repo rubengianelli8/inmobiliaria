@@ -1,7 +1,15 @@
 import React from "react";
 import { GoTriangleUp } from "react-icons/go";
 
-const Input = ({ type, label, name, placeholder, register, error }) => {
+const Input = ({
+  type,
+  label,
+  name,
+  placeholder,
+  register,
+  error,
+  classPlus,
+}) => {
   return (
     <div className="flex flex-col w-full">
       <label className="relative w-full focus:border-primary z-10">
@@ -13,7 +21,8 @@ const Input = ({ type, label, name, placeholder, register, error }) => {
           name={name}
           placeholder={placeholder}
           className={
-            "border-secondary border w-full py-4 px-4 focus:outline-none focus:ring focus:ring-primary focus:mb-1"
+            "border-secondary border w-full py-4 px-4 focus:outline-none focus:ring focus:ring-primary focus:mb-1 " +
+            classPlus
           }
           {...register(name)}
         ></input>

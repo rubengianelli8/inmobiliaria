@@ -71,7 +71,7 @@ const UserDashboard = ({ user }) => {
             <div
               className=" text-quaternary bg-tertiary rounded-full text-14 cursor-pointer p-2 w-4/5 flex justify-center items-center"
               onClick={() => {
-                Router.push(`/receipt/${id}`);
+                Router.push(`/receipt/add-receipt/${id}`);
               }}
             >
               <MdOutlineAssignmentInd className="mr-2" size={20} />

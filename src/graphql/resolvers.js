@@ -6,6 +6,8 @@ import { owner } from "./owner";
 import { client } from "./client";
 import { estate } from "./estate";
 import { paymentPlan } from "./payment-plan";
+import { receipt } from "./receipt";
+
 export const resolvers = merge(
   { DateTime: DateTimeResolver },
   realEstate.resolvers,
@@ -13,5 +15,6 @@ export const resolvers = merge(
   owner.resolvers,
   estate.resolvers,
   client.resolvers,
-  paymentPlan.resolvers
+  paymentPlan.resolvers,
+  receipt.resolvers
 );

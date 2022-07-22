@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ModalComponent from "@/components/modal-component";
 import ViewPaymentPlan from "@/containers/estates/payment_plan/view-payment-plan";
+import Router from "next/router";
 
 const CardEstate = ({ estate }) => {
   const [openPaymentModal, setOpenPaymentModal] = useState(false);
@@ -58,14 +59,24 @@ const CardEstate = ({ estate }) => {
           </p>
         </div>
         {estate.status === "Alquilada" && (
-          <button
-            onClick={() => {
-              setOpenPaymentModal(true);
-            }}
-            className="underline text-blue-500 font-semibold"
-          >
-            Ver plan de pago
-          </button>
+          <div className="flex justify-between w-full">
+            <button
+              onClick={() => {
+                setOpenPaymentModal(true);
+              }}
+              className="underline text-blue-500 font-semibold"
+            >
+              Ver plan de pago
+            </button>
+            <button
+              onClick={() => {
+                Router.push(`/receipt/add-receipt/${estate.id}`);
+              }}
+              className="underline text-blue-500 font-semibold"
+            >
+              Generar recibo
+            </button>
+          </div>
         )}
       </div>
     </>

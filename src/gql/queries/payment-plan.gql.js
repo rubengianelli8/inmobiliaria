@@ -9,6 +9,11 @@ export const GET_PAYMENT_PLAN = gql`
       finish
       increases_every
       note
+      estate {
+        address
+        address_number
+        location
+      }
       client {
         id
         user {
