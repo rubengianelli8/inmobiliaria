@@ -52,47 +52,48 @@ model inm_billing {
 }
 
 model inm_estate {
-  id                 Int                      @id @default(autoincrement())
-  type_estate        enum_type_estate
-  deleted            Boolean                  @default(false)
-  province           String                   @db.VarChar(20)
-  city               String                   @db.VarChar(50)
-  location           String                   @db.VarChar(50)
-  neighborhood       String?                  @db.VarChar(50)
-  address            String                   @db.VarChar(100)
-  address_number     String                   @db.VarChar(10)
-  floor              String?                  @db.VarChar(10)
-  flat               String?                  @db.VarChar(10)
-  internal_number    String?                  @db.VarChar(10)
-  between_streets    String?                  @db.VarChar(70)
-  internal_state     String                   @db.VarChar(50)
-  certificate_estate String                   @default("No") @db.VarChar(50)
-  domain             String                   @default("No") @db.VarChar(50)
-  area_m2            Int
-  area_m3            Int?
-  antiquity          Int
-  bedrooms           Int
-  bathrooms          Int
-  garages            Int
-  floors             Int
-  garden             Boolean
-  pool               Boolean
-  credit             Boolean
-  commercial_use     Boolean
-  has_cartel         Boolean
-  pets               Boolean
-  orientation        String                   @db.VarChar(20)
-  type_ceiling       ceiling_type
-  luminosity         luminosity_type
-  type               estate_type
-  status             estate_status
-  price              Int?
-  id_owner           Int
-  owner              inm_owner                @relation(fields: [id_owner], references: [id])
-  id_client          Int?
-  client             inm_client?              @relation(fields: [id_client], references: [id])
-  prospective_buyers inm_prospective_buyers[]
-  payment_plan       inm_payment_plan[]
+  id                   Int                      @id @default(autoincrement())
+  type_estate          enum_type_estate
+  deleted              Boolean                  @default(false)
+  province             String                   @db.VarChar(20)
+  city                 String                   @db.VarChar(50)
+  location             String                   @db.VarChar(50)
+  neighborhood         String?                  @db.VarChar(50)
+  address              String                   @db.VarChar(100)
+  address_number       String                   @db.VarChar(10)
+  floor                String?                  @db.VarChar(10)
+  flat                 String?                  @db.VarChar(10)
+  internal_number      String?                  @db.VarChar(10)
+  between_streets      String?                  @db.VarChar(70)
+  internal_state       String                   @db.VarChar(50)
+  certificate_estate   String                   @default("No") @db.VarChar(50)
+  domain               String                   @default("No") @db.VarChar(50)
+  area_m2              Int
+  area_m3              Int?
+  antiquity            Int
+  bedrooms             Int
+  bathrooms            Int
+  garages              Int
+  floors               Int
+  garden               Boolean
+  pool                 Boolean
+  credit               Boolean
+  commercial_use       Boolean
+  has_cartel           Boolean
+  pets                 Boolean
+  orientation          String                   @db.VarChar(20)
+  surcharge_percentage Int?
+  type_ceiling         ceiling_type
+  luminosity           luminosity_type
+  type                 estate_type
+  status               estate_status
+  price                Int?
+  id_owner             Int
+  owner                inm_owner                @relation(fields: [id_owner], references: [id])
+  id_client            Int?
+  client               inm_client?              @relation(fields: [id_client], references: [id])
+  prospective_buyers   inm_prospective_buyers[]
+  payment_plan         inm_payment_plan[]
 }
 
 model inm_payment_plan {
@@ -163,17 +164,19 @@ model inm_prospective_buyers {
 }
 
 model inm_receipt {
-  id              Int              @id @default(autoincrement())
-  id_client       Int              @unique
-  client          inm_client       @relation(fields: [id_client], references: [id])
-  id_payment_plan Int              @unique
-  payment_plan    inm_payment_plan @relation(fields: [id_payment_plan], references: [id])
-  amount          Int
-  api             Int              @default(0)
-  date            DateTime
-  note            String
-  surcharse       Int?
-  surcharge_note  String?
-  rate            Int              @default(0)
-
+  id                   Int              @id @default(autoincrement())
+  id_client            Int
+  receipt_number       Int
+  client               inm_client       @relation(fields: [id_client], references: [id])
+  id_payment_plan      Int
+  payment_plan         inm_payment_plan @relation(fields: [id_payment_plan], references: [id])
+  amount               Int
+  api                  Int              @default(0)
+  date                 DateTime
+  month                DateTime
+  note                 String?          @db.LongText
+  surcharge            Int?
+  surcharge_percentage Int?
+  rate                 Int              @default(0)
+  address              String           @db.VarChar(100)
 }

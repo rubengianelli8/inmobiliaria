@@ -6,6 +6,7 @@ import {
   makeVar,
 } from "@apollo/client";
 import "tailwindcss/tailwind.css";
+import "src/styles/global-styles.css";
 
 export const client = new ApolloClient({
   uri: "/api/graphql",

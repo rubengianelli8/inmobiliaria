@@ -5,6 +5,7 @@ import { owner } from "./owner";
 import { client } from "./client";
 import { estate } from "./estate";
 import { paymentPlan } from "./payment-plan";
+import { receipt } from "./receipt";
 
 export const schemas = [
   DateTimeTypeDefinition,
@@ -14,4 +15,5 @@ export const schemas = [
   estate.schema,
   client.schema,
   paymentPlan.schema,
+  receipt.schema,
 ];
