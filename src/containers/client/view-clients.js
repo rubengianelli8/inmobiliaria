@@ -207,8 +207,6 @@ const ViewClients = () => {
           <button
             onClick={() => {
               let totalpages = Math.ceil(cantClients.totalClients / 10);
-              console.log("tot", totalpages);
-              console.log("cant", cantClients.totalClients);
               if (!(page + 1 >= totalpages)) setPage(page + 1);
             }}
           >

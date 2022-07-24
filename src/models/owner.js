@@ -42,8 +42,6 @@ export const owner = {
         Object.assign(filters.user, { first_name: data.name });
       }
 
-      //console.log("filt......", filters);
-
       const owners = await prisma.inm_owner.findMany({
         where: {
           /* user: {

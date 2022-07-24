@@ -45,7 +45,6 @@ const Estates = () => {
   useEffect(async () => {
     if (idClient) {
       setSearch({ ...search, status: "Disponible" });
-      console.log("entra", search);
       await refetch({
         ...search,
         status: "Disponible",
@@ -291,8 +290,6 @@ const Estates = () => {
               <button
                 onClick={() => {
                   let totalpages = Math.ceil(cantOwners.totalOwners / 10);
-                  console.log("tot", totalpages);
-                  console.log("cant", cantOwners.totalOwners);
                   if (!(page + 1 >= totalpages)) setPage(page + 1);
                 }}
               >

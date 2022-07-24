@@ -64,7 +64,6 @@ const AddLiquidation = () => {
   };
 
   useEffect(() => {
-    console.log("data", data);
     if (data?.getPaymentPlan) {
       setPaymentPlan(data.getPaymentPlan);
       setValue("rental_amount", data.getPaymentPlan.price);

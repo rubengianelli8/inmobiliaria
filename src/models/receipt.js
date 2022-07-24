@@ -19,7 +19,6 @@ export const receipt = {
     });
   },
   async getAllReceipts(_parent, _args, _context) {
-    console.log(_args);
     let page = _args.page || 1;
     if (page > 0) page = page - 1;
     const receipts = await prisma.inm_receipt.findMany({
@@ -45,7 +44,6 @@ export const receipt = {
     return await prisma.inm_receipt.delete({ where: { id } });
   },
   async countReceiptByClient(_parent, { id_client }, _context) {
-    console.log("adasds");
     return await prisma.inm_receipt.count({
       where: { id_client },
     });

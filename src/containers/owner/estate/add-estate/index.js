@@ -150,7 +150,6 @@ const AddEstate = () => {
         setOpenModal(true);
       });
     } else {
-      console.log("update");
       updateEstate({
         variables: {
           ...data,

@@ -27,7 +27,7 @@ const index = () => {
   useEffect(() => {
     if (data) setIsDataLoaded(data.getLiquidation);
   }, [data]);
-  console.log(data);
+
   return (
     <>
       {/* {called && !loading && !isDataLoaded && (

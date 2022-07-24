@@ -20,7 +20,6 @@ export const user = {
           },
         });
       if (id_client) {
-        console.log("id_client", id_client);
         user_ = await prisma.inm_user.findFirst({
           where: {
             client: {

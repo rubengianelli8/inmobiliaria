@@ -55,7 +55,7 @@ export const estate = {
           ],
         });
       }
-      console.log("data", data);
+
       const estates = await prisma.inm_estate.findMany({
         take: page_size,
         skip: page_size * page,
@@ -125,7 +125,6 @@ export const estate = {
 
   async addPaymentPlan(_parent, data, _context) {
     try {
-      console.log("llega al model", data);
       const paymentPlan_ = await prisma.inm_payment_plan.create({ data });
       return paymentPlan_;
     } catch (e) {
@@ -150,7 +149,6 @@ export const estate = {
     return paymentPlan;
   },
   async getPaymentPlan(_parent, { id }, _context) {
-    console.log("id", id);
     const response = await prisma.inm_payment_plan.findFirst({
       where: { id_estate: id },
       include: {
@@ -170,7 +168,6 @@ export const estate = {
         },
       },
     });
-    console.log("response", response);
     return response;
   },
 };

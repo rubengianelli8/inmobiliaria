@@ -34,7 +34,6 @@ export const client = {
         take: data.page_size,
         include: { user: true, estate: true },
       });
-      console.log("asdas", clients[0].estate);
       return clients;
     } catch (e) {
       console.log("error", e);
@@ -82,7 +81,7 @@ export const client = {
           },
         },
       });
-      console.log("client_", client_);
+
       return client_.user;
     } catch (err) {
       console.log("err...", err);

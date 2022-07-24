@@ -149,8 +149,6 @@ const ViewOwners = () => {
           <button
             onClick={() => {
               let totalpages = Math.ceil(cantOwners.totalOwners / 10);
-              console.log("tot", totalpages);
-              console.log("cant", cantOwners.totalOwners);
               if (!(page + 1 >= totalpages)) setPage(page + 1);
             }}
           >

@@ -186,7 +186,6 @@ const TableRow = ({ item }) => {
   if (item.bg) {
     styleBg = { background: "#888888" };
   }
-  console.log("amount", item.amount);
   return (
     <View
       style={{

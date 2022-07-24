@@ -17,7 +17,6 @@ const IndividualEstate = () => {
     if (called && !data?.getEstate && !loading) {
       Router.push("/estates");
     }
-    console.log(data?.getEstate);
   }, [called, data]);
   const booleanToString = (value) => {
     return value ? "Si" : "No";

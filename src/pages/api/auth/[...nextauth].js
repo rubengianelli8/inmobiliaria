@@ -76,7 +76,6 @@ export default NextAuth({
      */
     async jwt(token, user, account, profile, isNewUser) {
       if (user) {
-        console.log(user);
         token = { ...token, ...user };
       }
       return token;

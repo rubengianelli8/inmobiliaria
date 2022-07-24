@@ -97,7 +97,6 @@ const AddReceipt = () => {
   };
 
   const onSubmit = async (e) => {
-    console.log("paymentPlan", paymentPlan);
     addReceipt({
       variables: {
         receiptNumber: countData.countReceiptByClient + 1,

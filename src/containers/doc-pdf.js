@@ -3,7 +3,6 @@ import { Document, Page, Text, View } from "@react-pdf/renderer";
 import NumeroALetras from "@/utils/NumeroALetras";
 
 const DocPdf = ({ receipt }) => {
-  console.log(receipt);
   return (
     <Document title="recibo">
       <Page

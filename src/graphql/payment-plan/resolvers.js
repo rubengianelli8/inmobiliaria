@@ -10,7 +10,6 @@ export const resolvers = {
   Mutation: {
     addPaymentPlan(_parent, _args, _context) {
       try {
-        console.log("llega al resolver");
         return estate.addPaymentPlan(_parent, _args, _context);
       } catch (e) {
         console.log(e);
