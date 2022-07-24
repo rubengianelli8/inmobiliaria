@@ -39,6 +39,7 @@ export const schema = gql`
     id_owner: Int
     id_client: Int
     surcharge_percentage: Int
+    fee: Int
     owner: Owner
     client: Client
   }
@@ -99,6 +100,7 @@ export const schema = gql`
       status: String
       price: Int
       surcharge_percentage: Int
+      fee: Int
       certificate_estate: String
       domain: String
       id_owner: Int
@@ -140,6 +142,7 @@ export const schema = gql`
       certificate_estate: String
       domain: String
       surcharge_percentage: Int
+      fee: Int
       id_owner: Int
       id_client: Int
     ): Estate

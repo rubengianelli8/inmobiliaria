@@ -35,6 +35,7 @@ export const ADD_ESTATE = gql`
     $price: Int
     $id_owner: Int
     $id_client: Int
+    $fee: Int
   ) {
     addEstate(
       type_estate: $type_estate
@@ -70,6 +71,7 @@ export const ADD_ESTATE = gql`
       price: $price
       id_owner: $id_owner
       id_client: $id_client
+      fee: $fee
     ) {
       id
     }
@@ -114,6 +116,7 @@ export const UPDATE_ESTATE = gql`
     $domain: String
     $id_owner: Int
     $id_client: Int
+    $fee: Int
   ) {
     updateEstate(
       id: $idEstate
@@ -152,6 +155,7 @@ export const UPDATE_ESTATE = gql`
       domain: $domain
       id_owner: $id_owner
       id_client: $id_client
+      fee: $fee
     ) {
       id
     }

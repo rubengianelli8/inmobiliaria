@@ -13,6 +13,14 @@ export const GET_PAYMENT_PLAN = gql`
         address
         address_number
         location
+        fee
+        owner {
+          id
+          user {
+            first_name
+            last_name
+          }
+        }
       }
       client {
         id

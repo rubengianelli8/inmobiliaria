@@ -222,6 +222,14 @@ const AddEstate = () => {
               error={errors.price}
             />
             <Input
+              type="number"
+              label="Honorarios administración(%)"
+              name={"fee"}
+              placeholder="%00.00"
+              register={register}
+              error={errors.fee}
+            />
+            <Input
               type="text"
               label="Dominio"
               name={"domain"}

@@ -28,10 +28,11 @@ model inm_user {
 }
 
 model inm_owner {
-  id      Int          @id @default(autoincrement())
-  id_user Int          @unique
-  user    inm_user     @relation(fields: [id_user], references: [id])
-  estates inm_estate[]
+  id              Int               @id @default(autoincrement())
+  id_user         Int               @unique
+  user            inm_user          @relation(fields: [id_user], references: [id])
+  estates         inm_estate[]
+  inm_liquidation inm_liquidation[]
 }
 
 model inm_client {
@@ -94,21 +95,23 @@ model inm_estate {
   client               inm_client?              @relation(fields: [id_client], references: [id])
   prospective_buyers   inm_prospective_buyers[]
   payment_plan         inm_payment_plan[]
+  fee                  Int                      @default(0)
 }
 
 model inm_payment_plan {
-  id              Int           @id @default(autoincrement())
+  id              Int               @id @default(autoincrement())
   id_estate       Int
   id_client       Int
-  api             Int           @default(0)
+  api             Int               @default(0)
   price           Int
-  client          inm_client    @relation(fields: [id_client], references: [id])
-  estate          inm_estate    @relation(fields: [id_estate], references: [id])
+  client          inm_client        @relation(fields: [id_client], references: [id])
+  estate          inm_estate        @relation(fields: [id_estate], references: [id])
   entry           DateTime
   finish          DateTime
   increases_every Int
   note            String
   inm_receipt     inm_receipt[]
+  inm_liquidation inm_liquidation[]
 }
 
 enum enum_type_estate {
@@ -179,4 +182,22 @@ model inm_receipt {
   surcharge_percentage Int?
   rate                 Int              @default(0)
   address              String           @db.VarChar(100)
+}
+
+model inm_liquidation {
+  id              Int              @id @default(autoincrement())
+  id_owner        Int
+  owner           inm_owner        @relation(fields: [id_owner], references: [id])
+  id_payment_plan Int
+  full_name       String
+  payment_plan    inm_payment_plan @relation(fields: [id_payment_plan], references: [id])
+  rental_amount   Int
+  total_amount    Int
+  api             Int              @default(0)
+  date            DateTime
+  month           DateTime
+  note            String?          @db.LongText
+  rate            Int              @default(0)
+  address         String           @db.VarChar(100)
+  fee             Json
 }
