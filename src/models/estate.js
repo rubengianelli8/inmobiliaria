@@ -150,10 +150,19 @@ export const estate = {
     return paymentPlan;
   },
   async getPaymentPlan(_parent, { id }, _context) {
-    return await prisma.inm_payment_plan.findFirst({
+    console.log("id", id);
+    const response = await prisma.inm_payment_plan.findFirst({
       where: { id_estate: id },
       include: {
-        estate: true,
+        estate: {
+          include: {
+            owner: {
+              include: {
+                user: true,
+              },
+            },
+          },
+        },
         client: {
           include: {
             user: true,
@@ -161,5 +170,7 @@ export const estate = {
         },
       },
     });
+    console.log("response", response);
+    return response;
   },
 };

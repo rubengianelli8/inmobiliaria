@@ -70,6 +70,14 @@ const CardEstate = ({ estate }) => {
             </button>
             <button
               onClick={() => {
+                Router.push(`/liquidation/add-liquidation/${estate.id}`);
+              }}
+              className="underline text-blue-500 font-semibold"
+            >
+              Generar Liquidación
+            </button>
+            <button
+              onClick={() => {
                 Router.push(`/receipt/add-receipt/${estate.id}`);
               }}
               className="underline text-blue-500 font-semibold"
