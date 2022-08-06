@@ -274,7 +274,7 @@ const Estates = () => {
               )}
             </div>
           </div>
-          )
+
           <div className="w-4/5 flex mx-auto justify-center max-w-[800px] items-center gap-x-2 py-2 bg-gray-200 rounded-b">
             {page > 0 && (
               <button

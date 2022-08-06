@@ -15,6 +15,7 @@ export const schema = gql`
     month: DateTime
     note: String
     rate: Int
+    total_profit: Int
     address: String
     fee: JSON
     owner: Owner
@@ -28,7 +29,12 @@ export const schema = gql`
 
   type Query {
     getLiquidation(id: Int): Liquidation
-    getAllLiquidations(page: Int, page_size: Int): ListLiquidation
+    getAllLiquidations(
+      page: Int
+      page_size: Int
+      full_name: String
+      month: DateTime
+    ): ListLiquidation
   }
   type Mutation {
     addLiquidation(
@@ -42,6 +48,7 @@ export const schema = gql`
       month: DateTime
       note: String
       full_name: String
+      total_profit: Int
       rate: Int
       address: String
       fee: JSON

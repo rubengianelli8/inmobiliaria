@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useInsertionEffect } from "react";
 import Router from "next/router";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -16,6 +16,7 @@ import ModalAlert from "@/components/modal-alert";
 const AddClient = () => {
   const [openModal, setOpenModal] = useState(false);
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
+  const [idClient, setIdClient] = useState(null);
 
   const [getUserClient, { data: dataUserClient }] = useLazyQuery(GET_CLIENT);
   const [updateUser] = useMutation(UPDATE_CLIENT);
@@ -31,6 +32,13 @@ const AddClient = () => {
       });
     }
   }, [id]);
+
+  useEffect(() => {
+    if (dataClient?.addClient?.id) {
+      setIdClient(dataClient.addClient.id);
+      setOpenModal(true);
+    }
+  }, [dataClient]);
 
   // React-Hook-Form
   const {
@@ -56,9 +64,9 @@ const AddClient = () => {
     }
   }, [dataUserClient]);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     if (!id)
-      addClient({
+      await addClient({
         variables: {
           email: data.email,
           firstName: data.first_name,
@@ -69,8 +77,6 @@ const AddClient = () => {
           phone: data.phone,
           cellPhone: data.cell_phone,
         },
-      }).then(() => {
-        setOpenModal(true);
       });
     else {
       updateUser({
@@ -100,7 +106,7 @@ const AddClient = () => {
         open={openModal}
         setOpen={setOpenModal}
         action={() => {
-          Router.push("/estate");
+          Router.push("/estates?id_client=" + idClient);
         }}
         cancelAction={() => {
           Router.push("/client");

@@ -6,7 +6,7 @@ import { PDFViewer } from "@react-pdf/renderer";
 
 const Receipt = ({ receipt }) => {
   return (
-    <PDFViewer className="w-screen h-screen">
+    <PDFViewer className="w-screen h-screen ">
       <DocPdf receipt={receipt} />
     </PDFViewer>
   );

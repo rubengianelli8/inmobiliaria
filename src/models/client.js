@@ -62,7 +62,7 @@ export const client = {
           },
         },
       });
-      return client_.user;
+      return client_;
     } catch (err) {
       console.log(err);
     }

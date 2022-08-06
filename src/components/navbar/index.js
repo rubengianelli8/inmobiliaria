@@ -63,8 +63,12 @@ const NavBar = () => {
           >
             <Link href={"/liquidation/list"}>Liquidaciones</Link>
           </li>
-          <li className="mr-3 hover:underline">
-            <Link href={"/owner"}>Administración</Link>
+          <li
+            className={`mr-3 hover:underline ${
+              path.includes("admin") && "text-tertiary"
+            }`}
+          >
+            <Link href={"/admin"}>Administración</Link>
           </li>
         </ul>
       )}
@@ -113,8 +117,12 @@ const NavBar = () => {
           >
             <Link href={"/liquidation/list"}>Liquidaciones</Link>
           </li>
-          <li className="mr-3 hover:underline">
-            <Link href={"/owner"}>Administración</Link>
+          <li
+            className={`mr-3 hover:underline ${
+              path.includes("admin") && "text-tertiary"
+            }`}
+          >
+            <Link href={"/admin"}>Administración</Link>
           </li>
         </ul>
       )}

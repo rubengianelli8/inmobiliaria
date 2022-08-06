@@ -4,6 +4,7 @@ import Router from "next/router";
 import { useLazyQuery } from "@apollo/client";
 
 import { GET_RECEIPT_BY_ID } from "@/gql/queries/receipt.gql";
+import NavBar from "@/components/navbar";
 
 const Receipt = dynamic(() => import("../../containers/receipt"), {
   ssr: false,
@@ -33,6 +34,7 @@ const index = () => {
           {Router.push("/receipt")}
         </div>
       )} */}
+      <NavBar />
 
       {called && !loading && data?.getReceipt && (
         <Receipt receipt={data?.getReceipt} />

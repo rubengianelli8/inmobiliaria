@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import Router from "next/router";
 import { useLazyQuery } from "@apollo/client";
-
+import NavBar from "@/components/navbar";
 import { GET_LIQUIDATION } from "@/gql/queries/liquidation.glq";
 
 const Liquidation = dynamic(
@@ -33,10 +33,10 @@ const index = () => {
       {/* {called && !loading && !isDataLoaded && (
         <div>
           {alert("El recibo que estas tratando de ver no existe")}
-          {Router.push("/receipt")}
+          {Router.push("/liquidation")}
         </div>
       )} */}
-
+      <NavBar />
       {called && !loading && data?.getLiquidation && (
         <Liquidation liquidation={data?.getLiquidation} />
       )}

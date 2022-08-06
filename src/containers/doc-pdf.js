@@ -1,6 +1,7 @@
 import React from "react";
 import { Document, Page, Text, View } from "@react-pdf/renderer";
 import NumeroALetras from "@/utils/NumeroALetras";
+import dayjs from "dayjs";
 
 const DocPdf = ({ receipt }) => {
   return (
@@ -118,7 +119,7 @@ const ReceiptDoc = ({ receipt }) => {
           Por el alquiler del inmueble ubicado en: {receipt?.address}{" "}
           correspondiente al mes de{" "}
           {new Intl.DateTimeFormat("es-ES", { month: "long" }).format(
-            new Date(receipt?.month)
+            dayjs(receipt?.month).add(1, "day")
           )}
         </Text>
         <View

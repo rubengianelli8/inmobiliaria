@@ -20,6 +20,7 @@ export const GET_RECEIPT_BY_ID = gql`
       surcharge_percentage
       rate
       address
+      full_name
       client {
         user {
           first_name
@@ -31,8 +32,18 @@ export const GET_RECEIPT_BY_ID = gql`
 `;
 
 export const GET_ALL_RECEIPTS = gql`
-  query GetAllReceipt($page: Int, $pageSize: Int) {
-    getAllReceipts(page: $page, page_size: $pageSize) {
+  query GetAllReceipt(
+    $page: Int
+    $pageSize: Int
+    $month: DateTime
+    $fullName: String
+  ) {
+    getAllReceipts(
+      page: $page
+      page_size: $pageSize
+      month: $month
+      full_name: $fullName
+    ) {
       results {
         id
         amount
@@ -45,6 +56,7 @@ export const GET_ALL_RECEIPTS = gql`
         surcharge_percentage
         rate
         address
+        full_name
         client {
           user {
             first_name

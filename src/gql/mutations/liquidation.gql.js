@@ -12,6 +12,7 @@ export const ADD_LIQUIDATION = gql`
     $note: String
     $fullName: String
     $rate: Int
+    $totalProfit: Int
     $address: String
     $fee: JSON
   ) {
@@ -28,6 +29,7 @@ export const ADD_LIQUIDATION = gql`
       rate: $rate
       address: $address
       fee: $fee
+      total_profit: $totalProfit
     ) {
       id
     }

@@ -101,6 +101,7 @@ const AddReceipt = () => {
       variables: {
         receiptNumber: countData.countReceiptByClient + 1,
         idClient: paymentPlan.client.id,
+        fullName: e.full_name,
         idPaymentPlan: paymentPlan.id,
         amount: parseInt(total),
         api: parseInt(e.api),

@@ -138,7 +138,10 @@ export const estate = {
     });
   },
   async deletePaymentPlan(_parent, { id }, _context) {
-    const paymentPlan = await prisma.inm_payment_plan.delete({ where: { id } });
+    const paymentPlan = await prisma.inm_payment_plan.update({
+      where: { id },
+      data: { deleted: true },
+    });
     await prisma.inm_estate.update({
       where: { id: paymentPlan.id_estate },
       data: {

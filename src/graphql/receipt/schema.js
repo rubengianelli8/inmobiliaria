@@ -18,6 +18,7 @@ export const schema = gql`
     address: String
     client: Client
     payment_plan: PaymentPlan
+    full_name: String
   }
 
   type ListReceipts {
@@ -27,7 +28,12 @@ export const schema = gql`
 
   type Query {
     getReceipt(id: Int): Receipt
-    getAllReceipts(page: Int, page_size: Int): ListReceipts
+    getAllReceipts(
+      page: Int
+      page_size: Int
+      month: DateTime
+      full_name: String
+    ): ListReceipts
     countReceiptByClient(id_client: Int): Int
   }
   type Mutation {
@@ -44,6 +50,7 @@ export const schema = gql`
       surcharge_percentage: Int
       rate: Int
       address: String
+      full_name: String
     ): Receipt
     deleteReceipt(id: Int): Receipt
   }

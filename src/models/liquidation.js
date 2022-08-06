@@ -21,9 +21,23 @@ export const liquidation = {
   async getAllLiquidations(_parent, _args, _context) {
     let page = _args.page || 1;
     if (page > 0) page = page - 1;
+
+    const { month, full_name } = _args;
+    let filters = {};
+    if (full_name) {
+      filters.full_name = {
+        contains: full_name,
+      };
+    }
+    if (month) {
+      filters.month = month;
+    }
     const liquidations = await prisma.inm_liquidation.findMany({
       take: _args.page_size || 10,
       skip: page * (_args.page_size || 10),
+      where: {
+        ...filters,
+      },
       include: {
         owner: {
           include: {

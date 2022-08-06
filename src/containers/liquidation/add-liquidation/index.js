@@ -130,10 +130,15 @@ const AddLiquidation = () => {
 
   const onSubmit = (e) => {
     if (!newDiscount.length) {
-      discounts.unshift({
+      let discounts_ = [...discounts];
+      discounts_.unshift({
         id: discounts.length,
         amount: e.fee,
         name: "Honorarios administración",
+      });
+      let profits = 0;
+      discounts_.map((discount) => {
+        profits += parseFloat(discount.amount);
       });
       addLiquidation({
         variables: {
@@ -147,9 +152,13 @@ const AddLiquidation = () => {
           note: e.note,
           rate: e.rate ? parseInt(e.rate) : 0,
           address: e.address,
-          fee: discounts,
+          fee: discounts_,
           fullName: e.full_name,
+          totalProfit: profits,
         },
+      }).then((res) => {
+        if (res.data.addLiquidation.id)
+          Router.push("/liquidation/" + res.data.addLiquidation.id);
       });
     }
   };

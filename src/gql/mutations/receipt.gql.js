@@ -14,6 +14,7 @@ export const ADD_RECEIPT = gql`
     $rate: Int
     $address: String
     $receiptNumber: Int
+    $fullName: String
   ) {
     addReceipt(
       id_client: $idClient
@@ -28,6 +29,7 @@ export const ADD_RECEIPT = gql`
       rate: $rate
       address: $address
       receipt_number: $receiptNumber
+      full_name: $fullName
     ) {
       id
     }

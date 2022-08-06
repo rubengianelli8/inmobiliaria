@@ -23,7 +23,7 @@ const ViewEstates = ({ id_owner, id_client }) => {
     <div className="flex flex-col w-full items-center">
       {dataEstates?.getAllEstatesByOwner.length > 0 ? (
         dataEstates?.getAllEstatesByOwner.map((estate) => (
-          <CardEstate estate={estate} />
+          <CardEstate estate={estate} key={estate.id} />
         ))
       ) : (
         <p className="text-18 md:text-25 text-tertiary font-bold mt-20">

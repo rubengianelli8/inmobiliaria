@@ -130,6 +130,7 @@ const AddEstate = () => {
           garden: toBoolean(data.garden),
           pool: toBoolean(data.pool),
           credit: toBoolean(data.credit),
+          fee: parseInt(data.fee),
           commercial_use: toBoolean(data.commercial_use),
           has_cartel: toBoolean(data.has_cartel),
           pets: toBoolean(data.pets),

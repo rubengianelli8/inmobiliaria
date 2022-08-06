@@ -15,7 +15,7 @@ const CardEstate = ({ estate }) => {
       >
         <ViewPaymentPlan id={estate.id} />
       </ModalComponent>
-      <div className="gap-y-5 flex flex-col justify-start items-start w-4/5 max-w-[500px] p-3 bg-gray-100 my-3 shadow-box rounded">
+      <div className="gap-y-5 flex flex-col justify-start items-start ml-10 p-3 bg-gray-100 my-3 shadow-box rounded">
         <div className="flex gap-x-10">
           <p className="flex flex-col">
             <span className="font-bold">Tipo de propiedad:</span>
