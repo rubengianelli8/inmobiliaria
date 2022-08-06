@@ -9,12 +9,12 @@ import ViewEstates from "@/containers/owner/user/view-estates";
 const UserDashboard = ({ user }) => {
   const id = Router?.router?.query?.index;
   return (
-    <div className="flex">
+    <div className="flex flex-col-reverse md:flex-row">
       <div className="w-full flex justify-center">
         <ViewEstates id_client={parseInt(id)} />
       </div>
-      <div className="flex justify-end w-full h-screen">
-        <div className="flex flex-col border ml-auto py-3 px-6 shadow-box">
+      <div className="flex w-full justify-center  mt-3 md:mt-0 md:justify-end md:w-full md:h-screen">
+        <div className="flex flex-col border w-4/5 md:w-auto md:ml-auto py-3 px-6 shadow-box">
           <div className="flex flex-row text-18 mb-2">
             <span className="font-bold mr-2 text-primary">Dni:</span>
             <span>{user?.dni}</span>
@@ -66,16 +66,6 @@ const UserDashboard = ({ user }) => {
             >
               <BsFillPencilFill className="mr-2" size={18} />
               Editar cliente
-            </div>
-
-            <div
-              className=" text-quaternary bg-tertiary rounded-full text-14 cursor-pointer p-2 w-4/5 flex justify-center items-center"
-              onClick={() => {
-                Router.push(`/receipt/add-receipt/${id}`);
-              }}
-            >
-              <MdOutlineAssignmentInd className="mr-2" size={20} />
-              Generar recibo
             </div>
           </div>
         </div>
