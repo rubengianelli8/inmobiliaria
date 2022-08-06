@@ -11,6 +11,7 @@ export const schema = gql`
     finish: DateTime
     increases_every: Int
     note: String
+    deleted: Boolean
     estate: Estate
     client: Client
   }
@@ -28,6 +29,7 @@ export const schema = gql`
       increases_every: Int
       note: String
       id_client: Int
+      deleted: Boolean
     ): PaymentPlan
     updatePaymentPlan(
       id: Int
@@ -39,6 +41,7 @@ export const schema = gql`
       increases_every: Int
       note: String
       id_client: Int
+      deleted: Boolean
     ): PaymentPlan
     deletePaymentPlan(id: Int): PaymentPlan
   }

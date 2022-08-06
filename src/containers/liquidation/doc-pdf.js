@@ -1,7 +1,7 @@
 import React from "react";
 import { Document, Page, Text, View } from "@react-pdf/renderer";
 import NumeroALetras from "@/utils/NumeroALetras";
-
+import dayjs from "dayjs";
 const DocPdf = ({ liquidation }) => {
   return (
     <Document title="recibo">
@@ -96,7 +96,7 @@ const LiquidationDoc = ({ liquidation }) => {
             }}
           >{` ${new Intl.DateTimeFormat("es-ES", {
             month: "long",
-          }).format(new Date(liquidation?.month))}`}</Text>
+          }).format(dayjs(liquidation?.month).add(1, "day"))}`}</Text>
           {` de ${new Date(liquidation?.month).getFullYear()}`}, vivienda
           ubicada en {liquidation?.address}
         </Text>

@@ -8,6 +8,8 @@ import { estate } from "./estate";
 import { paymentPlan } from "./payment-plan";
 import { receipt } from "./receipt";
 import { liquidation } from "./liquidation";
+import { admin } from "./admin";
+import { expense } from "./expense";
 
 export const resolvers = merge(
   { DateTime: DateTimeResolver },
@@ -18,5 +20,7 @@ export const resolvers = merge(
   client.resolvers,
   paymentPlan.resolvers,
   receipt.resolvers,
-  liquidation.resolvers
+  liquidation.resolvers,
+  admin.resolvers,
+  expense.resolvers
 );

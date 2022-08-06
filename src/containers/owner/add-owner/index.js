@@ -18,6 +18,7 @@ import ModalAlert from "@/components/modal-alert";
 const AddOwner = () => {
   const [openModal, setOpenModal] = useState(false);
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
+  const [idOwner, setIdOwner] = useState(null);
 
   const [getUserOwner, { data: dataUserOwner }] = useLazyQuery(GET_OWNER);
   const [updateUser] = useMutation(UPDATE_OWNER);
@@ -83,7 +84,8 @@ const AddOwner = () => {
           variables: {
             idUser: res.data.addUser.id,
           },
-        }).then(() => {
+        }).then((res_) => {
+          setIdOwner(res_.data.addOwner.id);
           setOpenModal(true);
         })
       );
@@ -115,7 +117,7 @@ const AddOwner = () => {
         open={openModal}
         setOpen={setOpenModal}
         action={() => {
-          Router.push("/owner/add-estate");
+          Router.push("/owner/user/add-estate?id_owner=" + idOwner);
         }}
         cancelAction={() => {
           Router.push("/owner");

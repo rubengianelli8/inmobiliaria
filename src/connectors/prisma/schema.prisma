@@ -110,6 +110,7 @@ model inm_payment_plan {
   finish          DateTime
   increases_every Int
   note            String
+  deleted         Boolean           @default(false)
   inm_receipt     inm_receipt[]
   inm_liquidation inm_liquidation[]
 }
@@ -182,6 +183,7 @@ model inm_receipt {
   surcharge_percentage Int?
   rate                 Int              @default(0)
   address              String           @db.VarChar(100)
+  full_name            String           @db.VarChar(100)
 }
 
 model inm_liquidation {
@@ -193,6 +195,7 @@ model inm_liquidation {
   payment_plan    inm_payment_plan @relation(fields: [id_payment_plan], references: [id])
   rental_amount   Int
   total_amount    Int
+  total_profit    Int              @default(0)
   api             Int              @default(0)
   date            DateTime
   month           DateTime
@@ -200,4 +203,12 @@ model inm_liquidation {
   rate            Int              @default(0)
   address         String           @db.VarChar(100)
   fee             Json
+  deleted         Boolean          @default(false)
+}
+
+model inm_expense {
+  id     Int      @id @default(autoincrement())
+  amount Int
+  note   String?  @db.LongText
+  month  DateTime
 }

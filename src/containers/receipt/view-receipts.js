@@ -38,7 +38,23 @@ const ViewReceipts = () => {
   const [getAllReceipts, { data, loading, error, refetch }] =
     useLazyQuery(GET_ALL_RECEIPTS);
 
+  const [filters, setFilters] = useState({});
+
   const [deleteReceipt] = useMutation(DELETE_RECEIPT);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await refetch({
+      page: page,
+      pageSize: page_size,
+      fullName: filters.fullName,
+      month: new Date(filters.month),
+    });
+  };
+  const handleChange = (e) => {
+    e.preventDefault();
+    setFilters({ ...filters, [e.target.name]: e.target.value });
+  };
 
   useEffect(() => {
     getAllReceipts({
@@ -50,11 +66,19 @@ const ViewReceipts = () => {
   }, []);
 
   const columns = [
-    { name: "Numero", selector: "receipt_number", sortable: true },
-    { name: "Cliente", selector: "client.user.first_name", sortable: false },
+    { name: "N° Recibo", selector: "receipt_number", sortable: true },
+    {
+      name: "Cliente",
+      selector: (d) => (
+        <span className="capitalize">
+          {d.client.user.first_name + " " + d.client.user.last_name}
+        </span>
+      ),
+      sortable: false,
+    },
     { name: "Monto", selector: "amount", sortable: true },
     { name: "Fecha", selector: "date", sortable: true },
-    { name: "mes", selector: "month", sortable: true },
+    { name: "Mes", selector: "month", sortable: true },
     { name: "API", selector: "api", sortable: false },
     { name: "Tasa", selector: "rate", sortable: false },
     { name: "Recargo", selector: "surcharge", sortable: false },
@@ -95,6 +119,30 @@ const ViewReceipts = () => {
           setOpenModal(false);
         }}
       />
+      <div className="w-4/5 max-w-[800px] mx-auto p-1 bg-gray-200 mt-3 flex rounded mb-2">
+        <form className="w-full flex flex-col md:flex-row mx-2 gap-x-3 gap-y-3">
+          <input
+            type="month"
+            className="rounded-full px-3 py-2"
+            placeholder="Mes"
+            name="month"
+            onChange={handleChange}
+          />
+
+          <input
+            className="rounded-full px-3 py-2"
+            placeholder="cliente"
+            name="fullName"
+            onChange={handleChange}
+          />
+          <button
+            onClick={handleSubmit}
+            className="ml-auto bg-tertiary py-2 px-3 rounded mb-1 md:mb-0"
+          >
+            Filtrar
+          </button>
+        </form>
+      </div>
       <DataTable
         columns={columns}
         data={data?.getAllReceipts.results}

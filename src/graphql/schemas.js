@@ -7,6 +7,8 @@ import { estate } from "./estate";
 import { paymentPlan } from "./payment-plan";
 import { receipt } from "./receipt";
 import { liquidation } from "./liquidation";
+import { admin } from "./admin";
+import { expense } from "./expense";
 
 export const schemas = [
   DateTimeTypeDefinition,
@@ -18,4 +20,6 @@ export const schemas = [
   paymentPlan.schema,
   receipt.schema,
   liquidation.schema,
+  admin.schema,
+  expense.schema,
 ];
