@@ -101,7 +101,7 @@ const Estates = () => {
       <ModalComponent
         acceptButton="Aceptar"
         cancelButton="Cancelar"
-        action={() => console.log("hola")}
+        action={() => }
         cancelAction={() => setOpenModal(false)}
         title={`Plan de pago`}
         open={openPaymentModal}
@@ -267,7 +267,7 @@ const Estates = () => {
                   ))}
                 </tbody>
               </table>
-              {dataEstates.getAllEstatesByOwner.length === 0 && (
+              {dataEstates?.getAllEstatesByOwner?.length === 0 && (
                 <div className="w-full flex justify-center py-3">
                   <p className="text-20">No se encontraron propiedades</p>
                 </div>

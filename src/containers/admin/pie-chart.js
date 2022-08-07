@@ -59,10 +59,9 @@ const PieChart = ({ data }) => {
       Object.entries(data).map(([key, value]) => {
         if (translate[key] && key !== "billing") total += value;
       });
-      console.log("total", total);
+
       Object.entries(data).map(([key, value]) => {
         if (translate[key] && key !== "billing") {
-          console.log("value: ", (value / total) * 100);
           newDataSet.push(parseInt((value / total) * 100));
           newDataLabel.push(translate[key]);
         }

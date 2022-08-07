@@ -75,7 +75,12 @@ const signin = () => {
             />
           </div>
           <div className="flex justify-center mt-5">
-            <Button type="submit" label="Iniciar sesión" />
+            <Button
+              type="submit"
+              label="Iniciar sesión"
+              bgColor={"bg-tertiary"}
+              classPlus="text-primary"
+            />
           </div>
         </form>
       </div>

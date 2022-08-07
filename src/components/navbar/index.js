@@ -16,13 +16,13 @@ const NavBar = () => {
         </h2>
       </div>
       {!session && (
-        <ul className="hidden sm:flex ml-auto md:mr-auto text-lg font-bold items-center ">
+        <ul className="flex ml-auto md:mr-auto text-lg font-bold items-center ">
           <li className="mr-3 hover:underline">
             <Link href={"/signin"}>Iniciar sesión</Link>
           </li>
-          <li className="mr-3 hover:underline">
+          {/* <li className="mr-3 hover:underline">
             <Link href={"/"}>Registrarse</Link>
-          </li>
+          </li> */}
         </ul>
       )}
 
@@ -72,14 +72,16 @@ const NavBar = () => {
           </li>
         </ul>
       )}
-      <button
-        onClick={() => {
-          setShowNav(!showNav);
-        }}
-        className="ml-auto my-auto mr-3 flex lg:hidden"
-      >
-        <GiHamburgerMenu size={30} className="text-white" />
-      </button>
+      {session && (
+        <button
+          onClick={() => {
+            setShowNav(!showNav);
+          }}
+          className="ml-auto my-auto mr-3 flex lg:hidden"
+        >
+          <GiHamburgerMenu size={30} className="text-white" />
+        </button>
+      )}
       {showNav && session && (
         <ul className="z-50 flex flex-col bg-primary lg:hidden mx-auto text-lg font-bold items-center absolute top-[60px]  w-screen">
           <li

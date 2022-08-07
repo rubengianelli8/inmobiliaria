@@ -17,7 +17,7 @@ export default function Home() {
             className="w-screen h-full object-cover fixed top-0 right-0 opacity-100 brightness-75"
             src="https://www.criptonoticias.com/wp-content/uploads/2020/07/inmobiliaria-interes-especialista-blockchain.jpg"
           ></img>
-          <div className="z-50 text-center text-white">
+          <div className="z-40 text-center text-white">
             <h2 className="uppercase text-3xl md:text-5xl font-bold">
               Lo hacemos por vos
             </h2>

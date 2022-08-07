@@ -170,7 +170,7 @@ const ViewClients = () => {
                           size={18}
                           className="cursor-pointer hover:text-gray-700"
                           onClick={() => {
-                            Router.push(`/estates?id_client=${item.id}`);
+                            Router.push(`/estates/${item.estate[0].id}`);
                           }}
                           title={"Asignar propiedad"}
                         />

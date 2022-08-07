@@ -16,7 +16,7 @@ export const schema = gql`
 
   type Query {
     getExpense(id: Int!): Expense
-    getAllExpenses: ListExpenses
+    getAllExpenses(month: DateTime): ListExpenses
   }
   type Mutation {
     addExpense(amount: Int!, note: String, month: DateTime!): Expense

@@ -6,7 +6,11 @@ export const resolvers = {
       return expense.getExpense(parent, args, _context);
     },
     getAllExpenses: async (parent, args, _context) => {
-      return expense.getAllExpenses(parent, args, _context);
+      try {
+        return expense.getAllExpenses(parent, args, _context);
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
 
