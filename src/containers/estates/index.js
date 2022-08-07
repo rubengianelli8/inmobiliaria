@@ -101,7 +101,6 @@ const Estates = () => {
       <ModalComponent
         acceptButton="Aceptar"
         cancelButton="Cancelar"
-        action={() => }
         cancelAction={() => setOpenModal(false)}
         title={`Plan de pago`}
         open={openPaymentModal}
