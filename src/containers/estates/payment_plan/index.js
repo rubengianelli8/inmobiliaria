@@ -1,6 +1,10 @@
 import React, { useEffect } from "react";
 import { useMutation } from "@apollo/client";
-import { ADD_PAYMENT_PLAN } from "@/gql/mutations/payment-plan.gql";
+import {
+  ADD_PAYMENT_PLAN,
+  UPDATE_PAYMENT_PLAN,
+} from "@/gql/mutations/payment-plan.gql";
+import dayjs from "dayjs";
 
 import Input from "@/components/input";
 import { useForm } from "react-hook-form";
@@ -8,7 +12,7 @@ import { GoTriangleUp } from "react-icons/go";
 import Button from "@/components/button";
 import Router from "next/router";
 
-const PaymentPlan = ({ estate, setEstateToClient, idClient }) => {
+const PaymentPlan = ({ estate, setEstateToClient, idClient, edit = false }) => {
   const {
     handleSubmit,
     register,
@@ -18,32 +22,75 @@ const PaymentPlan = ({ estate, setEstateToClient, idClient }) => {
 
   useEffect(() => {
     if (estate.price) setValue("price", estate.price);
-  }, [estate]);
+
+    console.log("afuer", estate);
+    if (estate.payment_plan && edit) {
+      console.log("entro");
+      setValue("api", estate.payment_plan[0].api);
+      setValue("price", estate.payment_plan[0].price);
+      setValue(
+        "entry",
+        dayjs(estate.payment_plan[0].entry).format("YYYY-MM-DD")
+      );
+      setValue(
+        "finish",
+        dayjs(estate.payment_plan[0].finish).format("YYYY-MM-DD")
+      );
+      setValue("increases_every", estate.payment_plan[0].increases_every);
+      setValue("note", estate.payment_plan[0].note);
+      setValue(
+        "surchargePercentage",
+        estate.payment_plan[0].surcharge_percentage
+      );
+      setValue("paymentDeadline", estate.payment_plan[0].payment_deadline);
+    }
+  }, [estate, edit]);
 
   const [addPaymentPlan, { loading }] = useMutation(ADD_PAYMENT_PLAN);
+  const [updatePaymentPlan, { loading: loadingUpdate }] =
+    useMutation(UPDATE_PAYMENT_PLAN);
 
   const onSubmit = async (data) => {
-    await addPaymentPlan({
-      variables: {
-        idEstate: estate.id,
-        idClient: idClient,
-        api: parseInt(data.api),
-        price: parseInt(data.price),
-        entry: new Date(data.entry),
-        finish: new Date(data.finish),
-        increasesEvery: parseInt(data.increases_every),
-        paymentDeadline: parseInt(data.paymentDeadline),
-        surchargePercentage: parseInt(data.surchargePercentage),
-        note: data.note,
-      },
-    });
-    setEstateToClient(estate.id);
-    window.location.href = `/client/user/${idClient}`;
+    if (!edit) {
+      await addPaymentPlan({
+        variables: {
+          idEstate: estate.id,
+          idClient: idClient,
+          api: parseInt(data.api),
+          price: parseInt(data.price),
+          entry: new Date(data.entry),
+          finish: new Date(data.finish),
+          increasesEvery: parseInt(data.increases_every),
+          paymentDeadline: parseInt(data.paymentDeadline),
+          surchargePercentage: parseInt(data.surchargePercentage),
+          note: data.note,
+        },
+      });
+      setEstateToClient(estate.id);
+      window.location.href = `/client/user/${idClient}`;
+    }
+    if (edit) {
+      console.log("dataaa.", data);
+      await updatePaymentPlan({
+        variables: {
+          id: estate.payment_plan[0].id,
+          api: parseInt(data.api),
+          price: parseInt(data.price),
+          entry: new Date(data.entry),
+          finish: new Date(data.finish),
+          increasesEvery: parseInt(data.increases_every),
+          paymentDeadline: parseInt(data.paymentDeadline),
+          surchargePercentage: parseInt(data.surchargePercentage),
+          note: data.note,
+        },
+      });
+      window.location.href = `/client/user/${estate.payment_plan[0].id_client}`;
+    }
   };
 
   return (
     <form className="mt-3" onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col gap-y-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-4">
         <Input
           label={"Ingreso"}
           placeholder="Ingreso"
@@ -93,8 +140,8 @@ const PaymentPlan = ({ estate, setEstateToClient, idClient }) => {
           error={errors.paymentDeadline}
         />
         <Input
-          label={"Porcenjate de recargo por mora"}
-          placeholder="%"
+          label={"Porcenjate de recargo"}
+          placeholder="% de recargo por mor"
           type="number"
           name="surchargePercentage"
           register={register}
@@ -126,15 +173,15 @@ const PaymentPlan = ({ estate, setEstateToClient, idClient }) => {
             </div>
           )}
         </div>
-        <div>
-          <Button
-            type="submit"
-            className="w-full"
-            label={"Acepto"}
-            bgColor={"bg-primary"}
-            disabled={loading}
-          />
-        </div>
+      </div>
+      <div className="mt-5 mb-2">
+        <Button
+          type="submit"
+          className="w-full"
+          label={edit ? "Editar" : "Cargar plan"}
+          bgColor={"bg-primary"}
+          disabled={loading}
+        />
       </div>
     </form>
   );

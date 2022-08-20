@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import { GET_PAYMENT_PLAN } from "@/gql/queries/payment-plan.gql";
 import { DELETE_PAYMENT_PLAN } from "@/gql/mutations/payment-plan.gql";
 
-const ViewPaymentPlan = ({ id }) => {
+const ViewPaymentPlan = ({ id, setOpen, setEditPaymentModal }) => {
   const [getPaymentPlan, { data }] = useLazyQuery(GET_PAYMENT_PLAN);
   const [deletePaymentPlan] = useMutation(DELETE_PAYMENT_PLAN);
 
@@ -48,9 +48,28 @@ const ViewPaymentPlan = ({ id }) => {
           </p>
 
           <p>
+            <span className="font-bold">Dia limite de pago por mes:</span>{" "}
+            {data.getPaymentPlan.payment_deadline}
+          </p>
+
+          <p>
+            <span className="font-bold">Porcentaje de recargo por mora:</span>{" "}
+            {data.getPaymentPlan.surcharge_percentage}%
+          </p>
+
+          <p>
             <span className="font-bold">Nota:</span> {data.getPaymentPlan.note}
           </p>
 
+          <button
+            className="mt-5 text-16 underline text-blue-500 font-semibold"
+            onClick={() => {
+              setEditPaymentModal(true);
+              setOpen(false);
+            }}
+          >
+            Editar plan de pago
+          </button>
           <button
             className="mt-5 text-16 underline text-blue-500 font-semibold"
             onClick={async () => {

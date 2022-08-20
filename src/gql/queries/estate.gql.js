@@ -121,6 +121,15 @@ export const GET_ALL_ESTATES_BY_OWNER = gql`
       }
       payment_plan {
         id
+        id_client
+        api
+        price
+        entry
+        finish
+        increases_every
+        note
+        surcharge_percentage
+        payment_deadline
       }
     }
   }
