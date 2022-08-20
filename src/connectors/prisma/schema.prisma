@@ -186,6 +186,8 @@ model inm_receipt {
   rate                 Int              @default(0)
   address              String           @db.VarChar(100)
   full_name            String           @db.VarChar(100)
+
+  @@unique([id_client, receipt_number])
 }
 
 model inm_liquidation {

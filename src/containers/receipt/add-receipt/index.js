@@ -14,6 +14,7 @@ import { COUNT_RECEIPT_BY_CLIENT } from "@/gql/queries/receipt.gql";
 
 const AddReceipt = () => {
   const [total, setTotal] = useState(0);
+  const [error, setError] = useState({ ok: true, message: "" });
   const id = Router.router?.query?.index;
 
   const [getPaymentPlan, { data, loading: loadingPayment, called }] =
@@ -105,31 +106,56 @@ const AddReceipt = () => {
     setValue("surcharge_days", surchargeDays > 0 ? surchargeDays : 0);
   }, [watch("month")]);
 
+  useEffect(() => {
+    if (countData?.countReceiptByClient) {
+      setValue("receiptNumber", countData.countReceiptByClient + 1);
+    }
+  }, [countData]);
   const redirect = () => {
     alert("No se encontró el plan de pago");
     Router.push("/client");
   };
 
+  useEffect(() => {
+    if (countData?.countReceiptByClient) {
+      const receiptNumber = getValues("receiptNumber");
+      if (
+        parseInt(receiptNumber) < countData.countReceiptByClient + 1 ||
+        !receiptNumber
+      ) {
+        setError({
+          ok: false,
+          message: `El número de recibo no puede ser menor al ultimo emitido (${countData.countReceiptByClient})`,
+        });
+      } else {
+        setError({
+          ok: true,
+          message: "",
+        });
+      }
+    }
+  }, [watch("receiptNumber"), countData]);
   const onSubmit = async (e) => {
-    addReceipt({
-      variables: {
-        receiptNumber: countData.countReceiptByClient + 1,
-        idClient: paymentPlan.client.id,
-        fullName: e.full_name,
-        idPaymentPlan: paymentPlan.id,
-        amount: parseInt(total),
-        api: parseInt(e.api),
-        date: new Date(e.date),
-        month: new Date(e.month),
-        note: e.note,
-        surcharge: surchargeState,
-        surchargePercentage: parseInt(e.surcharge_percentage),
-        rate: e.rate ? parseInt(e.rate) : 0,
-        address: e.address,
-      },
-    }).then((res) => {
-      Router.push(`/receipt/${res.data.addReceipt.id}`);
-    });
+    if (error.ok)
+      addReceipt({
+        variables: {
+          receiptNumber: parseInt(e.receiptNumber),
+          idClient: paymentPlan.client.id,
+          fullName: e.full_name,
+          idPaymentPlan: paymentPlan.id,
+          amount: parseInt(total),
+          api: parseInt(e.api),
+          date: new Date(e.date),
+          month: new Date(e.month),
+          note: e.note,
+          surcharge: surchargeState,
+          surchargePercentage: parseInt(e.surcharge_percentage),
+          rate: e.rate ? parseInt(e.rate) : 0,
+          address: e.address,
+        },
+      }).then((res) => {
+        Router.push(`/receipt/${res.data.addReceipt.id}`);
+      });
   };
 
   return (
@@ -138,29 +164,32 @@ const AddReceipt = () => {
 
       {!loading && called && data?.getPaymentPlan && (
         <>
-          {" "}
           <h2 className="font-bold text-20 mb-6 text-tertiary underline">
-            Generar recibo{" "}
-            {countData ? (
-              <span className="text-primary">
-                N°{countData?.countReceiptByClient + 1}
-              </span>
-            ) : (
-              ""
-            )}{" "}
-            para{" "}
+            Generar recibo para{" "}
             <span className="text-primary">
               {data?.getPaymentPlan?.client?.user?.first_name
                 ? `${data?.getPaymentPlan?.client?.user?.first_name} ${data?.getPaymentPlan?.client?.user?.last_name}`
                 : "cliente"}
             </span>
           </h2>
+          {!error.ok && (
+            <p className="text-18 text-red-500 mb-3 font-bold">
+              {error.message}
+            </p>
+          )}
           <form
             className="flex flex-col items-center"
             method="POST"
             onSubmit={handleSubmit(onSubmit)}
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-3 gap-y-3">
+              <Input
+                label={"Recibo N°"}
+                type="number"
+                name="receiptNumber"
+                error={errors.receiptNumber}
+                register={register}
+              />
               <Input
                 label={"Fecha de pago"}
                 type="date"

@@ -77,8 +77,13 @@ export const receipt = {
     return await prisma.inm_receipt.delete({ where: { id } });
   },
   async countReceiptByClient(_parent, { id_client }, _context) {
-    return await prisma.inm_receipt.count({
+    const receipt = await prisma.inm_receipt.findFirst({
+      orderBy: {
+        receipt_number: "desc",
+      },
       where: { id_client },
+      select: { receipt_number: true },
     });
+    return receipt ? receipt.receipt_number : 0;
   },
 };
