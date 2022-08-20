@@ -1,4 +1,4 @@
 import sendEmail from "../utils/nodemailer";
 test("should first", async () => {
-  sendEmail();
+  sendEmail("asda", "asd", "asd");
 });

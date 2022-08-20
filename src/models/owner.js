@@ -39,7 +39,7 @@ export const owner = {
         Object.assign(filters.user, { dni: data.dni });
       }
       if (data.name) {
-        Object.assign(filters.user, { first_name: data.name });
+        Object.assign(filters.user, { first_name: { contains: data.name } });
       }
 
       const owners = await prisma.inm_owner.findMany({

@@ -23,9 +23,9 @@ export const client = {
         Object.assign(filters.user, { dni: data.dni });
       }
       if (data.name) {
-        Object.assign(filters.user, { first_name: data.name });
+        Object.assign(filters.user, { first_name: { contains: data.name } });
       }
-
+      console.log(filters);
       const clients = await prisma.inm_client.findMany({
         where: {
           ...{ ...filters },
@@ -34,6 +34,7 @@ export const client = {
         take: data.page_size,
         include: { user: true, estate: true },
       });
+      console.log(clients);
       return clients;
     } catch (e) {
       console.log("error", e);

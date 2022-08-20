@@ -19,10 +19,10 @@ const sendEmail = (to, subject, body, html) => {
   transporter.sendMail(
     {
       from: "contactoscinmobiliaria@gmail.com",
-      to: "rocii.zarate97@gmail.com",
-      subject: "subject",
-      //text: html ? null : body,
-      html: `<h2>Hola</h2>`,
+      to: "rubengianelli8@gmail.com",
+      subject: subject,
+      text: html ? null : body,
+      html: html ? body : null,
     },
     callback
   );

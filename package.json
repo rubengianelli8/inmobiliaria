@@ -28,6 +28,7 @@
     "graphql-scalars": "^1.13.6",
     "html-pdf": "^3.0.1",
     "lodash": "^4.17.21",
+    "md5": "^2.3.0",
     "micro": "^9.3.4",
     "moment": "^2.29.1",
     "next": "latest",
@@ -38,6 +39,7 @@
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.27.1",
     "react-icons": "^4.3.1",
+    "reverse-md5": "^0.0.5",
     "styled-components": "^5.3.5",
     "yup": "^0.32.11"
   },
