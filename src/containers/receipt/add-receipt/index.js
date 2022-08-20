@@ -55,6 +55,15 @@ const AddReceipt = () => {
       setValue("api", data.getPaymentPlan.api);
       setValue("date", dayjs().format("YYYY-MM-DD"));
       setValue("month", dayjs().format("YYYY-MM"));
+      //calcular dias de mora
+
+      let actualDay = dayjs().date() - data.getPaymentPlan.payment_deadline;
+      actualDay = actualDay < 0 ? 0 : actualDay;
+      setValue("surcharge_days", actualDay);
+      setValue(
+        "surcharge_percentage",
+        data.getPaymentPlan.surcharge_percentage
+      );
       setValue(
         "address",
         `${data.getPaymentPlan.estate.location}, ${data.getPaymentPlan.estate.address} ${data.getPaymentPlan.estate.address_number}`
@@ -67,29 +76,28 @@ const AddReceipt = () => {
   }, [data]);
 
   useEffect(() => {
-    const [amount, api, rate] = getValues(["amount", "api", "rate"]);
-    let newAmount = amount ? parseFloat(amount) : 0;
-    let newApi = api ? parseFloat(api) : 0;
-    let newRate = rate ? parseFloat(rate) : 0;
-    let price = newAmount + newApi + newRate + surchargeState;
-    setTotal(price);
-  }, [watch("amount"), watch("api"), watch("rate")]);
-
-  const calculateSurcharge = () => {
-    const [surcharge_days, surcharge_percentage, amount, api, rate] = getValues(
-      ["surcharge_days", "surcharge_percentage", "amount", "api", "rate"]
+    const [amount, api, rate, surcharge_days, surcharge_percentage] = getValues(
+      ["amount", "api", "rate", "surcharge_days", "surcharge_percentage"]
     );
-
     let newAmount = amount ? parseFloat(amount) : 0;
     let newApi = api ? parseFloat(api) : 0;
     let newRate = rate ? parseFloat(rate) : 0;
-    let price = newAmount + newApi + newRate;
-
-    const surcharge_total_percentage = surcharge_days * surcharge_percentage;
-    setSurchargeState((newAmount * surcharge_total_percentage) / 100);
-    const newPrice = price + (newAmount * surcharge_total_percentage) / 100;
-    setTotal(newPrice);
-  };
+    let newSurchargeDays = surcharge_days ? parseInt(surcharge_days) : 0;
+    let newSurchargePercentage = surcharge_percentage
+      ? parseInt(surcharge_percentage)
+      : 0;
+    let surcharge = newSurchargeDays * newSurchargePercentage;
+    surcharge = (newAmount * surcharge) / 100;
+    setSurchargeState(surcharge);
+    let price = newAmount + newApi + newRate + surcharge;
+    setTotal(price);
+  }, [
+    watch("amount"),
+    watch("api"),
+    watch("rate"),
+    watch("surcharge_days"),
+    watch("surcharge_percentage"),
+  ]);
 
   const redirect = () => {
     alert("No se encontró el plan de pago");
@@ -246,16 +254,8 @@ const AddReceipt = () => {
               </div>
             </div>
             <div className="flex flex-col items-center">
-              <div className="flex gap-x-2 mb-2 items-center">
-                <Button
-                  type="button"
-                  bgColor={"bg-primary"}
-                  classPlus={"text-tertiary border border-tertiary"}
-                  label="Calcular mora"
-                  action={calculateSurcharge}
-                />
-                <h3 className="text-25 mb-3">Total: ${total}</h3>
-              </div>
+              <h3 className="text-25 mb-3">Total: ${total}</h3>
+
               <Button
                 type="submit"
                 classPlus="w-full text-18"

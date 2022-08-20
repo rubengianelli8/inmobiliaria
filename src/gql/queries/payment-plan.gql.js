@@ -9,6 +9,8 @@ export const GET_PAYMENT_PLAN = gql`
       finish
       increases_every
       note
+      surcharge_percentage
+      payment_deadline
       estate {
         address
         address_number

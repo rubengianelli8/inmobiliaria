@@ -177,7 +177,7 @@ const ReceiptDoc = ({ receipt }) => {
                 padding: "3px",
               }}
             >
-              Recargos:({receipt?.surcharge_percentage}%)
+              Recargos por mora:({calculateSurchargePercentage(receipt)}%)
             </Text>
             <Text
               style={{
@@ -283,5 +283,11 @@ const ReceiptDoc = ({ receipt }) => {
       </View>
     </View>
   );
+};
+
+const calculateSurchargePercentage = (receipt) => {
+  const amount =
+    receipt?.amount - receipt?.api - receipt?.rate - receipt?.surcharge;
+  return (receipt?.surcharge / amount) * 100;
 };
 export default DocPdf;
