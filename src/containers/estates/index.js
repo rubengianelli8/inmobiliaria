@@ -4,6 +4,7 @@ import Router from "next/router";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import { AiFillEdit } from "react-icons/ai";
 import { FaTrash, FaUserAlt } from "react-icons/fa";
+import { MdReceipt } from "react-icons/md";
 
 import { useQuery, useMutation } from "@apollo/client";
 import {
@@ -218,7 +219,7 @@ const Estates = () => {
                       <td className="px-6 py-4">{item.price || "--"}</td>
                       <td className="px-6 py-4 text-tertiary">
                         {!idClient ? (
-                          <p className="flex gap-x-2">
+                          <div className="flex gap-x-2">
                             <AiFillEdit
                               size={18}
                               className="cursor-pointer hover:text-gray-700"
@@ -237,6 +238,18 @@ const Estates = () => {
                               }
                               title="Ver propietario"
                             />
+                            {item.payment_plan.length > 0 && (
+                              <MdReceipt
+                                size={18}
+                                className="cursor-pointer hover:text-gray-700"
+                                title="Generar recibo"
+                                onClick={() => {
+                                  Router.push(
+                                    `/receipt/add-receipt/${item.id}`
+                                  );
+                                }}
+                              />
+                            )}
                             <FaTrash
                               size={18}
                               className="cursor-pointer hover:text-gray-700"
@@ -246,7 +259,7 @@ const Estates = () => {
                                 setOpenModal(true);
                               }}
                             />
-                          </p>
+                          </div>
                         ) : (
                           <p className="flex gap-x-2">
                             <button

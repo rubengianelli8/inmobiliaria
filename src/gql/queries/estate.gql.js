@@ -119,6 +119,9 @@ export const GET_ALL_ESTATES_BY_OWNER = gql`
           last_name
         }
       }
+      payment_plan {
+        id
+      }
     }
   }
 `;

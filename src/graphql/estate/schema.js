@@ -39,6 +39,7 @@ export const schema = gql`
     id_owner: Int
     id_client: Int
     surcharge_percentage: Int
+    payment_plan: [PaymentPlan]
     fee: Int
     owner: Owner
     client: Client

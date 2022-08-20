@@ -99,20 +99,22 @@ model inm_estate {
 }
 
 model inm_payment_plan {
-  id              Int               @id @default(autoincrement())
-  id_estate       Int
-  id_client       Int
-  api             Int               @default(0)
-  price           Int
-  client          inm_client        @relation(fields: [id_client], references: [id])
-  estate          inm_estate        @relation(fields: [id_estate], references: [id])
-  entry           DateTime
-  finish          DateTime
-  increases_every Int
-  note            String
-  deleted         Boolean           @default(false)
-  inm_receipt     inm_receipt[]
-  inm_liquidation inm_liquidation[]
+  id                   Int               @id @default(autoincrement())
+  id_estate            Int
+  id_client            Int
+  api                  Int               @default(0)
+  price                Int
+  client               inm_client        @relation(fields: [id_client], references: [id])
+  estate               inm_estate        @relation(fields: [id_estate], references: [id])
+  entry                DateTime
+  finish               DateTime
+  increases_every      Int
+  note                 String
+  payment_deadline     Int               @default(10)
+  surcharge_percentage Int?
+  deleted              Boolean           @default(false)
+  inm_receipt          inm_receipt[]
+  inm_liquidation      inm_liquidation[]
 }
 
 enum enum_type_estate {

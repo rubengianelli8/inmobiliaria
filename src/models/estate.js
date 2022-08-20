@@ -19,6 +19,11 @@ export const estate = {
             client: {
               include: { user: true },
             },
+            payment_plan: {
+              where: {
+                deleted: false,
+              },
+            },
           },
         });
 
@@ -31,6 +36,11 @@ export const estate = {
             owner: { include: { user: true } },
             client: {
               include: { user: true },
+            },
+            payment_plan: {
+              where: {
+                deleted: false,
+              },
             },
           },
         });
@@ -70,6 +80,11 @@ export const estate = {
         },
         include: {
           owner: { include: { user: true } },
+          payment_plan: {
+            where: {
+              deleted: false,
+            },
+          },
         },
       });
 
@@ -153,7 +168,7 @@ export const estate = {
   },
   async getPaymentPlan(_parent, { id }, _context) {
     const response = await prisma.inm_payment_plan.findFirst({
-      where: { id_estate: id },
+      where: { id_estate: id, deleted: false },
       include: {
         estate: {
           include: {

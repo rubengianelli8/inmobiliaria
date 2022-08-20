@@ -10,6 +10,8 @@ export const ADD_PAYMENT_PLAN = gql`
     $finish: DateTime
     $increasesEvery: Int
     $note: String
+    $paymentDeadline: Int
+    $surchargePercentage: Int
   ) {
     addPaymentPlan(
       id_estate: $idEstate
@@ -20,6 +22,8 @@ export const ADD_PAYMENT_PLAN = gql`
       finish: $finish
       increases_every: $increasesEvery
       note: $note
+      payment_deadline: $paymentDeadline
+      surcharge_percentage: $surchargePercentage
     ) {
       id
     }

@@ -32,6 +32,8 @@ const PaymentPlan = ({ estate, setEstateToClient, idClient }) => {
         entry: new Date(data.entry),
         finish: new Date(data.finish),
         increasesEvery: parseInt(data.increases_every),
+        paymentDeadline: parseInt(data.paymentDeadline),
+        surchargePercentage: parseInt(data.surchargePercentage),
         note: data.note,
       },
     });
@@ -81,6 +83,22 @@ const PaymentPlan = ({ estate, setEstateToClient, idClient }) => {
           name="api"
           register={register}
           error={errors.api}
+        />
+        <Input
+          label={"Día limite de pago "}
+          placeholder="Dia del mes limite de pago"
+          type="number"
+          name="paymentDeadline"
+          register={register}
+          error={errors.paymentDeadline}
+        />
+        <Input
+          label={"Porcenjate de recargo por mora"}
+          placeholder="%"
+          type="number"
+          name="surchargePercentage"
+          register={register}
+          error={errors.surchargePercentage}
         />
         <div className="flex flex-col w-full">
           <label className="relative w-full focus:border-primary z-10">
