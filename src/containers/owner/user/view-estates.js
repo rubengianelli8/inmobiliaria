@@ -21,8 +21,8 @@ const ViewEstates = ({ id_owner, id_client }) => {
 
   return (
     <div className="flex flex-col w-full items-center">
-      {dataEstates?.getAllEstatesByOwner.length > 0 ? (
-        dataEstates?.getAllEstatesByOwner.map((estate) => (
+      {dataEstates?.getAllEstatesByOwner.results.length > 0 ? (
+        dataEstates?.getAllEstatesByOwner.results.map((estate) => (
           <CardEstate estate={estate} key={estate.id} />
         ))
       ) : (

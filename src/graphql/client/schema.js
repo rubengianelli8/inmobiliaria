@@ -40,5 +40,6 @@ export const schema = gql`
       phone: String
       cell_phone: String
     ): User
+    deleteClient(id: Int): User
   }
 `;

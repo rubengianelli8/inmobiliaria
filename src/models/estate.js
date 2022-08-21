@@ -2,8 +2,8 @@ import { prisma } from "@/prisma/client";
 
 export const estate = {
   async getEstate(_parent, { id }, _context) {
-    return await prisma.inm_estate.findUnique({
-      where: { id },
+    return await prisma.inm_estate.findFirst({
+      where: { id, deleted: false },
       include: {
         owner: { include: { user: true } },
       },
@@ -13,7 +13,7 @@ export const estate = {
     try {
       if (data.owner_id) {
         const estates = await prisma.inm_estate.findMany({
-          where: { owner: { id: data.owner_id } },
+          where: { owner: { id: data.owner_id }, deleted: false },
           include: {
             owner: { include: { user: true } },
             client: {
@@ -33,6 +33,7 @@ export const estate = {
         const estates = await prisma.inm_estate.findMany({
           where: {
             id_client: data.client_id,
+            deleted: false,
           },
           include: {
             owner: { include: { user: true } },
@@ -75,6 +76,7 @@ export const estate = {
         take: page_size,
         skip: page_size * page,
         where: {
+          deleted: false,
           neighborhood: {
             contains: data.neighborhood,
           },
@@ -95,6 +97,7 @@ export const estate = {
 
       const total = await prisma.inm_estate.count({
         where: {
+          deleted: false,
           neighborhood: {
             contains: data.neighborhood,
           },
@@ -126,6 +129,7 @@ export const estate = {
     }
     return await prisma.inm_estate.count({
       where: {
+        deleted: false,
         neighborhood: {
           contains: data.neighborhood,
         },
@@ -151,7 +155,12 @@ export const estate = {
     }
   },
   async deleteEstate(_parent, { id }, _context) {
-    return await prisma.inm_estate.delete({ where: { id } });
+    return await prisma.inm_estate.update({
+      where: { id },
+      data: {
+        deleted: true,
+      },
+    });
   },
 
   async addPaymentPlan(_parent, data, _context) {

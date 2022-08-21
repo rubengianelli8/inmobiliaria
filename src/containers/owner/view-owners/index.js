@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import Router from "next/router";
 
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { AiFillEdit } from "react-icons/ai";
 import { FaTrash } from "react-icons/fa";
 
-import { GET_ALL_OWNERS } from "@/gql/owner.gql";
+import { GET_ALL_OWNERS, DELETE_OWNER } from "@/gql/owner.gql";
+import ModalAlert from "@/components/modal-alert";
 
 const customStyles = {
   headCells: {
@@ -34,6 +35,10 @@ const ViewOwners = () => {
   const [page, setPage] = useState(0);
   const [page_size, setPage_size] = useState(10);
   const [search, setSearch] = useState({ name: null, dni: null });
+
+  const [idOwner, setIdOwner] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
+  const [deleteOwner] = useMutation(DELETE_OWNER);
 
   const { data: dataOwners, refetch } = useQuery(GET_ALL_OWNERS, {
     variables: {
@@ -84,8 +89,8 @@ const ViewOwners = () => {
             className="cursor-pointer hover:text-gray-700"
             title="Eliminar"
             onClick={() => {
-              /* setIdEstate(row.id);
-              setOpenModal(true); */
+              setIdOwner(row.id);
+              setOpenModal(true);
             }}
           />
         </div>
@@ -99,7 +104,7 @@ const ViewOwners = () => {
     e.preventDefault();
     refetch({
       page: page,
-      pageSize: 10,
+      pageSize: page_size,
       dni: parseInt(search.dni),
       name: search.name,
     });
@@ -110,6 +115,27 @@ const ViewOwners = () => {
   };
   return (
     <div>
+      <ModalAlert
+        acceptButton={"Eliminar"}
+        cancelButton="Cancelar"
+        title={"Eliminar Propietario"}
+        message={"¿Está seguro de eliminar este propietario?"}
+        open={openModal}
+        setOpen={setOpenModal}
+        action={async () => {
+          await deleteOwner({ variables: { id: idOwner } });
+          await refetch({
+            page: page,
+            pageSize: page_size,
+            dni: parseInt(search.dni),
+            name: search.name,
+          });
+          setOpenModal(false);
+        }}
+        cancelAction={() => {
+          setOpenModal(false);
+        }}
+      />
       <div className="w-4/5 max-w-[800px] mx-auto p-1 bg-gray-200 mt-3 flex rounded">
         <form className="w-full flex flex-col md:flex-row mx-2 gap-x-3 gap-y-3">
           <input

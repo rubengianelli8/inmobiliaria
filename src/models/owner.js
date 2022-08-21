@@ -2,8 +2,8 @@ import { prisma } from "@/prisma/client";
 
 export const owner = {
   async getOwner(_parent, { id }, _context) {
-    return await prisma.inm_owner.findUnique({
-      where: { id },
+    return await prisma.inm_owner.findFirst({
+      where: { id, deleted: false },
       include: { user: true },
     });
   },
@@ -30,7 +30,12 @@ export const owner = {
     });
   },
   async deleteOwner(_parent, { id }, _context) {
-    return await prisma.inm_owner.delete({ where: { id } });
+    return await prisma.inm_owner.update({
+      where: { id },
+      data: {
+        deleted: true,
+      },
+    });
   },
   async getAllOwners(_parent, data, _context) {
     try {
@@ -50,6 +55,7 @@ export const owner = {
             /* dni: data.dni, 
           }, */
           ...{ ...filters },
+          deleted: false,
         },
         skip: page * data.page_size,
         take: data.page_size,
@@ -59,6 +65,7 @@ export const owner = {
       const total = await prisma.inm_owner.count({
         where: {
           ...{ ...filters },
+          deleted: false,
         },
       });
 

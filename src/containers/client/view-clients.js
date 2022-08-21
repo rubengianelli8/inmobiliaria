@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import Router from "next/router";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { AiFillEdit, AiFillHome } from "react-icons/ai";
 import { FaTrash } from "react-icons/fa";
 
 import { GET_ALL_CLIENTS } from "@/gql/queries/client.gql";
+import { DELETE_CLIENT } from "@/gql/mutations/client.gql";
+import ModalAlert from "@/components/modal-alert";
 
 const customStyles = {
   headCells: {
@@ -34,6 +36,10 @@ const ViewClients = () => {
   const [page_size, setPage_size] = useState(10);
   const [search, setSearch] = useState({ dni: null, name: null });
 
+  const [idClient, setIdClient] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
+
+  const [deleteClient] = useMutation(DELETE_CLIENT);
   const { data: dataClients, refetch } = useQuery(GET_ALL_CLIENTS, {
     variables: {
       page: page,
@@ -93,7 +99,7 @@ const ViewClients = () => {
             className="cursor-pointer hover:text-gray-700"
             title="Eliminar"
             onClick={() => {
-              setIdEstate(row.id);
+              setIdClient(row.id);
               setOpenModal(true);
             }}
           />
@@ -129,6 +135,28 @@ const ViewClients = () => {
   }, []);
   return (
     <div>
+      <ModalAlert
+        acceptButton={"Eliminar"}
+        cancelButton={"Cancelar"}
+        open={openModal}
+        setOpen={setOpenModal}
+        action={async () => {
+          await deleteClient({ variables: { clientId: idClient } });
+          await refetch({
+            page: page,
+            pageSize: page_size,
+            dni: parseInt(search.dni),
+            name: search.name,
+          });
+          setOpenModal(false);
+        }}
+        cancelAction={() => {
+          setOpenModal(false);
+        }}
+        title={"Eliminar inquilino"}
+        message={`¿Está seguro de eliminar este inquilino?.
+          Esta acción no se puede deshacer`}
+      />
       <div className="w-4/5 max-w-[800px] mx-auto p-1 bg-gray-200 mt-3 flex rounded">
         <form className="w-full flex flex-col md:flex-row mx-2 gap-x-3 gap-y-3">
           <input

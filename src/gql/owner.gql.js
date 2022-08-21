@@ -81,3 +81,11 @@ export const GET_OWNER = gql`
     }
   }
 `;
+
+export const DELETE_OWNER = gql`
+  mutation DeleteOwner($id: Int) {
+    deleteOwner(id: $id) {
+      id
+    }
+  }
+`;

@@ -7,6 +7,7 @@ export const client = {
         client: {
           some: {
             id: id_client,
+            deleted: false,
           },
         },
       },
@@ -33,15 +34,24 @@ export const client = {
       const clients = await prisma.inm_client.findMany({
         where: {
           ...{ ...filters },
+          deleted: false,
         },
         skip: page * page_size,
         take: page_size,
-        include: { user: true, estate: true },
+        include: {
+          user: true,
+          estate: {
+            where: {
+              deleted: false,
+            },
+          },
+        },
       });
 
       const total = prisma.inm_client.count({
         where: {
           ...{ ...filters },
+          deleted: false,
         },
       });
       return { results: clients, total };
@@ -60,6 +70,7 @@ export const client = {
     return await prisma.inm_client.count({
       where: {
         ...{ ...filters },
+        deleted: false,
       },
     });
   },
@@ -98,6 +109,11 @@ export const client = {
     }
   },
   async deleteClient(_parent, { id }, _context) {
-    return await prisma.inm_client.delete({ where: { id } });
+    return await prisma.inm_client.update({
+      where: { id },
+      data: {
+        deleted: true,
+      },
+    });
   },
 };

@@ -30,6 +30,7 @@ model inm_user {
 model inm_owner {
   id              Int               @id @default(autoincrement())
   id_user         Int               @unique
+  deleted         Boolean           @default(false)
   user            inm_user          @relation(fields: [id_user], references: [id])
   estates         inm_estate[]
   inm_liquidation inm_liquidation[]
@@ -38,6 +39,7 @@ model inm_owner {
 model inm_client {
   id                 Int                      @id @default(autoincrement())
   id_user            Int                      @unique
+  deleted            Boolean                  @default(false)
   user               inm_user                 @relation(fields: [id_user], references: [id])
   billing            inm_billing[]
   estate             inm_estate[]

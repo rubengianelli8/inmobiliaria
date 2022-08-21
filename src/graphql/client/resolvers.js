@@ -19,5 +19,8 @@ export const resolvers = {
     updateClient(_parent, _args, _context) {
       return client.updateClient(_parent, _args, _context);
     },
+    deleteClient(_parent, { id }, _context) {
+      return client.deleteClient(_parent, { id }, _context);
+    },
   },
 };
