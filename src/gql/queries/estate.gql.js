@@ -88,49 +88,52 @@ export const GET_ALL_ESTATES_BY_OWNER = gql`
       page_size: $page_size
       status: $status
     ) {
-      id
-      type_estate
-      province
-      city
-      location
-      address
-      address_number
-      area_m2
-      bedrooms
-      bathrooms
-      garages
-      floors
-      price
-      type
-      status
-      neighborhood
-      domain
-      certificate_estate
-      id_owner
-      owner {
-        user {
-          first_name
-          last_name
-        }
-      }
-      client {
-        user {
-          first_name
-          last_name
-        }
-      }
-      payment_plan {
+      results {
         id
-        id_client
-        api
+        type_estate
+        province
+        city
+        location
+        address
+        address_number
+        area_m2
+        bedrooms
+        bathrooms
+        garages
+        floors
         price
-        entry
-        finish
-        increases_every
-        note
-        surcharge_percentage
-        payment_deadline
+        type
+        status
+        neighborhood
+        domain
+        certificate_estate
+        id_owner
+        owner {
+          user {
+            first_name
+            last_name
+          }
+        }
+        client {
+          user {
+            first_name
+            last_name
+          }
+        }
+        payment_plan {
+          id
+          id_client
+          api
+          price
+          entry
+          finish
+          increases_every
+          note
+          surcharge_percentage
+          payment_deadline
+        }
       }
+      total
     }
   }
 `;

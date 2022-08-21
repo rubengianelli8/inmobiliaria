@@ -11,8 +11,8 @@ export const estate = {
   },
   async getAllEstatesByOwner(_parent, data, _context) {
     try {
-      if (data.owner_id)
-        return await prisma.inm_estate.findMany({
+      if (data.owner_id) {
+        const estates = await prisma.inm_estate.findMany({
           where: { owner: { id: data.owner_id } },
           include: {
             owner: { include: { user: true } },
@@ -26,9 +26,11 @@ export const estate = {
             },
           },
         });
+        return { results: estates, total: estates.length };
+      }
 
-      if (data.client_id)
-        return await prisma.inm_estate.findMany({
+      if (data.client_id) {
+        const estates = await prisma.inm_estate.findMany({
           where: {
             id_client: data.client_id,
           },
@@ -44,6 +46,8 @@ export const estate = {
             },
           },
         });
+        return { results: estates, total: estates.length };
+      }
       let filters = {};
       if (data.until && data.since >= 0 && data.since < data.until) {
         Object.assign(filters, {
@@ -56,6 +60,7 @@ export const estate = {
       let { page, page_size } = data;
       page = page || 0;
       page_size = page_size || 10;
+      if (page > 0) page -= 1;
 
       if (data.status === "Disponible") {
         Object.assign(filters, {
@@ -88,7 +93,18 @@ export const estate = {
         },
       });
 
-      return estates;
+      const total = await prisma.inm_estate.count({
+        where: {
+          neighborhood: {
+            contains: data.neighborhood,
+          },
+          domain: {
+            contains: data.domain,
+          },
+          ...filters,
+        },
+      });
+      return { results: estates, total };
     } catch (e) {
       console.log("ee.", e);
     }

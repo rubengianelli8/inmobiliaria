@@ -41,6 +41,8 @@ export const owner = {
       if (data.name) {
         Object.assign(filters.user, { first_name: { contains: data.name } });
       }
+      let page = data.page || 0;
+      page = page > 0 ? page - 1 : page;
 
       const owners = await prisma.inm_owner.findMany({
         where: {
@@ -49,7 +51,7 @@ export const owner = {
           }, */
           ...{ ...filters },
         },
-        skip: data.page * data.page_size,
+        skip: page * data.page_size,
         take: data.page_size,
         include: { user: true },
       });

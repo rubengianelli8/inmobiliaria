@@ -45,6 +45,10 @@ export const schema = gql`
     client: Client
   }
 
+  type ListEstates {
+    results: [Estate]
+    total: Int
+  }
   type Query {
     getEstate(id: Int): Estate
     getAllEstatesByOwner(
@@ -57,7 +61,7 @@ export const schema = gql`
       page: Int
       page_size: Int
       status: String
-    ): [Estate]
+    ): ListEstates
     getTotalEstates(
       owner_id: Int
       until: Int
