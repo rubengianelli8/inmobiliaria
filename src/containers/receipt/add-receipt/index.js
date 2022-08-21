@@ -107,7 +107,10 @@ const AddReceipt = () => {
   }, [watch("month")]);
 
   useEffect(() => {
-    if (countData?.countReceiptByClient) {
+    if (
+      countData?.countReceiptByClient ||
+      countData?.countReceiptByClient === 0
+    ) {
       setValue("receiptNumber", countData.countReceiptByClient + 1);
     }
   }, [countData]);
@@ -117,7 +120,10 @@ const AddReceipt = () => {
   };
 
   useEffect(() => {
-    if (countData?.countReceiptByClient) {
+    if (
+      countData?.countReceiptByClient ||
+      countData?.countReceiptByClient === 0
+    ) {
       const receiptNumber = getValues("receiptNumber");
       if (
         parseInt(receiptNumber) < countData.countReceiptByClient + 1 ||
