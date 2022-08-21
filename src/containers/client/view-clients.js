@@ -2,15 +2,10 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import Router from "next/router";
 import { useQuery } from "@apollo/client";
-import {
-  AiOutlineLeft,
-  AiOutlineRight,
-  AiFillEdit,
-  AiFillHome,
-} from "react-icons/ai";
+import { AiFillEdit, AiFillHome } from "react-icons/ai";
 import { FaTrash } from "react-icons/fa";
 
-import { GET_ALL_CLIENTS, TOTAL_CLIENTS } from "@/gql/queries/client.gql";
+import { GET_ALL_CLIENTS } from "@/gql/queries/client.gql";
 
 const customStyles = {
   headCells: {

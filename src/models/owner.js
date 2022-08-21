@@ -54,7 +54,13 @@ export const owner = {
         include: { user: true },
       });
 
-      return owners;
+      const total = await prisma.inm_owner.count({
+        where: {
+          ...{ ...filters },
+        },
+      });
+
+      return { results: owners, total };
     } catch (e) {
       console.log("er...", e);
     }

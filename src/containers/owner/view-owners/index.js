@@ -1,39 +1,109 @@
 import React, { useEffect, useState } from "react";
+import DataTable from "react-data-table-component";
 import Router from "next/router";
-import { useLazyQuery, useQuery } from "@apollo/client";
-import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 
-import { GET_ALL_OWNERS, TOTAL_OWNERS } from "@/gql/owner.gql";
+import { useQuery } from "@apollo/client";
+import { AiFillEdit } from "react-icons/ai";
+import { FaTrash } from "react-icons/fa";
 
+import { GET_ALL_OWNERS } from "@/gql/owner.gql";
+
+const customStyles = {
+  headCells: {
+    style: {
+      fontStyle: "bold",
+      fontSize: "1rem",
+      backgroundColor: "#e8e8e8",
+      paddingLeft: "8px", // override the cell padding for head cells
+      paddingRight: "8px",
+    },
+  },
+  cells: {
+    style: {
+      paddingLeft: "8px", // override the cell padding for data cells
+      paddingRight: "8px",
+    },
+  },
+  footer: {
+    style: {
+      color: "#000000",
+    },
+  },
+};
 const ViewOwners = () => {
-  const [totalPages, setTotalPages] = useState(0);
   const [page, setPage] = useState(0);
-  const [filters, setFilters] = useState({
-    name: null,
-    dni: null,
-  });
-  const [search, setSearch] = useState({});
+  const [page_size, setPage_size] = useState(10);
+  const [search, setSearch] = useState({ name: null, dni: null });
 
-  const { data: cantOwners } = useQuery(TOTAL_OWNERS);
   const { data: dataOwners, refetch } = useQuery(GET_ALL_OWNERS, {
     variables: {
       page: page,
       pageSize: 10,
-      dni: filters.dni,
-      name: filters.name,
+      dni: search.dni,
+      name: search.name,
     },
   });
 
-  useEffect(() => {
+  const columns = [
+    { name: "DNI", selector: "user.dni", sortable: false },
+    { name: "Email", selector: "user.email", sortable: false },
+    { name: "Nombre", selector: "user.first_name", sortable: false },
+    { name: "Apellido", selector: "user.last_name", sortable: false },
+    {
+      name: "Dirección personal",
+      selector: "user.personal_address",
+      sortable: false,
+    },
+    {
+      name: "Dirección laboral",
+      selector: (d) => (d.user.work_address ? d.user.work_address : "-----"),
+      sortable: false,
+    },
+    {
+      name: "Teléfono",
+      selector: (d) => (d.user.phone ? d.user.phone : "-----"),
+      sortable: false,
+    },
+    {
+      name: "Celular",
+      selector: (d) => (d.user.cell_phone ? d.user.cell_phone : "-----"),
+      sortable: false,
+    },
+    {
+      name: "Acciones",
+      cell: (row) => (
+        <div className="flex gap-x-2 text-center justify-center text-tertiary">
+          <AiFillEdit
+            size={18}
+            className="cursor-pointer hover:text-gray-700"
+            onClick={() => Router.push(`/owner/add-owner?id=${row.id}`)}
+            title="Editar"
+          />
+          <FaTrash
+            size={18}
+            className="cursor-pointer hover:text-gray-700"
+            title="Eliminar"
+            onClick={() => {
+              /* setIdEstate(row.id);
+              setOpenModal(true); */
+            }}
+          />
+        </div>
+      ),
+      button: true,
+      ignoreRowClick: true,
+    },
+  ];
+
+  const handleSubmitFilter = (e) => {
+    e.preventDefault();
     refetch({
       page: page,
       pageSize: 10,
-      dni: parseInt(filters.dni),
-      name: filters.name,
+      dni: parseInt(search.dni),
+      name: search.name,
     });
-    setTotalPages(Math.ceil(cantOwners?.totalOwners / 10));
-  }, [dataOwners, page, filters]);
-
+  };
   const handleChange = (e) => {
     e.preventDefault();
     setSearch({ ...search, [e.target.name]: e.target.value });
@@ -57,10 +127,7 @@ const ViewOwners = () => {
             onChange={handleChange}
           />
           <button
-            onClick={(e) => {
-              e.preventDefault();
-              setFilters({ ...search });
-            }}
+            onClick={handleSubmitFilter}
             className="ml-auto bg-tertiary py-2 px-3 rounded mb-1 md:mb-0"
           >
             Filtrar
@@ -68,93 +135,43 @@ const ViewOwners = () => {
         </form>
       </div>
       <div className="flex w-full justify-center mt-2">
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-4/5 text-sm text-left text-gray-800 max-w-[800px]">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-200 ">
-              <tr>
-                <th scope="col" className="px-6 py-3">
-                  DNI
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Email
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Nombre
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Apellido
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Dirección personal
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Dirección laboral
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Telefono
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Celular
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {dataOwners?.getAllOwners?.map((item) => (
-                <tr
-                  key={item.id}
-                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 cursor-pointer"
-                  onClick={() => {
-                    Router.push(`/owner/user/${item.id}`);
-                  }}
-                >
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
-                  >
-                    {item.user.dni}
-                  </th>
-                  <td className="px-6 py-4">{item.user.email}</td>
-                  <td className="px-6 py-4">{item.user.first_name}</td>
-                  <td className="px-6 py-4">{item.user.last_name}</td>
-                  <td className="px-6 py-4">{item.user.personal_address}</td>
-                  <td className="px-6 py-4">
-                    {item.user.work_address
-                      ? item.user.work_address
-                      : "--------"}
-                  </td>
-                  <td className="px-6 py-4">
-                    {item.user.phone ? item.user.phone : "--------"}
-                  </td>
-                  <td className="px-6 py-4">
-                    {item.user.cell_phone ? item.user.cell_phone : "--------"}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div>
+          <DataTable
+            columns={columns}
+            data={dataOwners?.getAllOwners.results}
+            responsive={true}
+            pointerOnHover
+            highlightOnHover
+            persistTableHead
+            fixedHeader
+            pagination
+            paginationServer
+            customStyles={customStyles}
+            paginationTotalRows={dataOwners?.getAllOwners?.total}
+            paginationPerPage={10}
+            onRowClicked={(row) => {
+              Router.push(`/owner/user/${row.id}`);
+            }}
+            onChangePage={async (page) => {
+              setPage(page);
+              await refetch({
+                page: page,
+                pageSize: page_size,
+                dni: parseInt(search.dni),
+                name: search.name,
+              });
+            }}
+            onChangeRowsPerPage={async (page_size, page) => {
+              setPage_size(page_size);
+              await refetch({
+                page: page,
+                pageSize: page_size,
+                dni: parseInt(search.dni),
+                name: search.name,
+              });
+            }}
+          />
         </div>
-      </div>
-      <div className="w-4/5 flex mx-auto justify-center max-w-[800px] items-center gap-x-2 py-2 bg-gray-200 rounded-b">
-        {page > 0 && (
-          <button
-            onClick={() => {
-              if (page > 0) setPage(page - 1);
-            }}
-          >
-            <AiOutlineLeft size={16} />
-          </button>
-        )}
-        <p className="font-semibold text-16">{page + 1}</p>
-        {page + 1 < totalPages && (
-          <button
-            onClick={() => {
-              let totalpages = Math.ceil(cantOwners.totalOwners / 10);
-              if (!(page + 1 >= totalpages)) setPage(page + 1);
-            }}
-          >
-            <AiOutlineRight size={16} />
-          </button>
-        )}
       </div>
     </div>
   );
