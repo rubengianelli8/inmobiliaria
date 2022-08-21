@@ -19,21 +19,24 @@ export const GET_CLIENT = gql`
 export const GET_ALL_CLIENTS = gql`
   query GetAllClients($page: Int, $pageSize: Int, $dni: Int, $name: String) {
     getAllClients(page: $page, page_size: $pageSize, dni: $dni, name: $name) {
-      id
-      estate {
+      results {
         id
+        estate {
+          id
+        }
+        user {
+          id
+          email
+          first_name
+          last_name
+          dni
+          personal_address
+          work_address
+          phone
+          cell_phone
+        }
       }
-      user {
-        id
-        email
-        first_name
-        last_name
-        dni
-        personal_address
-        work_address
-        phone
-        cell_phone
-      }
+      total
     }
   }
 `;

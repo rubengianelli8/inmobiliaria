@@ -18,6 +18,10 @@ export const client = {
   },
   async getAllClients(_parent, data, _context) {
     try {
+      let page = data.page || 0;
+      let page_size = data.page_size || 10;
+      if (page > 0) page -= 1;
+
       let filters = { user: {} };
       if (data.dni) {
         Object.assign(filters.user, { dni: data.dni });
@@ -25,17 +29,22 @@ export const client = {
       if (data.name) {
         Object.assign(filters.user, { first_name: { contains: data.name } });
       }
-      console.log(filters);
+
       const clients = await prisma.inm_client.findMany({
         where: {
           ...{ ...filters },
         },
-        skip: data.page * data.page_size,
-        take: data.page_size,
+        skip: page * page_size,
+        take: page_size,
         include: { user: true, estate: true },
       });
-      console.log(clients);
-      return clients;
+
+      const total = prisma.inm_client.count({
+        where: {
+          ...{ ...filters },
+        },
+      });
+      return { results: clients, total };
     } catch (e) {
       console.log("error", e);
     }

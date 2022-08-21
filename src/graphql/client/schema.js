@@ -7,9 +7,14 @@ export const schema = gql`
     user: User
     estate: [Estate]
   }
+
+  type ListClient {
+    results: [Client]
+    total: Int
+  }
   type Query {
     getClient(id_client: Int!): User
-    getAllClients(page_size: Int, page: Int, dni: Int, name: String): [Client]
+    getAllClients(page_size: Int, page: Int, dni: Int, name: String): ListClient
     totalClients(page_size: Int, page: Int, dni: Int, name: String): Int
   }
 
