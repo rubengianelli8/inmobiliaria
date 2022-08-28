@@ -28,7 +28,7 @@ export const client = {
         Object.assign(filters.user, { dni: data.dni });
       }
       if (data.name) {
-        Object.assign(filters.user, { first_name: { contains: data.name } });
+        Object.assign(filters.user, { full_name: { contains: data.name } });
       }
 
       const clients = await prisma.inm_client.findMany({
@@ -79,7 +79,10 @@ export const client = {
       const client_ = await prisma.inm_client.create({
         data: {
           user: {
-            create: { ...data },
+            create: {
+              ...data,
+              full_name: `${data.first_name} ${data.last_name}`,
+            },
           },
         },
       });
@@ -98,7 +101,10 @@ export const client = {
         },
         data: {
           user: {
-            update: { ...data },
+            update: {
+              ...data,
+              full_name: `${data.first_name} ${data.last_name}`,
+            },
           },
         },
       });

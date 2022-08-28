@@ -57,29 +57,29 @@ const Estates = () => {
   const [page_size, setPage_size] = useState(10);
 
   const columns = [
-    { name: "Ciudad", selector: "city", sortable: false },
-    { name: "Barrio", selector: "neighborhood", sortable: false },
+    { name: "Ciudad", selector: (row) => row.city, sortable: false },
+    { name: "Barrio", selector: (row) => row.neighborhood, sortable: false },
     {
       name: "Dirección",
       selector: (row) => {
-        row.address + " " + row.address_number;
+        return row.address + " " + row.address_number;
       },
       sortable: false,
     },
-    { name: "Dominio", selector: "domain", sortable: false },
+    { name: "Dominio", selector: (row) => row.domain, sortable: false },
     {
       name: "N° Pda. Inmobiliaria",
-      selector: "certificate_estate",
+      selector: (row) => row.certificate_estate,
       sortable: false,
     },
     {
       name: "Estado",
-      selector: "status",
+      selector: (row) => row.status,
       sortable: false,
     },
     {
       name: "Precio",
-      selector: "price",
+      selector: (row) => row.price,
       sortable: false,
     },
     {
@@ -140,7 +140,7 @@ const Estates = () => {
     },
   ];
   const handleChange = (e) => {
-    e.preventDefault();
+    //e.preventDefault();
     setSearch({ ...search, [e.target.name]: e.target.value });
   };
 
@@ -151,9 +151,7 @@ const Estates = () => {
         ...search,
         page,
         page_size,
-        status: "Disponible",
-        until: parseInt(search.until),
-        since: parseInt(search.since),
+        search: { ...search, status: "Disponible" },
       });
       setSearch({ ...search, status: "Disponible" });
     }
@@ -161,11 +159,9 @@ const Estates = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     await refetch({
-      ...search,
+      search,
       page: page,
       page_size: page_size,
-      until: parseInt(search.until),
-      since: parseInt(search.since),
     });
   };
   const onDelete = async (id) => {
@@ -209,39 +205,96 @@ const Estates = () => {
       </ModalComponent>
       {!loading && (
         <div>
-          <div className="w-4/5 max-w-[800px] mx-auto p-1 bg-gray-200 mt-3 flex rounded">
-            <form className="w-full flex flex-col mx-2 mt-2">
-              <div className="flex flex-col md:flex-row gap-y-2 gap-x-2">
-                <input
-                  className="rounded-full px-3 py-2"
-                  placeholder="Dominio"
-                  name="domain"
-                  onChange={handleChange}
-                />
+          <div className="mx-5 p-1 bg-gray-200 mt-3 flex rounded">
+            <form className="w-full grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-4 mx-4">
+              <div>
+                <p className="underline mt-3 font-bold">Dirección:</p>
+                <div className="flex flex-col md:flex-row gap-y-2 gap-x-2">
+                  <input
+                    className="rounded-full px-3 py-2"
+                    placeholder="Calle"
+                    name="address"
+                    onChange={handleChange}
+                  />
 
-                <input
-                  className="rounded-full px-3 py-2"
-                  placeholder="Barrio"
-                  name="neighborhood"
-                  onChange={handleChange}
-                />
+                  <input
+                    className="rounded-full px-3 py-2"
+                    placeholder="Numero"
+                    name="address_number"
+                    onChange={handleChange}
+                  />
+                </div>
               </div>
-              <p>Precio:</p>
-              <div className="flex flex-col md:flex-row gap-y-2 gap-x-2">
-                <input
-                  type="number"
-                  className="rounded-full px-3 py-2"
-                  placeholder="Desde"
-                  name="since"
-                  onChange={handleChange}
-                />
-                <input
-                  type="number"
-                  className="rounded-full px-3 py-2"
-                  placeholder="Hasta"
-                  name="until"
-                  onChange={handleChange}
-                />
+              <div>
+                <p className="underline mt-3 font-bold">Propietario:</p>
+                <div className="flex flex-col md:flex-row gap-y-2 gap-x-2">
+                  <input
+                    className="rounded-full px-3 py-2"
+                    placeholder="Propietario"
+                    name="full_name"
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+              <div>
+                <p className="underline mt-3 font-bold">
+                  Estado de la propiedad:
+                </p>
+                <div className="flex flex-col gap-y-2 gap-x-2 ">
+                  <div>
+                    <input
+                      className="rounded-full px-3 py-2"
+                      type="radio"
+                      name="status"
+                      id="all"
+                      defaultChecked
+                      value="all"
+                      onChange={handleChange}
+                    />
+                    <label>Todas</label>
+                  </div>
+                  <div>
+                    <input
+                      className="rounded-full px-3 py-2"
+                      type="radio"
+                      name="status"
+                      id="Disponible"
+                      value="Disponible"
+                      onChange={handleChange}
+                    />
+                    <label>Disponibles</label>
+                  </div>
+                  <div>
+                    <input
+                      className="rounded-full px-3 py-2"
+                      type="radio"
+                      name="status"
+                      id="Alquilada"
+                      value="Alquilada"
+                      onChange={handleChange}
+                    />
+                    <label>Alquiladas</label>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <p className="underline mt-3 font-bold">Precio:</p>
+                <div className="flex flex-col md:flex-row gap-y-2 gap-x-2">
+                  <input
+                    type="number"
+                    className="rounded-full px-3 py-2"
+                    placeholder="Desde"
+                    name="since"
+                    onChange={handleChange}
+                  />
+                  <input
+                    type="number"
+                    className="rounded-full px-3 py-2"
+                    placeholder="Hasta"
+                    name="until"
+                    onChange={handleChange}
+                  />
+                </div>
               </div>
               <button
                 onClick={onSubmit}
@@ -274,7 +327,7 @@ const Estates = () => {
                   await refetch({
                     page: page,
                     pageSize: page_size,
-                    ...search,
+                    search,
                   });
                 }}
                 onChangeRowsPerPage={async (page_size, page) => {
@@ -282,7 +335,7 @@ const Estates = () => {
                   await refetch({
                     page: page,
                     pageSize: page_size,
-                    ...search,
+                    search,
                   });
                 }}
               />

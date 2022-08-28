@@ -19,6 +19,7 @@ export const owner = {
             email: data.email,
             first_name: data.first_name,
             last_name: data.last_name,
+            full_name: data.first_name + " " + data.last_name,
             dni: data.dni,
             personal_address: data.personal_address,
             work_address: data.work_address,
@@ -44,16 +45,13 @@ export const owner = {
         Object.assign(filters.user, { dni: data.dni });
       }
       if (data.name) {
-        Object.assign(filters.user, { first_name: { contains: data.name } });
+        Object.assign(filters.user, { full_name: { contains: data.name } });
       }
       let page = data.page || 0;
       page = page > 0 ? page - 1 : page;
 
       const owners = await prisma.inm_owner.findMany({
         where: {
-          /* user: {
-            /* dni: data.dni, 
-          }, */
           ...{ ...filters },
           deleted: false,
         },

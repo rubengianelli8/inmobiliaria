@@ -18,6 +18,7 @@ model inm_user {
   email            String       @unique @db.VarChar(150)
   first_name       String       @db.VarChar(40)
   last_name        String       @db.VarChar(40)
+  full_name        String       @db.VarChar(80)
   dni              Int
   personal_address String       @db.VarChar(20)
   work_address     String?      @db.VarChar(30)
@@ -111,6 +112,7 @@ model inm_payment_plan {
   entry                DateTime
   finish               DateTime
   increases_every      Int
+  last_increase        DateTime?
   note                 String
   payment_deadline     Int               @default(10)
   surcharge_percentage Int?

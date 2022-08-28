@@ -50,11 +50,16 @@ export const estate = {
         return { results: estates, total: estates.length };
       }
       let filters = {};
-      if (data.until && data.since >= 0 && data.since < data.until) {
+      console.log("data", data.search);
+      if (
+        data.search?.until &&
+        data.search?.since >= 0 &&
+        data.search?.since < data.search?.until
+      ) {
         Object.assign(filters, {
           price: {
-            gte: data.since,
-            lte: data.until,
+            gte: parseInt(data.search?.since),
+            lte: parseInt(data.search?.until),
           },
         });
       }
@@ -63,13 +68,17 @@ export const estate = {
       page_size = page_size || 10;
       if (page > 0) page -= 1;
 
-      if (data.status === "Disponible") {
+      if (data.search?.status && data.search?.status !== "all") {
         Object.assign(filters, {
-          AND: [
-            { status: { not: "Alquilada" } },
-            { status: { not: "Vendida" } },
-          ],
+          status: data.search.status,
         });
+      }
+      if (data.search?.full_name) {
+        filters.owner = {
+          user: {
+            full_name: { contains: data.search.full_name },
+          },
+        };
       }
 
       const estates = await prisma.inm_estate.findMany({
@@ -78,10 +87,10 @@ export const estate = {
         where: {
           deleted: false,
           neighborhood: {
-            contains: data.neighborhood,
+            contains: data.search?.neighborhood,
           },
           domain: {
-            contains: data.domain,
+            contains: data.search?.domain,
           },
           ...filters,
         },
@@ -149,6 +158,38 @@ export const estate = {
   },
   async updateEstate(_parent, data, _context) {
     try {
+      if (data.is_increase || data.price) {
+        const payment_plan_ = await prisma.inm_payment_plan.findFirst({
+          where: {
+            id_estate: data.id,
+          },
+          select: { price: true },
+        });
+        if (payment_plan_.price < data.price || data.is_increase) {
+          await prisma.inm_payment_plan.updateMany({
+            where: {
+              deleted: false,
+              id_estate: data.id,
+            },
+            data: {
+              last_increase: new Date(),
+              price: data.price,
+            },
+          });
+        }
+        if (payment_plan_.price <= data.price && !data.is_increase) {
+          await prisma.inm_payment_plan.updateMany({
+            where: {
+              deleted: false,
+              id_estate: data.id,
+            },
+            data: {
+              price: data.price,
+            },
+          });
+        }
+      }
+      delete data.is_increase;
       return await prisma.inm_estate.update({ where: { id: data.id }, data });
     } catch (e) {
       console.log(e);
@@ -165,7 +206,12 @@ export const estate = {
 
   async addPaymentPlan(_parent, data, _context) {
     try {
-      const paymentPlan_ = await prisma.inm_payment_plan.create({ data });
+      const paymentPlan_ = await prisma.inm_payment_plan.create({
+        data: {
+          ...data,
+          last_increase: data.entry,
+        },
+      });
       return paymentPlan_;
     } catch (e) {
       console.log(e);

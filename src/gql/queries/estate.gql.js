@@ -69,24 +69,16 @@ export const GET_ALL_ESTATES_BY_OWNER = gql`
   query GetAllEstatesByOwner(
     $ownerId: Int
     $clientId: Int
-    $until: Int
-    $since: Int
-    $domain: String
-    $neighborhood: String
+    $search: JSON
     $page: Int
     $page_size: Int
-    $status: String
   ) {
     getAllEstatesByOwner(
       owner_id: $ownerId
       client_id: $clientId
-      until: $until
-      since: $since
-      domain: $domain
-      neighborhood: $neighborhood
+      search: $search
       page: $page
       page_size: $page_size
-      status: $status
     ) {
       results {
         id
