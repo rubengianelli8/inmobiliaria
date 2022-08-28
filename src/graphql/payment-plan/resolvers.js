@@ -16,7 +16,11 @@ export const resolvers = {
       }
     },
     updatePaymentPlan(_parent, _args, _context) {
-      return estate.updatePaymentPlan(_parent, _args, _context);
+      try {
+        return estate.updatePaymentPlan(_parent, _args, _context);
+      } catch (e) {
+        console.log(e);
+      }
     },
     deletePaymentPlan(_parent, _args, _context) {
       return estate.deletePaymentPlan(_parent, _args, _context);

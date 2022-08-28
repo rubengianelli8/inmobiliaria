@@ -18,6 +18,7 @@ model inm_user {
   email            String       @unique @db.VarChar(150)
   first_name       String       @db.VarChar(40)
   last_name        String       @db.VarChar(40)
+  full_name        String       @db.VarChar(80)
   dni              Int
   personal_address String       @db.VarChar(20)
   work_address     String?      @db.VarChar(30)
@@ -30,6 +31,7 @@ model inm_user {
 model inm_owner {
   id              Int               @id @default(autoincrement())
   id_user         Int               @unique
+  deleted         Boolean           @default(false)
   user            inm_user          @relation(fields: [id_user], references: [id])
   estates         inm_estate[]
   inm_liquidation inm_liquidation[]
@@ -38,6 +40,7 @@ model inm_owner {
 model inm_client {
   id                 Int                      @id @default(autoincrement())
   id_user            Int                      @unique
+  deleted            Boolean                  @default(false)
   user               inm_user                 @relation(fields: [id_user], references: [id])
   billing            inm_billing[]
   estate             inm_estate[]
@@ -99,20 +102,23 @@ model inm_estate {
 }
 
 model inm_payment_plan {
-  id              Int               @id @default(autoincrement())
-  id_estate       Int
-  id_client       Int
-  api             Int               @default(0)
-  price           Int
-  client          inm_client        @relation(fields: [id_client], references: [id])
-  estate          inm_estate        @relation(fields: [id_estate], references: [id])
-  entry           DateTime
-  finish          DateTime
-  increases_every Int
-  note            String
-  deleted         Boolean           @default(false)
-  inm_receipt     inm_receipt[]
-  inm_liquidation inm_liquidation[]
+  id                   Int               @id @default(autoincrement())
+  id_estate            Int
+  id_client            Int
+  api                  Int               @default(0)
+  price                Int
+  client               inm_client        @relation(fields: [id_client], references: [id])
+  estate               inm_estate        @relation(fields: [id_estate], references: [id])
+  entry                DateTime
+  finish               DateTime
+  increases_every      Int
+  last_increase        DateTime?
+  note                 String
+  payment_deadline     Int               @default(10)
+  surcharge_percentage Int?
+  deleted              Boolean           @default(false)
+  inm_receipt          inm_receipt[]
+  inm_liquidation      inm_liquidation[]
 }
 
 enum enum_type_estate {
@@ -184,6 +190,8 @@ model inm_receipt {
   rate                 Int              @default(0)
   address              String           @db.VarChar(100)
   full_name            String           @db.VarChar(100)
+
+  @@unique([id_client, receipt_number])
 }
 
 model inm_liquidation {

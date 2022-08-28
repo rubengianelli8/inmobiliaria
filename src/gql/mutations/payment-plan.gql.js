@@ -10,6 +10,8 @@ export const ADD_PAYMENT_PLAN = gql`
     $finish: DateTime
     $increasesEvery: Int
     $note: String
+    $paymentDeadline: Int
+    $surchargePercentage: Int
   ) {
     addPaymentPlan(
       id_estate: $idEstate
@@ -20,6 +22,36 @@ export const ADD_PAYMENT_PLAN = gql`
       finish: $finish
       increases_every: $increasesEvery
       note: $note
+      payment_deadline: $paymentDeadline
+      surcharge_percentage: $surchargePercentage
+    ) {
+      id
+    }
+  }
+`;
+
+export const UPDATE_PAYMENT_PLAN = gql`
+  mutation UpdatePaymentPlan(
+    $id: Int
+    $api: Int
+    $price: Int
+    $entry: DateTime
+    $finish: DateTime
+    $increasesEvery: Int
+    $note: String
+    $paymentDeadline: Int
+    $surchargePercentage: Int
+  ) {
+    updatePaymentPlan(
+      id: $id
+      api: $api
+      price: $price
+      entry: $entry
+      finish: $finish
+      increases_every: $increasesEvery
+      note: $note
+      payment_deadline: $paymentDeadline
+      surcharge_percentage: $surchargePercentage
     ) {
       id
     }

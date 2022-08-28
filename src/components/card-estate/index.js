@@ -1,19 +1,40 @@
 import React, { useState } from "react";
 import ModalComponent from "@/components/modal-component";
 import ViewPaymentPlan from "@/containers/estates/payment_plan/view-payment-plan";
+import PaymentPlan from "@/containers/estates/payment_plan";
 import Router from "next/router";
 
 const CardEstate = ({ estate }) => {
   const [openPaymentModal, setOpenPaymentModal] = useState(false);
+  const [editPaymentModal, setEditPaymentModal] = useState(false);
+
   return (
     <>
       <ModalComponent
-        cancelAction={() => setOpenModal(false)}
+        cancelAction={() => setOpenPaymentModal(false)}
         title={`Plan de pago`}
         open={openPaymentModal}
         setOpen={setOpenPaymentModal}
       >
-        <ViewPaymentPlan id={estate.id} />
+        <ViewPaymentPlan
+          id={estate.id}
+          setEditPaymentModal={setEditPaymentModal}
+          setOpen={setOpenPaymentModal}
+        />
+      </ModalComponent>
+      <ModalComponent
+        acceptButton="Aceptar"
+        cancelButton="Cancelar"
+        cancelAction={() => setEditPaymentModal(false)}
+        title={`Editar plan de pago`}
+        open={editPaymentModal}
+        setOpen={setEditPaymentModal}
+      >
+        <PaymentPlan
+          estate={estate}
+          edit={true}
+          //setEstateToClient={setEstateToClient}
+        />
       </ModalComponent>
       <div className="gap-y-5 flex flex-col justify-start items-start ml-10 p-3 bg-gray-100 my-3 shadow-box rounded">
         <div className="flex gap-x-10">

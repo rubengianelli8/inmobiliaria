@@ -6,10 +6,13 @@ export const schema = gql`
     id_user: Int
     user: User
   }
-
+  type ListOwners {
+    results: [Owner]
+    total: Int
+  }
   type Query {
     getOwner(id: Int): Owner
-    getAllOwners(page_size: Int, page: Int, dni: Int, name: String): [Owner]
+    getAllOwners(page_size: Int, page: Int, dni: Int, name: String): ListOwners
     totalOwners: Int
   }
   type Mutation {

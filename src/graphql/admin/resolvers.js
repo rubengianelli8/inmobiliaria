@@ -9,5 +9,8 @@ export const resolvers = {
         console.log(e);
       }
     },
+    getIncreaseAlerts(_parent, _args, _context) {
+      return admin.increaseAlerts(_parent, _args, _context);
+    },
   },
 };

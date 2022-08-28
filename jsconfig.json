@@ -8,7 +8,8 @@
       "@/models/*": ["src/models/*"],
       "@/graphql/*": ["src/graphql/*"],
       "@/utils/*": ["src/utils/*"],
-      "@/gql/*": ["src/gql/*"]
+      "@/gql/*": ["src/gql/*"],
+      "@/assets/*": ["src/assets/*"]
     }
   },
   "exclude": ["node_modules"]

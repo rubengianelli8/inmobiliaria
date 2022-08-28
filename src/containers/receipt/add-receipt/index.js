@@ -14,6 +14,7 @@ import { COUNT_RECEIPT_BY_CLIENT } from "@/gql/queries/receipt.gql";
 
 const AddReceipt = () => {
   const [total, setTotal] = useState(0);
+  const [error, setError] = useState({ ok: true, message: "" });
   const id = Router.router?.query?.index;
 
   const [getPaymentPlan, { data, loading: loadingPayment, called }] =
@@ -55,6 +56,15 @@ const AddReceipt = () => {
       setValue("api", data.getPaymentPlan.api);
       setValue("date", dayjs().format("YYYY-MM-DD"));
       setValue("month", dayjs().format("YYYY-MM"));
+      //calcular dias de mora
+
+      let actualDay = dayjs().date() - data.getPaymentPlan.payment_deadline;
+      actualDay = actualDay < 0 ? 0 : actualDay;
+      setValue("surcharge_days", actualDay);
+      setValue(
+        "surcharge_percentage",
+        data.getPaymentPlan.surcharge_percentage
+      );
       setValue(
         "address",
         `${data.getPaymentPlan.estate.location}, ${data.getPaymentPlan.estate.address} ${data.getPaymentPlan.estate.address_number}`
@@ -67,55 +77,91 @@ const AddReceipt = () => {
   }, [data]);
 
   useEffect(() => {
-    const [amount, api, rate] = getValues(["amount", "api", "rate"]);
-    let newAmount = amount ? parseFloat(amount) : 0;
-    let newApi = api ? parseFloat(api) : 0;
-    let newRate = rate ? parseFloat(rate) : 0;
-    let price = newAmount + newApi + newRate + surchargeState;
-    setTotal(price);
-  }, [watch("amount"), watch("api"), watch("rate")]);
-
-  const calculateSurcharge = () => {
-    const [surcharge_days, surcharge_percentage, amount, api, rate] = getValues(
-      ["surcharge_days", "surcharge_percentage", "amount", "api", "rate"]
+    const [amount, api, rate, surcharge_days, surcharge_percentage] = getValues(
+      ["amount", "api", "rate", "surcharge_days", "surcharge_percentage"]
     );
-
     let newAmount = amount ? parseFloat(amount) : 0;
     let newApi = api ? parseFloat(api) : 0;
     let newRate = rate ? parseFloat(rate) : 0;
-    let price = newAmount + newApi + newRate;
+    let newSurchargeDays = surcharge_days ? parseInt(surcharge_days) : 0;
+    let newSurchargePercentage = surcharge_percentage
+      ? parseInt(surcharge_percentage)
+      : 0;
+    let surcharge = newSurchargeDays * newSurchargePercentage;
+    surcharge = (newAmount * surcharge) / 100;
+    setSurchargeState(surcharge);
+    let price = newAmount + newApi + newRate + surcharge;
+    setTotal(price);
+  }, [
+    watch("amount"),
+    watch("api"),
+    watch("rate"),
+    watch("surcharge_days"),
+    watch("surcharge_percentage"),
+  ]);
+  useEffect(() => {
+    const [month] = getValues(["month"]);
+    let diffDays = dayjs(new Date(month)).diff(dayjs(), "day");
+    let surchargeDays = diffDays * -1 - paymentPlan.payment_deadline + 1; // se agrega un día porque calcula un día menos
+    setValue("surcharge_days", surchargeDays > 0 ? surchargeDays : 0);
+  }, [watch("month")]);
 
-    const surcharge_total_percentage = surcharge_days * surcharge_percentage;
-    setSurchargeState((newAmount * surcharge_total_percentage) / 100);
-    const newPrice = price + (newAmount * surcharge_total_percentage) / 100;
-    setTotal(newPrice);
-  };
-
+  useEffect(() => {
+    if (
+      countData?.countReceiptByClient ||
+      countData?.countReceiptByClient === 0
+    ) {
+      setValue("receiptNumber", countData.countReceiptByClient + 1);
+    }
+  }, [countData]);
   const redirect = () => {
     alert("No se encontró el plan de pago");
     Router.push("/client");
   };
 
+  useEffect(() => {
+    if (
+      countData?.countReceiptByClient ||
+      countData?.countReceiptByClient === 0
+    ) {
+      const receiptNumber = getValues("receiptNumber");
+      if (
+        parseInt(receiptNumber) < countData.countReceiptByClient + 1 ||
+        !receiptNumber
+      ) {
+        setError({
+          ok: false,
+          message: `El número de recibo no puede ser menor al ultimo emitido (${countData.countReceiptByClient})`,
+        });
+      } else {
+        setError({
+          ok: true,
+          message: "",
+        });
+      }
+    }
+  }, [watch("receiptNumber"), countData]);
   const onSubmit = async (e) => {
-    addReceipt({
-      variables: {
-        receiptNumber: countData.countReceiptByClient + 1,
-        idClient: paymentPlan.client.id,
-        fullName: e.full_name,
-        idPaymentPlan: paymentPlan.id,
-        amount: parseInt(total),
-        api: parseInt(e.api),
-        date: new Date(e.date),
-        month: new Date(e.month),
-        note: e.note,
-        surcharge: surchargeState,
-        surchargePercentage: parseInt(e.surcharge_percentage),
-        rate: e.rate ? parseInt(e.rate) : 0,
-        address: e.address,
-      },
-    }).then((res) => {
-      Router.push(`/receipt/${res.data.addReceipt.id}`);
-    });
+    if (error.ok)
+      addReceipt({
+        variables: {
+          receiptNumber: parseInt(e.receiptNumber),
+          idClient: paymentPlan.client.id,
+          fullName: e.full_name,
+          idPaymentPlan: paymentPlan.id,
+          amount: parseInt(total),
+          api: parseInt(e.api),
+          date: new Date(e.date),
+          month: new Date(e.month),
+          note: e.note,
+          surcharge: surchargeState,
+          surchargePercentage: parseInt(e.surcharge_percentage),
+          rate: e.rate ? parseInt(e.rate) : 0,
+          address: e.address,
+        },
+      }).then((res) => {
+        Router.push(`/receipt/${res.data.addReceipt.id}`);
+      });
   };
 
   return (
@@ -124,29 +170,32 @@ const AddReceipt = () => {
 
       {!loading && called && data?.getPaymentPlan && (
         <>
-          {" "}
           <h2 className="font-bold text-20 mb-6 text-tertiary underline">
-            Generar recibo{" "}
-            {countData ? (
-              <span className="text-primary">
-                N°{countData?.countReceiptByClient + 1}
-              </span>
-            ) : (
-              ""
-            )}{" "}
-            para{" "}
+            Generar recibo para{" "}
             <span className="text-primary">
               {data?.getPaymentPlan?.client?.user?.first_name
                 ? `${data?.getPaymentPlan?.client?.user?.first_name} ${data?.getPaymentPlan?.client?.user?.last_name}`
                 : "cliente"}
             </span>
           </h2>
+          {!error.ok && (
+            <p className="text-18 text-red-500 mb-3 font-bold">
+              {error.message}
+            </p>
+          )}
           <form
             className="flex flex-col items-center"
             method="POST"
             onSubmit={handleSubmit(onSubmit)}
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-3 gap-y-3">
+              <Input
+                label={"Recibo N°"}
+                type="number"
+                name="receiptNumber"
+                error={errors.receiptNumber}
+                register={register}
+              />
               <Input
                 label={"Fecha de pago"}
                 type="date"
@@ -246,16 +295,8 @@ const AddReceipt = () => {
               </div>
             </div>
             <div className="flex flex-col items-center">
-              <div className="flex gap-x-2 mb-2 items-center">
-                <Button
-                  type="button"
-                  bgColor={"bg-primary"}
-                  classPlus={"text-tertiary border border-tertiary"}
-                  label="Calcular mora"
-                  action={calculateSurcharge}
-                />
-                <h3 className="text-25 mb-3">Total: ${total}</h3>
-              </div>
+              <h3 className="text-25 mb-3">Total: ${total}</h3>
+
               <Button
                 type="submit"
                 classPlus="w-full text-18"

@@ -37,10 +37,25 @@ export const user = {
     }
   },
   async addUser(_parent, data, _context) {
-    return await prisma.inm_user.create({ data });
+    return await prisma.inm_user.create({
+      data: {
+        ...data,
+        full_name: `${data.first_name} ${data.last_name}`,
+      },
+    });
   },
   async updateUser(_parent, data, _context) {
-    return await prisma.inm_user.update({ where: { id: data.id }, data });
+    const user_ = await prisma.inm_user.findUnique({ where: { id } });
+    let full_name = user_?.full_name;
+    if (data.first_name && data.last_name)
+      full_name = `${data.first_name} ${data.last_name}`;
+    return await prisma.inm_user.update({
+      where: { id: data.id },
+      data: {
+        ...data,
+        full_name,
+      },
+    });
   },
   async deleteUser(_parent, { id }, _context) {
     return await prisma.inm_user.delete({ where: { id } });

@@ -1,4 +1,4 @@
-import nodemailer from 'nodemailer';
+import nodemailer from "nodemailer";
 
 const sendEmail = (to, subject, body, html) => {
   const callback = (err, info) => {
@@ -8,23 +8,23 @@ const sendEmail = (to, subject, body, html) => {
     console.log(info);
   };
   const transporter = nodemailer.createTransport({
-    host: 'mail.tiarg.net',
+    host: "smtp.gmail.com",
     port: 587,
     secure: false,
     auth: {
-      user: 'noreply@tiarg.net',
-      pass: 'Tiarg2021',
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
     },
   });
   transporter.sendMail(
     {
-      from: 'noreply@tiarg.net',
-      to: to,
+      from: "contactoscinmobiliaria@gmail.com",
+      to: "rubengianelli8@gmail.com",
       subject: subject,
       text: html ? null : body,
       html: html ? body : null,
     },
-    callback,
+    callback
   );
 };
 

@@ -11,3 +11,19 @@ export const GET_STATISTICS = gql`
     }
   }
 `;
+
+export const GET_INCREASE_ALERTS = gql`
+  query GetIncreaseAlerts {
+    getIncreaseAlerts {
+      id
+      id_estate
+      last_increase
+      address
+      address_number
+      city
+      province
+      increases_every
+      full_name
+    }
+  }
+`;

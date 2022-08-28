@@ -1,6 +1,7 @@
 import { gql } from "apollo-server-micro";
 
 export const schema = gql`
+  scalar JSON
   type Estate {
     id: Int
     type_estate: String
@@ -39,24 +40,25 @@ export const schema = gql`
     id_owner: Int
     id_client: Int
     surcharge_percentage: Int
+    payment_plan: [PaymentPlan]
     fee: Int
     owner: Owner
     client: Client
   }
 
+  type ListEstates {
+    results: [Estate]
+    total: Int
+  }
   type Query {
     getEstate(id: Int): Estate
     getAllEstatesByOwner(
       owner_id: Int
       client_id: Int
-      until: Int
-      since: Int
-      domain: String
-      neighborhood: String
+      search: JSON
       page: Int
       page_size: Int
-      status: String
-    ): [Estate]
+    ): ListEstates
     getTotalEstates(
       owner_id: Int
       until: Int
@@ -145,6 +147,7 @@ export const schema = gql`
       fee: Int
       id_owner: Int
       id_client: Int
+      is_increase: Boolean
     ): Estate
     deleteEstate(id: Int): Estate
   }

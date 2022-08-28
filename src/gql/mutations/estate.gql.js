@@ -117,6 +117,7 @@ export const UPDATE_ESTATE = gql`
     $id_owner: Int
     $id_client: Int
     $fee: Int
+    $isIncrease: Boolean
   ) {
     updateEstate(
       id: $idEstate
@@ -156,6 +157,7 @@ export const UPDATE_ESTATE = gql`
       id_owner: $id_owner
       id_client: $id_client
       fee: $fee
+      is_increase: $isIncrease
     ) {
       id
     }

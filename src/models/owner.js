@@ -2,8 +2,8 @@ import { prisma } from "@/prisma/client";
 
 export const owner = {
   async getOwner(_parent, { id }, _context) {
-    return await prisma.inm_owner.findUnique({
-      where: { id },
+    return await prisma.inm_owner.findFirst({
+      where: { id, deleted: false },
       include: { user: true },
     });
   },
@@ -19,6 +19,7 @@ export const owner = {
             email: data.email,
             first_name: data.first_name,
             last_name: data.last_name,
+            full_name: data.first_name + " " + data.last_name,
             dni: data.dni,
             personal_address: data.personal_address,
             work_address: data.work_address,
@@ -30,7 +31,12 @@ export const owner = {
     });
   },
   async deleteOwner(_parent, { id }, _context) {
-    return await prisma.inm_owner.delete({ where: { id } });
+    return await prisma.inm_owner.update({
+      where: { id },
+      data: {
+        deleted: true,
+      },
+    });
   },
   async getAllOwners(_parent, data, _context) {
     try {
@@ -39,22 +45,29 @@ export const owner = {
         Object.assign(filters.user, { dni: data.dni });
       }
       if (data.name) {
-        Object.assign(filters.user, { first_name: data.name });
+        Object.assign(filters.user, { full_name: { contains: data.name } });
       }
+      let page = data.page || 0;
+      page = page > 0 ? page - 1 : page;
 
       const owners = await prisma.inm_owner.findMany({
         where: {
-          /* user: {
-            /* dni: data.dni, 
-          }, */
           ...{ ...filters },
+          deleted: false,
         },
-        skip: data.page * data.page_size,
+        skip: page * data.page_size,
         take: data.page_size,
         include: { user: true },
       });
 
-      return owners;
+      const total = await prisma.inm_owner.count({
+        where: {
+          ...{ ...filters },
+          deleted: false,
+        },
+      });
+
+      return { results: owners, total };
     } catch (e) {
       console.log("er...", e);
     }

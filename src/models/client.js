@@ -7,6 +7,7 @@ export const client = {
         client: {
           some: {
             id: id_client,
+            deleted: false,
           },
         },
       },
@@ -18,23 +19,42 @@ export const client = {
   },
   async getAllClients(_parent, data, _context) {
     try {
+      let page = data.page || 0;
+      let page_size = data.page_size || 10;
+      if (page > 0) page -= 1;
+
       let filters = { user: {} };
       if (data.dni) {
         Object.assign(filters.user, { dni: data.dni });
       }
       if (data.name) {
-        Object.assign(filters.user, { first_name: data.name });
+        Object.assign(filters.user, { full_name: { contains: data.name } });
       }
 
       const clients = await prisma.inm_client.findMany({
         where: {
           ...{ ...filters },
+          deleted: false,
         },
-        skip: data.page * data.page_size,
-        take: data.page_size,
-        include: { user: true, estate: true },
+        skip: page * page_size,
+        take: page_size,
+        include: {
+          user: true,
+          estate: {
+            where: {
+              deleted: false,
+            },
+          },
+        },
       });
-      return clients;
+
+      const total = prisma.inm_client.count({
+        where: {
+          ...{ ...filters },
+          deleted: false,
+        },
+      });
+      return { results: clients, total };
     } catch (e) {
       console.log("error", e);
     }
@@ -50,6 +70,7 @@ export const client = {
     return await prisma.inm_client.count({
       where: {
         ...{ ...filters },
+        deleted: false,
       },
     });
   },
@@ -58,7 +79,10 @@ export const client = {
       const client_ = await prisma.inm_client.create({
         data: {
           user: {
-            create: { ...data },
+            create: {
+              ...data,
+              full_name: `${data.first_name} ${data.last_name}`,
+            },
           },
         },
       });
@@ -77,7 +101,10 @@ export const client = {
         },
         data: {
           user: {
-            update: { ...data },
+            update: {
+              ...data,
+              full_name: `${data.first_name} ${data.last_name}`,
+            },
           },
         },
       });
@@ -88,6 +115,11 @@ export const client = {
     }
   },
   async deleteClient(_parent, { id }, _context) {
-    return await prisma.inm_client.delete({ where: { id } });
+    return await prisma.inm_client.update({
+      where: { id },
+      data: {
+        deleted: true,
+      },
+    });
   },
 };

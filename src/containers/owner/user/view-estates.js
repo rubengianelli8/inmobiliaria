@@ -21,13 +21,13 @@ const ViewEstates = ({ id_owner, id_client }) => {
 
   return (
     <div className="flex flex-col w-full items-center">
-      {dataEstates?.getAllEstatesByOwner.length > 0 ? (
-        dataEstates?.getAllEstatesByOwner.map((estate) => (
+      {dataEstates?.getAllEstatesByOwner.results.length > 0 ? (
+        dataEstates?.getAllEstatesByOwner.results.map((estate) => (
           <CardEstate estate={estate} key={estate.id} />
         ))
       ) : (
         <p className="text-18 md:text-25 text-tertiary font-bold mt-20">
-          El propietario no tiene propiedades cargadas aún
+          No hay propiedades cargadas aún.
         </p>
       )}
     </div>

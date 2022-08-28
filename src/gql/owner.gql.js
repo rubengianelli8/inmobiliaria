@@ -39,18 +39,21 @@ export const UPDATE_OWNER = gql`
 export const GET_ALL_OWNERS = gql`
   query GetAllOwners($page: Int, $pageSize: Int, $dni: Int, $name: String) {
     getAllOwners(page: $page, page_size: $pageSize, dni: $dni, name: $name) {
-      id
-      user {
+      results {
         id
-        email
-        first_name
-        last_name
-        dni
-        personal_address
-        work_address
-        phone
-        cell_phone
+        user {
+          id
+          email
+          first_name
+          last_name
+          dni
+          personal_address
+          work_address
+          phone
+          cell_phone
+        }
       }
+      total
     }
   }
 `;
@@ -75,6 +78,14 @@ export const GET_OWNER = gql`
         phone
         cell_phone
       }
+    }
+  }
+`;
+
+export const DELETE_OWNER = gql`
+  mutation DeleteOwner($id: Int) {
+    deleteOwner(id: $id) {
+      id
     }
   }
 `;

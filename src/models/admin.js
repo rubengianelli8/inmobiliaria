@@ -1,5 +1,4 @@
 import { prisma } from "@/prisma/client";
-import dayjs from "dayjs";
 
 export const admin = {
   async getStatistics(_parent, _args, _context) {
@@ -66,6 +65,23 @@ export const admin = {
       };
     } catch (e) {
       console.log(e);
+    }
+  },
+
+  async increaseAlerts(_parent, _args, _context) {
+    try {
+      let query = `
+      SELECT i.id, i.id_estate, i.last_increase, e.address, e.address_number, e.city, i.increases_every, e.province, u.full_name
+      FROM inmobiliaria.inm_payment_plan i 
+      join inmobiliaria.inm_estate e on e.id = i.id_estate 
+      join inmobiliaria.inm_client c on c.id = i.id_client
+      join inmobiliaria.inm_user u on u.id = c.id_user
+      where date_add(now(), interval 4 day) > date_add(i.last_increase, interval i.increases_every month) and i.deleted = 0;
+      `;
+      const payments_plans = await prisma.$queryRawUnsafe(query);
+      return payments_plans;
+    } catch (e) {
+      return e;
     }
   },
 };
