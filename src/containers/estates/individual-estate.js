@@ -6,6 +6,8 @@ import { UPDATE_ESTATE } from "@/gql/mutations/estate.gql";
 import { IoMdReturnLeft } from "react-icons/io";
 import Button from "@/components/button";
 import ModalComponent from "@/components/modal-component";
+import ViewPaymentPlan from "@/containers/estates/payment_plan/view-payment-plan";
+import PaymentPlan from "@/containers/estates/payment_plan";
 
 const IndividualEstate = () => {
   const id = Router?.router?.query?.id;
@@ -15,6 +17,8 @@ const IndividualEstate = () => {
   const [updateEstate] = useMutation(UPDATE_ESTATE);
 
   const [openModal, setOpenModal] = useState(false);
+  const [openPaymentModal, setOpenPaymentModal] = useState(false);
+  const [editPaymentModal, setEditPaymentModal] = useState(false);
   const [newPrice, setNewPrice] = useState(0);
 
   useEffect(() => {
@@ -105,6 +109,29 @@ const IndividualEstate = () => {
           </form>
         </div>
       </ModalComponent>
+
+      <ModalComponent
+        cancelAction={() => setOpenModal(false)}
+        title={`Plan de pago`}
+        open={openPaymentModal}
+        setOpen={setOpenPaymentModal}
+      >
+        <ViewPaymentPlan
+          id={data?.getEstate?.id}
+          setEditPaymentModal={setEditPaymentModal}
+          setOpen={setOpenPaymentModal}
+        />
+      </ModalComponent>
+      <ModalComponent
+        acceptButton="Aceptar"
+        cancelButton="Cancelar"
+        cancelAction={() => setOpenModal(false)}
+        title={`Editar plan de pago`}
+        open={editPaymentModal}
+        setOpen={setEditPaymentModal}
+      >
+        <PaymentPlan estate={data?.getEstate} edit={true} />
+      </ModalComponent>
       <div
         className=" mt-3 ml-3 h-10 w-10 rounded-full bg-tertiary cursor-pointer "
         onClick={() => {
@@ -120,6 +147,7 @@ const IndividualEstate = () => {
             "--------"}
         </p>
       </div>
+
       <div className="flex w-full justify-center">
         <Button
           label={"Aumentar precio de la propiedad"}
@@ -272,6 +300,16 @@ const IndividualEstate = () => {
           <div className="flex ">
             <p className="font-bold">Estado:</p>
             <p>{data?.getEstate?.status || "--------"}</p>
+          </div>
+          <div className="mx-auto">
+            <p
+              className="text-blue-500 underline font-bold cursor-pointer"
+              onClick={() => {
+                setOpenPaymentModal(true);
+              }}
+            >
+              Ver plan de pago
+            </p>
           </div>
         </div>
       </div>

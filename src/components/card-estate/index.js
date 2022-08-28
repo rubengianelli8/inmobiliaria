@@ -7,11 +7,11 @@ import Router from "next/router";
 const CardEstate = ({ estate }) => {
   const [openPaymentModal, setOpenPaymentModal] = useState(false);
   const [editPaymentModal, setEditPaymentModal] = useState(false);
-  console.log("estate", estate);
+
   return (
     <>
       <ModalComponent
-        cancelAction={() => setOpenModal(false)}
+        cancelAction={() => setOpenPaymentModal(false)}
         title={`Plan de pago`}
         open={openPaymentModal}
         setOpen={setOpenPaymentModal}
@@ -25,7 +25,7 @@ const CardEstate = ({ estate }) => {
       <ModalComponent
         acceptButton="Aceptar"
         cancelButton="Cancelar"
-        cancelAction={() => setOpenModal(false)}
+        cancelAction={() => setEditPaymentModal(false)}
         title={`Editar plan de pago`}
         open={editPaymentModal}
         setOpen={setEditPaymentModal}

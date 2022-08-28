@@ -7,12 +7,18 @@ import Expense from "./expense";
 import Table from "./expense/table";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { GET_ALL_EXPENSES } from "@/gql/queries/expense.gql";
+import { GET_INCREASE_ALERTS } from "@/gql/queries/admin.gql";
 import dayjs from "dayjs";
+import IncreaseAlerts from "./increase-alerts";
+
 const Admin = () => {
   const [getExpenses, { data: dataExpenses, refetch: refetchExpenses }] =
     useLazyQuery(GET_ALL_EXPENSES);
   const [getStatistics, { data, loading, error, refetch }] =
     useLazyQuery(GET_STATISTICS);
+
+  const { data: dataAlerts, refetch: refetchAlerts } =
+    useQuery(GET_INCREASE_ALERTS);
   const [filters, setFilters] = useState({ month: new Date() });
 
   useEffect(() => {
@@ -21,6 +27,7 @@ const Admin = () => {
         startDate: new Date(),
       },
     });
+    refetchAlerts();
     getExpenses({
       variables: {
         month: new Date(),
@@ -54,6 +61,11 @@ const Admin = () => {
         setOpenModal={setOpenModal}
         refetch={refetch_}
       />
+      {dataAlerts?.getIncreaseAlerts?.length > 0 && (
+        <div>
+          <IncreaseAlerts alerts={dataAlerts?.getIncreaseAlerts} />
+        </div>
+      )}
       <div className="w-4/5 max-w-[800px] mx-auto p-1 bg-gray-200 mt-3 flex rounded mb-2">
         <form className="w-full flex flex-col md:flex-row mx-2 gap-x-3 gap-y-3">
           <input

@@ -10,7 +10,20 @@ export const schema = gql`
     net_earnings: Int
   }
 
+  type increaseAlert {
+    id: Int
+    id_estate: Int
+    last_increase: DateTime
+    address: String
+    address_number: String
+    city: String
+    province: String
+    increases_every: Int
+    full_name: String
+  }
+
   type Query {
     getStatistics(start_date: DateTime): Statistics
+    getIncreaseAlerts: [increaseAlert]
   }
 `;
