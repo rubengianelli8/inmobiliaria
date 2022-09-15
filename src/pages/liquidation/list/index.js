@@ -8,7 +8,7 @@ const ViewLiquidations = dynamic(
     ssr: false,
   }
 );
-import ViewLiquidations from "@/containers/liquidation/view-liquidations";
+
 const index = () => {
   return (
     <Layout>
