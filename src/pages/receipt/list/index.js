@@ -1,6 +1,13 @@
 import React from "react";
 import Layout from "@/containers/layout";
-import ViewReceipts from "@/containers/receipt/view-receipts";
+import dynamic from "next/dynamic";
+
+const ViewReceipts = dynamic(
+  () => import("../../../containers/receipt/view-receipts"),
+  {
+    ssr: false,
+  }
+);
 
 const index = () => {
   return (
