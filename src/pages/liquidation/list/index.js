@@ -1,5 +1,13 @@
 import React from "react";
 import Layout from "@/containers/layout";
+import dynamic from "next/dynamic";
+
+const ViewLiquidations = dynamic(
+  () => import("../../../containers/liquidation/view-liquidations"),
+  {
+    ssr: false,
+  }
+);
 import ViewLiquidations from "@/containers/liquidation/view-liquidations";
 const index = () => {
   return (
