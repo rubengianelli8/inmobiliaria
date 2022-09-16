@@ -26,7 +26,7 @@ const signin = () => {
       redirect: false,
       email: e.email,
       password: e.password,
-      callbackUrl: "https://inmobiliaria-iota.vercel.app/",
+      callbackUrl: process.env.NEXT_PUBLIC_BASE_URL,
     }).then((res) => {
       if (res.ok) Router.push(res.url);
       else {
