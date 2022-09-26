@@ -16,12 +16,12 @@ model inm_real_estate {
 model inm_user {
   id               Int          @id @default(autoincrement())
   email            String       @unique @db.VarChar(150)
-  first_name       String       @db.VarChar(40)
-  last_name        String       @db.VarChar(40)
-  full_name        String       @db.VarChar(80)
+  first_name       String       @db.VarChar(60)
+  last_name        String       @db.VarChar(60)
+  full_name        String       @db.VarChar(120)
   dni              Int
-  personal_address String       @db.VarChar(20)
-  work_address     String?      @db.VarChar(30)
+  personal_address String       @db.VarChar(70)
+  work_address     String?      @db.VarChar(70)
   phone            String?      @db.VarChar(35)
   cell_phone       String?      @db.VarChar(35)
   owner            inm_owner[]
