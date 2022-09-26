@@ -115,10 +115,26 @@ export const client = {
     }
   },
   async deleteClient(_parent, { id }, _context) {
+    const client_ = await prisma.inm_client.findUnique({
+      where: { id },
+      select: {
+        user: {
+          select: {
+            email: true,
+            dni: true,
+          },
+        },
+      },
+    });
     return await prisma.inm_client.update({
       where: { id },
       data: {
         deleted: true,
+        user: {
+          update: {
+            email: client_.user.email + new Date(),
+          },
+        },
       },
     });
   },

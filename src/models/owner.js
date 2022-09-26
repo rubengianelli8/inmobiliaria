@@ -31,10 +31,25 @@ export const owner = {
     });
   },
   async deleteOwner(_parent, { id }, _context) {
+    const owner_ = await prisma.inm_owner.findUnique({
+      where: { id },
+      select: {
+        user: {
+          select: {
+            email: true,
+          },
+        },
+      },
+    });
     return await prisma.inm_owner.update({
       where: { id },
       data: {
         deleted: true,
+        user: {
+          update: {
+            email: owner_.user.email + new Date(),
+          },
+        },
       },
     });
   },
