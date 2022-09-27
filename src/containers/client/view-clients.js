@@ -185,44 +185,42 @@ const ViewClients = () => {
           </button>
         </form>
       </div>
-      <div className="flex w-full justify-center mt-2">
-        <div>
-          <DataTable
-            columns={columns}
-            data={dataClients?.getAllClients.results}
-            responsive={true}
-            pointerOnHover
-            highlightOnHover
-            persistTableHead
-            fixedHeader
-            pagination
-            paginationServer
-            customStyles={customStyles}
-            paginationTotalRows={dataClients?.getAllClients?.total}
-            paginationPerPage={10}
-            onRowClicked={(row) => {
-              Router.push(`/client/user/${row.id}`);
-            }}
-            onChangePage={async (page) => {
-              setPage(page);
-              await refetch({
-                page: page,
-                pageSize: page_size,
-                dni: parseInt(search.dni),
-                name: search.name,
-              });
-            }}
-            onChangeRowsPerPage={async (page_size, page) => {
-              setPage_size(page_size);
-              await refetch({
-                page: page,
-                pageSize: page_size,
-                dni: parseInt(search.dni),
-                name: search.name,
-              });
-            }}
-          />
-        </div>
+      <div className="w-4/5 mx-auto rounded mt-5 mb-10 border">
+        <DataTable
+          columns={columns}
+          data={dataClients?.getAllClients.results}
+          responsive={true}
+          pointerOnHover
+          highlightOnHover
+          persistTableHead
+          fixedHeader
+          pagination
+          paginationServer
+          customStyles={customStyles}
+          paginationTotalRows={dataClients?.getAllClients?.total}
+          paginationPerPage={10}
+          onRowClicked={(row) => {
+            Router.push(`/client/user/${row.id}`);
+          }}
+          onChangePage={async (page) => {
+            setPage(page);
+            await refetch({
+              page: page,
+              pageSize: page_size,
+              dni: parseInt(search.dni),
+              name: search.name,
+            });
+          }}
+          onChangeRowsPerPage={async (page_size, page) => {
+            setPage_size(page_size);
+            await refetch({
+              page: page,
+              pageSize: page_size,
+              dni: parseInt(search.dni),
+              name: search.name,
+            });
+          }}
+        />
       </div>
     </div>
   );

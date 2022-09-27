@@ -304,42 +304,41 @@ const Estates = () => {
               </button>
             </form>
           </div>
-          <div className="flex w-full justify-center mt-2">
-            <div>
-              <DataTable
-                columns={columns}
-                data={dataEstates?.getAllEstatesByOwner?.results}
-                responsive={true}
-                pointerOnHover
-                highlightOnHover
-                persistTableHead
-                fixedHeader
-                pagination
-                paginationServer
-                customStyles={customStyles}
-                paginationTotalRows={dataEstates?.getAllEstatesByOwner?.total}
-                paginationPerPage={10}
-                onRowClicked={(row) => {
-                  Router.push(Router.push(`/estates/${row.id}`));
-                }}
-                onChangePage={async (page) => {
-                  setPage(page);
-                  await refetch({
-                    page: page,
-                    pageSize: page_size,
-                    search,
-                  });
-                }}
-                onChangeRowsPerPage={async (page_size, page) => {
-                  setPage_size(page_size);
-                  await refetch({
-                    page: page,
-                    pageSize: page_size,
-                    search,
-                  });
-                }}
-              />
-            </div>
+          <div className="w-4/5 mx-auto rounded mt-5 mb-10 border">
+            <DataTable
+              columns={columns}
+              data={dataEstates?.getAllEstatesByOwner?.results}
+              responsive={true}
+              pointerOnHover
+              highlightOnHover
+              persistTableHead
+              fixedHeader
+              pagination
+              paginationServer
+              customStyles={customStyles}
+              paginationTotalRows={dataEstates?.getAllEstatesByOwner?.total}
+              paginationPerPage={10}
+              onRowClicked={(row) => {
+                Router.push(Router.push(`/estates/${row.id}`));
+              }}
+              onChangePage={async (page) => {
+                setPage(page);
+                await refetch({
+                  page: page,
+                  pageSize: page_size,
+                  search,
+                });
+              }}
+              onChangeRowsPerPage={async (page_size, page) => {
+                setPage_size(page_size);
+                await refetch({
+                  page: page,
+                  pageSize: page_size,
+                  search,
+                });
+              }}
+            />
+
             {/* <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
               <table className="w-4/5 text-sm text-left text-gray-800 max-w-[800px] table-auto">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-200 ">
