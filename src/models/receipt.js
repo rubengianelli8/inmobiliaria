@@ -69,7 +69,7 @@ export const receipt = {
       "#url#",
       `${process.env.NEXT_PUBLIC_BASE_URL}/download/receipt/${id64}`
     );
-    sendEmail(email, sendReceipt.subject, body, true);
+    if (email.length > 0) sendEmail(email, sendReceipt.subject, body, true);
 
     return receipt;
   },

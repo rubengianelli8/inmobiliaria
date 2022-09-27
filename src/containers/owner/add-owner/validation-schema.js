@@ -1,9 +1,6 @@
 import * as yup from "yup";
 export const validationSchema = yup.object({
-  email: yup
-    .string()
-    .email("Ingrese un email valido")
-    .required("Este campo es obligatorio"),
+  email: yup.string().email("Ingrese un email valido").notRequired(),
   first_name: yup
     .string()
     .min(2, "El minimo es de 2 caracteres")

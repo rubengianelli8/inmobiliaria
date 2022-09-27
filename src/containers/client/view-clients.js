@@ -51,7 +51,11 @@ const ViewClients = () => {
 
   const columns = [
     { name: "DNI", selector: "user.dni", sortable: false },
-    { name: "Email", selector: "user.email", sortable: false },
+    {
+      name: "Email",
+      selector: (r) => (r.user.email.length > 1 ? r.user.email : "----"),
+      sortable: false,
+    },
     { name: "Nombre", selector: "user.first_name", sortable: false },
     { name: "Apellido", selector: "user.last_name", sortable: false },
     {
