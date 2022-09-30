@@ -15,7 +15,7 @@ model inm_real_estate {
 
 model inm_user {
   id               Int          @id @default(autoincrement())
-  email            String?      @unique @db.VarChar(150)
+  email            String?      @db.VarChar(150)
   first_name       String       @db.VarChar(60)
   last_name        String       @db.VarChar(60)
   full_name        String       @db.VarChar(120)

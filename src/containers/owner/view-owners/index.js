@@ -49,6 +49,14 @@ const ViewOwners = () => {
     },
   });
 
+  useEffect(() => {
+    refetch({
+      page: page,
+      pageSize: 10,
+      dni: search.dni,
+      name: search.name,
+    });
+  }, []);
   const columns = [
     { name: "DNI", selector: "user.dni", sortable: false },
     {
