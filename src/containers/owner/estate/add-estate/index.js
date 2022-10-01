@@ -70,7 +70,7 @@ const AddEstate = () => {
       setValue("bedrooms", dataEstate?.getEstate?.bedrooms || "");
       setValue("antiquity", dataEstate?.getEstate?.antiquity || "");
       setValue("bathrooms", dataEstate?.getEstate?.bathrooms || "");
-      setValue("garages", dataEstate?.getEstate?.garages || "");
+      setValue("garages", dataEstate?.getEstate?.garages ?? "");
       setValue("floors", dataEstate?.getEstate?.floors || "");
       setValue("garden", dataEstate?.getEstate?.garden ? "Si" : "No");
       setValue("pool", dataEstate?.getEstate?.pool ? "Si" : "No");
@@ -85,8 +85,9 @@ const AddEstate = () => {
       setValue("type_ceiling", dataEstate?.getEstate?.type_ceiling || "");
       setValue("luminosity", dataEstate?.getEstate?.luminosity || "");
       setValue("type", dataEstate?.getEstate?.type || "");
-      setValue("status", dataEstate?.getEstate?.status || "");
+      //setValue("status", dataEstate?.getEstate?.status || "");
       setValue("price", dataEstate?.getEstate?.price || "");
+      setValue("fee", dataEstate?.getEstate?.fee || "");
     }
   }, [dataEstate]);
 
@@ -111,7 +112,6 @@ const AddEstate = () => {
       commercial_use: "",
       pool: "",
       garden: "",
-      status: "",
     },
     resolver: yupResolver(validationSchema),
   });
@@ -123,7 +123,9 @@ const AddEstate = () => {
     return false;
   };
   const onSubmitAddEstate = (data) => {
+    console.log("data", data);
     if (!id_estate) {
+      console.log("add");
       addEstate({
         variables: {
           ...data,
@@ -142,7 +144,7 @@ const AddEstate = () => {
           floors: parseInt(data.floors),
           antiquity: parseInt(data.antiquity),
           id_owner: parseInt(id_owner),
-          status: data.status,
+          status: "Disponible",
           price: parseInt(data.price),
         },
       }).then((res) => {
@@ -151,9 +153,11 @@ const AddEstate = () => {
         setOpenModal(true);
       });
     } else {
+      console.log("actualiza");
       updateEstate({
         variables: {
           ...data,
+          fee: parseInt(data.fee),
           idEstate: parseInt(id_estate),
           garden: toBoolean(data.garden),
           pool: toBoolean(data.pool),
@@ -168,7 +172,7 @@ const AddEstate = () => {
           garages: parseInt(data.garages),
           floors: parseInt(data.floors),
           antiquity: parseInt(data.antiquity),
-          status: data.status,
+          //          status: data.status,
           price: parseInt(data.price),
         },
       }).then((res) => {
@@ -430,16 +434,6 @@ const AddEstate = () => {
               register={register}
               name="internal_state"
               error={errors.internal_state}
-            />
-            <SelectComponent
-              data={STATUS}
-              label="Estado"
-              placeholder="Seleccionar"
-              control={control}
-              Controller={Controller}
-              register={register}
-              name="status"
-              error={errors.status}
             />
             <SelectComponent
               data={YES_OR_NO}

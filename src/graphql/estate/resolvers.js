@@ -15,10 +15,12 @@ export const resolvers = {
 
   Mutation: {
     addEstate(_parent, _args, _context) {
+      console.log(_args);
       return estate.addEstate(_parent, _args, _context);
     },
     updateEstate(_parent, _args, _context) {
       try {
+        console.log(_args);
         return estate.updateEstate(_parent, _args, _context);
       } catch (e) {
         console.log(e);

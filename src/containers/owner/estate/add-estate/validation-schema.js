@@ -29,7 +29,6 @@ export const validationSchema = yup.object({
   type_ceiling: yup.string().required("Este campo es requerido"),
   luminosity: yup.string().required("Este campo es requerido"),
   type: yup.string().required("Este campo es requerido"),
-  status: yup.string().notRequired("Este campo es requerido"),
   price: yup.string().notRequired(),
   id_client: yup.string().notRequired(),
 });

@@ -15,16 +15,6 @@ const DocPdf = ({ liquidation }) => {
         }}
       >
         <LiquidationDoc liquidation={liquidation} />
-      </Page>
-      <Page
-        size="A4"
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          marginTop: "10px",
-        }}
-      >
         <LiquidationDoc liquidation={liquidation} />
       </Page>
     </Document>

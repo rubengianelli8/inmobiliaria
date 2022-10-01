@@ -37,6 +37,7 @@ export const GET_ESTATE_BY_ID = gql`
       price
       certificate_estate
       domain
+      fee
       owner {
         id
         user {

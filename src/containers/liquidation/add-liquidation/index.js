@@ -333,7 +333,7 @@ const AddLiquidation = () => {
           <Button
             type="submit"
             classPlus="w-full text-18"
-            label={"Generar recibo"}
+            label={"Generar Liquidación"}
             bgColor={"bg-primary"}
             disabled={false}
           />

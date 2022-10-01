@@ -16,16 +16,6 @@ const DocPdf = ({ receipt }) => {
         }}
       >
         <ReceiptDoc receipt={receipt} />
-      </Page>
-      <Page
-        size="A4"
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          marginTop: "10px",
-        }}
-      >
         <ReceiptDoc receipt={receipt} />
       </Page>
     </Document>
