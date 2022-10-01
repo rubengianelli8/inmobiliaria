@@ -50,7 +50,6 @@ export const estate = {
         return { results: estates, total: estates.length };
       }
       let filters = {};
-      console.log("data", data.search);
       if (
         data.search?.until &&
         data.search?.since >= 0 &&
@@ -80,7 +79,19 @@ export const estate = {
           },
         };
       }
+      if (data.search?.address) {
+        filters.address = {
+          contains: data.search.address,
+        };
+      }
 
+      if (data.search?.address_number) {
+        filters.address_number = {
+          contains: data.search.address_number,
+        };
+      }
+
+      console.log("data", data.search);
       const estates = await prisma.inm_estate.findMany({
         take: page_size,
         skip: page_size * page,
