@@ -109,7 +109,7 @@ model inm_payment_plan {
   id                   Int               @id @default(autoincrement())
   id_estate            Int
   id_client            Int
-  api                  Int               @default(0)
+  rate                 Int               @default(0)
   price                Int
   client               inm_client        @relation(fields: [id_client], references: [id])
   estate               inm_estate        @relation(fields: [id_estate], references: [id])

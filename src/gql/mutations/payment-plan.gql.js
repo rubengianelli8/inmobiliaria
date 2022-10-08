@@ -4,7 +4,7 @@ export const ADD_PAYMENT_PLAN = gql`
   mutation AddPaymentPlan(
     $idEstate: Int
     $idClient: Int
-    $api: Int
+    $rate: Int
     $price: Int
     $entry: DateTime
     $finish: DateTime
@@ -16,7 +16,7 @@ export const ADD_PAYMENT_PLAN = gql`
     addPaymentPlan(
       id_estate: $idEstate
       id_client: $idClient
-      api: $api
+      rate: $rate
       price: $price
       entry: $entry
       finish: $finish
@@ -33,7 +33,7 @@ export const ADD_PAYMENT_PLAN = gql`
 export const UPDATE_PAYMENT_PLAN = gql`
   mutation UpdatePaymentPlan(
     $id: Int
-    $api: Int
+    $rate: Int
     $price: Int
     $entry: DateTime
     $finish: DateTime
@@ -44,7 +44,7 @@ export const UPDATE_PAYMENT_PLAN = gql`
   ) {
     updatePaymentPlan(
       id: $id
-      api: $api
+      rate: $rate
       price: $price
       entry: $entry
       finish: $finish

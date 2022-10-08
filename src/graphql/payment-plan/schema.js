@@ -5,7 +5,7 @@ export const schema = gql`
     id: Int
     id_estate: Int
     id_client: Int
-    api: Int
+    rate: Int
     price: Int
     entry: DateTime
     finish: DateTime
@@ -24,7 +24,7 @@ export const schema = gql`
   type Mutation {
     addPaymentPlan(
       id_estate: Int
-      api: Int
+      rate: Int
       price: Int
       entry: DateTime
       finish: DateTime
@@ -38,7 +38,7 @@ export const schema = gql`
     updatePaymentPlan(
       id: Int
       id_estate: Int
-      api: Int
+      rate: Int
       price: Int
       entry: DateTime
       finish: DateTime

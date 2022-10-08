@@ -23,10 +23,8 @@ const PaymentPlan = ({ estate, setEstateToClient, idClient, edit = false }) => {
   useEffect(() => {
     if (estate.price) setValue("price", estate.price);
 
-    console.log("afuer", estate);
     if (estate.payment_plan && edit) {
-      console.log("entro");
-      setValue("api", estate.payment_plan[0].api);
+      setValue("rate", estate.payment_plan[0].rate);
       setValue("price", estate.payment_plan[0].price);
       setValue(
         "entry",
@@ -56,7 +54,7 @@ const PaymentPlan = ({ estate, setEstateToClient, idClient, edit = false }) => {
         variables: {
           idEstate: estate.id,
           idClient: idClient,
-          api: parseInt(data.api),
+          rate: parseInt(data.rate),
           price: parseInt(data.price),
           entry: new Date(data.entry),
           finish: new Date(data.finish),
@@ -74,7 +72,7 @@ const PaymentPlan = ({ estate, setEstateToClient, idClient, edit = false }) => {
       await updatePaymentPlan({
         variables: {
           id: estate.payment_plan[0].id,
-          api: parseInt(data.api),
+          rate: parseInt(data.rate),
           price: parseInt(data.price),
           entry: new Date(data.entry),
           finish: new Date(data.finish),
@@ -124,12 +122,12 @@ const PaymentPlan = ({ estate, setEstateToClient, idClient, edit = false }) => {
           error={errors.increases_every}
         />
         <Input
-          label={"api"}
-          placeholder="api"
+          label={"Tasa Municipal"}
+          placeholder="Tasa"
           type="number"
-          name="api"
+          name="rate"
           register={register}
-          error={errors.api}
+          error={errors.rate}
         />
         <Input
           label={"Día limite de pago "}

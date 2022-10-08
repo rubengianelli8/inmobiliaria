@@ -116,7 +116,7 @@ export const GET_ALL_ESTATES_BY_OWNER = gql`
         payment_plan {
           id
           id_client
-          api
+          rate
           price
           entry
           finish
