@@ -100,11 +100,11 @@ const AddReceipt = () => {
     watch("surcharge_percentage"),
   ]);
   useEffect(() => {
-    const [month] = getValues(["month"]);
-    let diffDays = dayjs(new Date(month)).diff(dayjs(), "day");
+    const [month, date] = getValues(["month", "date"]);
+    let diffDays = dayjs(new Date(month)).diff(dayjs(date), "day");
     let surchargeDays = diffDays * -1 - paymentPlan.payment_deadline + 1; // se agrega un día porque calcula un día menos
     setValue("surcharge_days", surchargeDays > 0 ? surchargeDays : 0);
-  }, [watch("month")]);
+  }, [watch("month"), watch("date")]);
 
   useEffect(() => {
     if (

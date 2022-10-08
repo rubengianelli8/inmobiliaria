@@ -67,7 +67,7 @@ const UserDashboard = ({ user }) => {
           {user?.owner?.length > 0 && (
             <div className="flex flex-row text-18 mb-2">
               <span className="font-bold mr-2 text-primary">
-                Número de cuenta bancaria.
+                N° de cuenta bancaria.
               </span>
               <span>{user?.owner[0]?.number_account}</span>
             </div>
