@@ -38,6 +38,12 @@ export const GET_USER = gql`
       work_address
       phone
       cell_phone
+      owner {
+        cbu
+        alias_cbu
+        bank
+        number_account
+      }
     }
   }
 `;

@@ -63,6 +63,13 @@ const AddOwner = () => {
         "cell_phone",
         dataUserOwner.getOwner.user.cell_phone || undefined
       );
+      setValue("cbu", dataUserOwner.getOwner.cbu || undefined);
+      setValue("alias_cbu", dataUserOwner.getOwner.alias_cbu || undefined);
+      setValue("bank", dataUserOwner.getOwner.bank || undefined);
+      setValue(
+        "number_account",
+        dataUserOwner.getOwner.number_account || undefined
+      );
     }
   }, [dataUserOwner]);
 
@@ -83,6 +90,10 @@ const AddOwner = () => {
         addOwner({
           variables: {
             idUser: res.data.addUser.id,
+            cbu: data.cbu,
+            alias_cbu: data.alias_cbu,
+            number_account: data.number_account,
+            bank: data.bank,
           },
         }).then((res_) => {
           setIdOwner(res_.data.addOwner.id);
@@ -101,6 +112,10 @@ const AddOwner = () => {
           workAddress: data.work_address,
           phone: data.phone,
           cellPhone: data.cell_phone,
+          cbu: data.cbu,
+          alias_cbu: data.alias_cbu,
+          number_account: data.number_account,
+          bank: data.bank,
         },
       }).then(() => {
         setOpenModalUpdate(true);
@@ -227,6 +242,49 @@ const AddOwner = () => {
                   name="cell_phone"
                   register={register}
                   error={errors.cell_phone}
+                />
+              </div>
+
+              <h3 className="underline text-18 font-bold">Datos bancarios</h3>
+              <div></div>
+              <div>
+                <Input
+                  label={"CBU"}
+                  placeholder="00012789467871090000123101263819000"
+                  type="number"
+                  name="cbu"
+                  register={register}
+                  error={errors.cbu}
+                />
+              </div>
+              <div>
+                <Input
+                  label={"Alias"}
+                  placeholder="HOLA.ALIAS"
+                  type="text"
+                  name="alias_cbu"
+                  register={register}
+                  error={errors.alias_cbu}
+                />
+              </div>
+              <div>
+                <Input
+                  label={"Banco"}
+                  placeholder="La nación"
+                  type="text"
+                  name="bank"
+                  register={register}
+                  error={errors.bank}
+                />
+              </div>
+              <div>
+                <Input
+                  label={"Número de cuenta bancaria"}
+                  placeholder="12983765-1"
+                  type="text"
+                  name="number_account"
+                  register={register}
+                  error={errors.number_account}
                 />
               </div>
             </div>

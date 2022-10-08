@@ -11,9 +11,14 @@ export const owner = {
     return await prisma.inm_owner.create({ data });
   },
   async updateOwner(_parent, data, _context) {
+    const { cbu, alias_cbu, bank, number_account } = data;
     return await prisma.inm_owner.update({
       where: { id: data.id },
       data: {
+        cbu,
+        alias_cbu,
+        bank,
+        number_account,
         user: {
           update: {
             email: data.email,

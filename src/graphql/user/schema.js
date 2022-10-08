@@ -11,6 +11,7 @@ export const schema = gql`
     work_address: String
     phone: String
     cell_phone: String
+    owner: [Owner]
   }
 
   type Query {

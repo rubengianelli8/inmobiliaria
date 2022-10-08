@@ -6,7 +6,7 @@ export const user = {
       if (id)
         return await prisma.inm_user.findUnique({
           where: { id },
-          include: { real_estate: true },
+          include: { real_estate: true, owner: true },
         });
       let user_;
       if (id_owner)
@@ -17,6 +17,9 @@ export const user = {
                 id: id_owner,
               },
             },
+          },
+          include: {
+            owner: true,
           },
         });
       if (id_client) {

@@ -32,6 +32,10 @@ model inm_owner {
   id              Int               @id @default(autoincrement())
   id_user         Int               @unique
   deleted         Boolean           @default(false)
+  cbu             String?
+  alias_cbu       String?
+  bank            String?
+  number_account  String?
   user            inm_user          @relation(fields: [id_user], references: [id])
   estates         inm_estate[]
   inm_liquidation inm_liquidation[]

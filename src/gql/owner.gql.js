@@ -1,8 +1,20 @@
 import { gql } from "apollo-server-micro";
 
 export const ADD_OWNER = gql`
-  mutation AddOwner($idUser: Int) {
-    addOwner(id_user: $idUser) {
+  mutation AddOwner(
+    $idUser: Int
+    $cbu: String
+    $alias_cbu: String
+    $bank: String
+    $number_account: String
+  ) {
+    addOwner(
+      id_user: $idUser
+      cbu: $cbu
+      alias_cbu: $alias_cbu
+      bank: $bank
+      number_account: $number_account
+    ) {
       id
     }
   }
@@ -19,6 +31,10 @@ export const UPDATE_OWNER = gql`
     $workAddress: String
     $phone: String
     $cellPhone: String
+    $cbu: String
+    $alias_cbu: String
+    $bank: String
+    $number_account: String
   ) {
     updateOwner(
       id: $id
@@ -30,6 +46,10 @@ export const UPDATE_OWNER = gql`
       work_address: $workAddress
       phone: $phone
       cell_phone: $cellPhone
+      cbu: $cbu
+      alias_cbu: $alias_cbu
+      bank: $bank
+      number_account: $number_account
     ) {
       id
     }
@@ -68,6 +88,10 @@ export const GET_OWNER = gql`
   query GetOwner($getOwnerId: Int) {
     getOwner(id: $getOwnerId) {
       id
+      cbu
+      alias_cbu
+      bank
+      number_account
       user {
         email
         first_name

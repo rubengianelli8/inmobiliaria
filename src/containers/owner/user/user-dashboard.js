@@ -46,6 +46,32 @@ const UserDashboard = ({ user }) => {
             <span className="font-bold mr-2 text-primary">Celular:</span>
             <span>{user?.cell_phone}</span>
           </div>
+          {user?.owner?.length > 0 && (
+            <div className="flex flex-row text-18 mb-2">
+              <span className="font-bold mr-2 text-primary">CBU:</span>
+              <span>{user?.owner[0]?.cbu}</span>
+            </div>
+          )}
+          {user?.owner?.length > 0 && (
+            <div className="flex flex-row text-18 mb-2">
+              <span className="font-bold mr-2 text-primary">Alias:</span>
+              <span>{user?.owner[0]?.alias_cbu}</span>
+            </div>
+          )}
+          {user?.owner?.length > 0 && (
+            <div className="flex flex-row text-18 mb-2">
+              <span className="font-bold mr-2 text-primary">Banco</span>
+              <span>{user?.owner[0]?.bank}</span>
+            </div>
+          )}
+          {user?.owner?.length > 0 && (
+            <div className="flex flex-row text-18 mb-2">
+              <span className="font-bold mr-2 text-primary">
+                Número de cuenta bancaria.
+              </span>
+              <span>{user?.owner[0]?.number_account}</span>
+            </div>
+          )}
           <div className="flex flex-col items-center gap-y-2">
             <div
               className=" text-quaternary bg-tertiary rounded-full text-14 cursor-pointer p-2 w-4/5 flex justify-center items-center"
