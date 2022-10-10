@@ -10,7 +10,8 @@ import Input from "@/components/input";
 import { useForm } from "react-hook-form";
 import { GoTriangleUp } from "react-icons/go";
 import Button from "@/components/button";
-import Router from "next/router";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { validationSchema } from "./validation-schema";
 
 const PaymentPlan = ({ estate, setEstateToClient, idClient, edit = false }) => {
   const {
@@ -18,7 +19,7 @@ const PaymentPlan = ({ estate, setEstateToClient, idClient, edit = false }) => {
     register,
     setValue,
     formState: { errors },
-  } = useForm();
+  } = useForm({ mode: "onBlur", resolver: yupResolver(validationSchema) });
 
   useEffect(() => {
     if (estate.price) setValue("price", estate.price);

@@ -3,7 +3,7 @@ export const GET_PAYMENT_PLAN = gql`
   query GetPaymentPlan($id: Int!) {
     getPaymentPlan(id: $id) {
       id
-      api
+      rate
       price
       entry
       finish
