@@ -29,7 +29,8 @@ const ViewPaymentPlan = ({ id, setOpen, setEditPaymentModal }) => {
           </p>
 
           <p>
-            <span className="font-bold">API:</span> ${data.getPaymentPlan.api}
+            <span className="font-bold">Tasa Municipal:</span> $
+            {data.getPaymentPlan.rate}
           </p>
 
           <p>

@@ -53,7 +53,7 @@ const AddReceipt = () => {
           " " +
           data.getPaymentPlan.client.user.last_name
       );
-      setValue("api", data.getPaymentPlan.api);
+      setValue("rate", data.getPaymentPlan.rate);
       setValue("date", dayjs().format("YYYY-MM-DD"));
       setValue("month", dayjs().format("YYYY-MM"));
       //calcular dias de mora
