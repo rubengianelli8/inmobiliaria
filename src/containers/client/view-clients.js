@@ -8,6 +8,7 @@ import { FaTrash } from "react-icons/fa";
 import { GET_ALL_CLIENTS } from "@/gql/queries/client.gql";
 import { DELETE_CLIENT } from "@/gql/mutations/client.gql";
 import ModalAlert from "@/components/modal-alert";
+import Loader from "@/components/loader";
 
 const customStyles = {
   headCells: {
@@ -40,7 +41,11 @@ const ViewClients = () => {
   const [openModal, setOpenModal] = useState(false);
 
   const [deleteClient] = useMutation(DELETE_CLIENT);
-  const { data: dataClients, refetch } = useQuery(GET_ALL_CLIENTS, {
+  const {
+    data: dataClients,
+    refetch,
+    loading,
+  } = useQuery(GET_ALL_CLIENTS, {
     variables: {
       page: page,
       pageSize: 10,
@@ -138,91 +143,96 @@ const ViewClients = () => {
     });
   }, []);
   return (
-    <div>
-      <ModalAlert
-        acceptButton={"Eliminar"}
-        cancelButton={"Cancelar"}
-        open={openModal}
-        setOpen={setOpenModal}
-        action={async () => {
-          await deleteClient({ variables: { clientId: idClient } });
-          await refetch({
-            page: page,
-            pageSize: page_size,
-            dni: parseInt(search.dni),
-            name: search.name,
-          });
-          setOpenModal(false);
-        }}
-        cancelAction={() => {
-          setOpenModal(false);
-        }}
-        title={"Eliminar inquilino"}
-        message={`¿Está seguro de eliminar este inquilino?.
+    <>
+      {loading && <Loader />}
+      {!loading && (
+        <div>
+          <ModalAlert
+            acceptButton={"Eliminar"}
+            cancelButton={"Cancelar"}
+            open={openModal}
+            setOpen={setOpenModal}
+            action={async () => {
+              await deleteClient({ variables: { clientId: idClient } });
+              await refetch({
+                page: page,
+                pageSize: page_size,
+                dni: parseInt(search.dni),
+                name: search.name,
+              });
+              setOpenModal(false);
+            }}
+            cancelAction={() => {
+              setOpenModal(false);
+            }}
+            title={"Eliminar inquilino"}
+            message={`¿Está seguro de eliminar este inquilino?.
           Esta acción no se puede deshacer`}
-      />
-      <div className="w-4/5 max-w-[800px] mx-auto p-1 bg-gray-200 mt-3 flex rounded">
-        <form className="w-full flex flex-col md:flex-row mx-2 gap-x-3 gap-y-3">
-          <input
-            type="number"
-            className="rounded-full px-3 py-2"
-            placeholder="Dni"
-            name="dni"
-            onChange={handleChange}
           />
+          <div className="w-4/5 max-w-[800px] mx-auto p-1 bg-gray-200 mt-3 flex rounded">
+            <form className="w-full flex flex-col md:flex-row mx-2 gap-x-3 gap-y-3">
+              <input
+                type="number"
+                className="rounded-full px-3 py-2"
+                placeholder="Dni"
+                name="dni"
+                onChange={handleChange}
+              />
 
-          <input
-            className="rounded-full px-3 py-2"
-            placeholder="Nombre"
-            name="name"
-            onChange={handleChange}
-          />
-          <button
-            onClick={handleSubmit}
-            className="ml-auto bg-tertiary py-2 px-3 rounded mb-1 md:mb-0"
-          >
-            Filtrar
-          </button>
-        </form>
-      </div>
-      <div className="w-4/5 mx-auto rounded mt-5 mb-10 border">
-        <DataTable
-          columns={columns}
-          data={dataClients?.getAllClients.results}
-          responsive={true}
-          pointerOnHover
-          highlightOnHover
-          persistTableHead
-          fixedHeader
-          pagination
-          paginationServer
-          customStyles={customStyles}
-          paginationTotalRows={dataClients?.getAllClients?.total}
-          paginationPerPage={10}
-          onRowClicked={(row) => {
-            Router.push(`/client/user/${row.id}`);
-          }}
-          onChangePage={async (page) => {
-            setPage(page);
-            await refetch({
-              page: page,
-              pageSize: page_size,
-              dni: parseInt(search.dni),
-              name: search.name,
-            });
-          }}
-          onChangeRowsPerPage={async (page_size, page) => {
-            setPage_size(page_size);
-            await refetch({
-              page: page,
-              pageSize: page_size,
-              dni: parseInt(search.dni),
-              name: search.name,
-            });
-          }}
-        />
-      </div>
-    </div>
+              <input
+                className="rounded-full px-3 py-2"
+                placeholder="Nombre"
+                name="name"
+                onChange={handleChange}
+              />
+              <button
+                onClick={handleSubmit}
+                className="ml-auto bg-tertiary py-2 px-3 rounded mb-1 md:mb-0"
+              >
+                Filtrar
+              </button>
+            </form>
+          </div>
+          <div className="w-4/5 mx-auto rounded mt-5 mb-10 border">
+            <DataTable
+              columns={columns}
+              data={dataClients?.getAllClients.results}
+              responsive={true}
+              pointerOnHover
+              highlightOnHover
+              persistTableHead
+              fixedHeader
+              pagination
+              paginationServer
+              customStyles={customStyles}
+              paginationTotalRows={dataClients?.getAllClients?.total}
+              paginationPerPage={10}
+              onRowClicked={(row) => {
+                Router.push(`/client/user/${row.id}`);
+              }}
+              onChangePage={async (page) => {
+                setPage(page);
+                await refetch({
+                  page: page,
+                  pageSize: page_size,
+                  dni: parseInt(search.dni),
+                  name: search.name,
+                });
+              }}
+              onChangeRowsPerPage={async (page_size, page) => {
+                setPage_size(page_size);
+                await refetch({
+                  page: page,
+                  pageSize: page_size,
+                  dni: parseInt(search.dni),
+                  name: search.name,
+                });
+              }}
+            />
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

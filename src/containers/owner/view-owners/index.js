@@ -8,6 +8,7 @@ import { FaTrash } from "react-icons/fa";
 
 import { GET_ALL_OWNERS, DELETE_OWNER } from "@/gql/owner.gql";
 import ModalAlert from "@/components/modal-alert";
+import Loader from "@/components/loader";
 
 const customStyles = {
   headCells: {
@@ -40,7 +41,11 @@ const ViewOwners = () => {
   const [openModal, setOpenModal] = useState(false);
   const [deleteOwner] = useMutation(DELETE_OWNER);
 
-  const { data: dataOwners, refetch } = useQuery(GET_ALL_OWNERS, {
+  const {
+    data: dataOwners,
+    refetch,
+    loading,
+  } = useQuery(GET_ALL_OWNERS, {
     variables: {
       page: page,
       pageSize: 10,
@@ -126,90 +131,95 @@ const ViewOwners = () => {
     setSearch({ ...search, [e.target.name]: e.target.value });
   };
   return (
-    <div>
-      <ModalAlert
-        acceptButton={"Eliminar"}
-        cancelButton="Cancelar"
-        title={"Eliminar Propietario"}
-        message={"¿Está seguro de eliminar este propietario?"}
-        open={openModal}
-        setOpen={setOpenModal}
-        action={async () => {
-          await deleteOwner({ variables: { id: idOwner } });
-          await refetch({
-            page: page,
-            pageSize: page_size,
-            dni: parseInt(search.dni),
-            name: search.name,
-          });
-          setOpenModal(false);
-        }}
-        cancelAction={() => {
-          setOpenModal(false);
-        }}
-      />
-      <div className="w-4/5 max-w-[800px] mx-auto p-1 bg-gray-200 mt-3 flex rounded">
-        <form className="w-full flex flex-col md:flex-row mx-2 gap-x-3 gap-y-3">
-          <input
-            type="number"
-            className="rounded-full px-3 py-2"
-            placeholder="Dni"
-            name="dni"
-            onChange={handleChange}
+    <>
+      {loading && <Loader />}
+      {!loading && (
+        <div>
+          <ModalAlert
+            acceptButton={"Eliminar"}
+            cancelButton="Cancelar"
+            title={"Eliminar Propietario"}
+            message={"¿Está seguro de eliminar este propietario?"}
+            open={openModal}
+            setOpen={setOpenModal}
+            action={async () => {
+              await deleteOwner({ variables: { id: idOwner } });
+              await refetch({
+                page: page,
+                pageSize: page_size,
+                dni: parseInt(search.dni),
+                name: search.name,
+              });
+              setOpenModal(false);
+            }}
+            cancelAction={() => {
+              setOpenModal(false);
+            }}
           />
+          <div className="w-4/5 max-w-[800px] mx-auto p-1 bg-gray-200 mt-3 flex rounded">
+            <form className="w-full flex flex-col md:flex-row mx-2 gap-x-3 gap-y-3">
+              <input
+                type="number"
+                className="rounded-full px-3 py-2"
+                placeholder="Dni"
+                name="dni"
+                onChange={handleChange}
+              />
 
-          <input
-            className="rounded-full px-3 py-2"
-            placeholder="Nombre"
-            name="name"
-            onChange={handleChange}
-          />
-          <button
-            onClick={handleSubmitFilter}
-            className="ml-auto bg-tertiary py-2 px-3 rounded mb-1 md:mb-0"
-          >
-            Filtrar
-          </button>
-        </form>
-      </div>
-      <div className="w-4/5 mx-auto rounded mt-5 mb-10 border">
-        <DataTable
-          columns={columns}
-          data={dataOwners?.getAllOwners.results}
-          responsive={true}
-          pointerOnHover
-          highlightOnHover
-          persistTableHead
-          fixedHeader
-          pagination
-          paginationServer
-          customStyles={customStyles}
-          paginationTotalRows={dataOwners?.getAllOwners?.total}
-          paginationPerPage={10}
-          onRowClicked={(row) => {
-            Router.push(`/owner/user/${row.id}`);
-          }}
-          onChangePage={async (page) => {
-            setPage(page);
-            await refetch({
-              page: page,
-              pageSize: page_size,
-              dni: parseInt(search.dni),
-              name: search.name,
-            });
-          }}
-          onChangeRowsPerPage={async (page_size, page) => {
-            setPage_size(page_size);
-            await refetch({
-              page: page,
-              pageSize: page_size,
-              dni: parseInt(search.dni),
-              name: search.name,
-            });
-          }}
-        />
-      </div>
-    </div>
+              <input
+                className="rounded-full px-3 py-2"
+                placeholder="Nombre"
+                name="name"
+                onChange={handleChange}
+              />
+              <button
+                onClick={handleSubmitFilter}
+                className="ml-auto bg-tertiary py-2 px-3 rounded mb-1 md:mb-0"
+              >
+                Filtrar
+              </button>
+            </form>
+          </div>
+          <div className="w-4/5 mx-auto rounded mt-5 mb-10 border">
+            <DataTable
+              columns={columns}
+              data={dataOwners?.getAllOwners.results}
+              responsive={true}
+              pointerOnHover
+              highlightOnHover
+              persistTableHead
+              fixedHeader
+              pagination
+              paginationServer
+              customStyles={customStyles}
+              paginationTotalRows={dataOwners?.getAllOwners?.total}
+              paginationPerPage={10}
+              onRowClicked={(row) => {
+                Router.push(`/owner/user/${row.id}`);
+              }}
+              onChangePage={async (page) => {
+                setPage(page);
+                await refetch({
+                  page: page,
+                  pageSize: page_size,
+                  dni: parseInt(search.dni),
+                  name: search.name,
+                });
+              }}
+              onChangeRowsPerPage={async (page_size, page) => {
+                setPage_size(page_size);
+                await refetch({
+                  page: page,
+                  pageSize: page_size,
+                  dni: parseInt(search.dni),
+                  name: search.name,
+                });
+              }}
+            />
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

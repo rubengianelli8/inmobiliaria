@@ -12,6 +12,7 @@ import { DELETE_ESTATE, UPDATE_ESTATE } from "@/gql/mutations/estate.gql";
 import ModalAlert from "@/components/modal-alert";
 import ModalComponent from "@/components/modal-component";
 import PaymentPlan from "./payment_plan";
+import Loader from "@/components/loader";
 
 const customStyles = {
   headCells: {
@@ -203,6 +204,7 @@ const Estates = () => {
           idClient={parseInt(idClient)}
         />
       </ModalComponent>
+      {loading && <Loader />}
       {!loading && (
         <div>
           <div className="mx-5 p-1 bg-gray-200 mt-3 flex rounded">
