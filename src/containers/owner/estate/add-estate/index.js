@@ -132,7 +132,7 @@ const AddEstate = () => {
           garden: toBoolean(data.garden),
           pool: toBoolean(data.pool),
           credit: toBoolean(data.credit),
-          fee: parseInt(data.fee),
+          fee: data.fee ? parseInt(data.fee) : undefined,
           commercial_use: toBoolean(data.commercial_use),
           has_cartel: toBoolean(data.has_cartel),
           pets: toBoolean(data.pets),
@@ -145,7 +145,7 @@ const AddEstate = () => {
           antiquity: parseInt(data.antiquity),
           id_owner: parseInt(id_owner),
           status: "Disponible",
-          price: parseInt(data.price),
+          price: data.price ? parseInt(data.price) : undefined,
         },
       }).then((res) => {
         setTitle("Propiedad agregada");
